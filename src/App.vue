@@ -2,7 +2,7 @@
 
   <div id="app">
 
-    <mu-appbar style="width: 100%; min-width: 1080px;" color="primary">
+    <mu-appbar style="width: 100%; min-width: 480px;" color="primary">
       <mu-button icon slot="left">
         <mu-icon value="menu"></mu-icon>
       </mu-button>
