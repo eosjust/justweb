@@ -74,72 +74,69 @@
 </template>
 
 <script>
-export default {
-  name: 'App',
-  data() {
-    return{
-      clientWidth:1,
-      clientHeight:1,
-      ismobile:false,
-      menuopen:false,
-      menudrawdocked:false,
-      menudrawopen:false,
-    }
-  },
-  created() {
-    this.changeLang(this.$store.state.lang);
-    this.checkClient();
-    var that=this;
-    document.addEventListener('scatterLoaded', scatterExtension => {
-      var scatter = window.scatter;
-      if(scatter){
-        that.$store.commit("changeScatterSdk",scatter);
+  import eossdkutil from 'eos-sdk-util';
+
+  export default {
+    name: 'App',
+    data() {
+      return {
+        clientWidth: 1,
+        clientHeight: 1,
+        ismobile: false,
+        menuopen: false,
+        menudrawdocked: false,
+        menudrawopen: false,
       }
-      //自动
-      scatterGetIdentity();
-    });
-    if(this.$tp){
-      window.tp=this.$tp;
-    }
-  },
-  mounted() {
-    const that = this;
-    window.onresize = () => {
-      return (() => {
-        that.clientWidth=document.documentElement.clientWidth;
-        that.clientHeight=document.documentElement.clientHeight;
-      })()
-    }
-  },
-  methods: {
-    changeLang(lang) {
-      this.$i18n.locale=lang;
-      this.$store.commit('changeLang', lang);
-      this.menuopen=false;
     },
-    onClientSizeChange(width,height){
-      if(width>height){
-        this.ismobile=false;
-      }else{
-        this.ismobile=true;
+    created() {
+      this.changeLang(this.$store.state.lang);
+      this.checkClient();
+      var that = this;
+
+      if (eossdkutil) {
+        window.eossdkutil = eossdkutil;
+        eossdkutil.init();
+
       }
-    },checkClient(){
-      if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
-        this.ismobile=true;
-      } else {
-        this.ismobile=false;
-      }
-    }
-  },
-  watch: {
-    clientWidth: function (val) {
-      this.onClientSizeChange(val,this.clientHeight);
     },
-    clientHeight: function (val) {
-      this.onClientSizeChange(this.clientWidth,val);
+    mounted() {
+      const that = this;
+      window.onresize = () => {
+        return (() => {
+          that.clientWidth = document.documentElement.clientWidth;
+          that.clientHeight = document.documentElement.clientHeight;
+        })()
+      }
+    },
+    methods: {
+      changeLang(lang) {
+        this.$i18n.locale = lang;
+        this.$store.commit('changeLang', lang);
+        this.menuopen = false;
+      },
+      onClientSizeChange(width, height) {
+        if (width > height) {
+          this.ismobile = false;
+        } else {
+          this.ismobile = true;
+        }
+      }, checkClient() {
+        if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+          this.ismobile = true;
+        } else {
+          this.ismobile = false;
+        }
+      }
+    },
+    watch: {
+      clientWidth: function (val) {
+        this.onClientSizeChange(val, this.clientHeight);
+      },
+      clientHeight: function (val) {
+        this.onClientSizeChange(this.clientWidth, val);
+      }
     }
   }
-}
 </script>
 
 <style>

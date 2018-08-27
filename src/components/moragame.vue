@@ -29,14 +29,12 @@
           {{ opengame.describe }}
         </option>
       </select>
-      <button @click="btnFunNewGame">新建游戏</button>
+      <button @click="changeValue">新建游戏</button>
     </div>
   </div>
 </template>
 
 <script>
-  import tp from 'tp-js-sdk';
-  import $ from 'jquery';
   import timeout from 'timeout';
 
   export default {
@@ -44,8 +42,8 @@
     data() {
       return {
         select_account: '未登录',
-        select_fee:'1',
-        select_account_tokens:'0.0000 EOS,0.0000 MORA',
+        select_fee: '1',
+        select_account_tokens: '0.0000 EOS,0.0000 MORA',
         tpaccounts: [
           {
             name: '未登录'
@@ -68,15 +66,41 @@
     },
     methods: {
       btnFunNewGame() {
-        var tp=this.$tp;
-        var str="isconnected" + tp.isConnected();
-        alert(str);
+        var eossdkutil = window.eossdkutil;
+        eossdkutil.login().then(identity => {
+          //
+          alert(identity);
+        }).catch(error => {
+          //
+          alert(error);
+        });
 
       },
       changeValue() {
-        var tp=window.tp;
-        var str="isconnected" + tp.isConnected();
-        alert(str);
+        var eossdkutil = window.eossdkutil;
+        eossdkutil.pushEosAction({
+          actions: [
+            {
+              account: "justgamemora",
+              name: "claimad",
+              authorization: [
+                {
+                  actor: 'moraplay1111',
+                  permission: "active"
+                }
+              ],
+              data: {
+                account: 'moraplay1111'
+              }
+            }
+          ]
+        }).then(data => {
+          //
+          alert(data);
+        }).catch(error => {
+          //
+          alert(error);
+        });
       },
       requestMyEosBalance() {
 

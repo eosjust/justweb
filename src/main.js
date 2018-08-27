@@ -7,13 +7,14 @@ import MuseUI from 'muse-ui';
 import 'muse-ui/dist/muse-ui.css';
 import store from './store';
 import i18n from './lang';
-import tp from 'tp-js-sdk';
-
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 
 
 
 Vue.config.productionTip = false
 Vue.use(MuseUI);
+Vue.use(ElementUI);
 
 /* eslint-disable no-new */
 new Vue({
@@ -21,7 +22,6 @@ new Vue({
   i18n,
   router,
   store,
-  tp,
   components: { App },
   template: '<App/>'
 })
