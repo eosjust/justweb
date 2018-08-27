@@ -2,7 +2,7 @@
 
   <div id="app">
 
-    <mu-appbar style="width:100%;" color="primary">
+    <mu-appbar style="width:100%;height: 56px;" color="primary">
 
       <mu-button icon slot="left" @click="menudrawopen = !menudrawopen" v-show="ismobile">
         <mu-icon value="menu"></mu-icon>
@@ -27,7 +27,7 @@
       </mu-menu>
       <mu-menu slot="right" :open.sync="menuopen">
         <mu-button flat ripple color="primary">
-          <img :src="currentlangurl">
+          <img :src="this.$store.state.langImgUrl">
         </mu-button>
         <mu-list slot="content">
           <mu-list-item button @click="changeLang('zhCHS')">
@@ -62,7 +62,7 @@
           <mu-list-item-title> {{$t('mainmenu.games')}}</mu-list-item-title>
         </mu-list-item>
         <mu-list-item button to="setting" @click="menudrawopen = false">
-          <mu-list-item-title> {{$t('mainmenu.setting')}}</mu-list-item-title>
+          <mu-list-item-title> {{$t('mainmenu.settings')}}</mu-list-item-title>
         </mu-list-item>
         <mu-list-item button to="about" @click="menudrawopen = false">
           <mu-list-item-title> {{$t('mainmenu.about')}}</mu-list-item-title>
@@ -84,16 +84,22 @@ export default {
       menuopen:false,
       menudrawdocked:false,
       menudrawopen:false,
-      currentlang:this.$store.state.lang,
-      currentlangurl:'https://www.countryflags.io/US/flat/48.png',
     }
   },
   created() {
-    this.changeLang(this.currentlang);
-    if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
-      this.ismobile=true;
-    } else {
-      this.ismobile=false;
+    this.changeLang(this.$store.state.lang);
+    this.checkClient();
+    var that=this;
+    document.addEventListener('scatterLoaded', scatterExtension => {
+      var scatter = window.scatter;
+      if(scatter){
+        that.$store.commit("changeScatterSdk",scatter);
+      }
+      //自动
+      scatterGetIdentity();
+    });
+    if(this.$tp){
+      window.tp=this.$tp;
     }
   },
   mounted() {
@@ -108,11 +114,6 @@ export default {
   methods: {
     changeLang(lang) {
       this.$i18n.locale=lang;
-      if(lang=='en'){
-        this.currentlangurl='https://www.countryflags.io/US/flat/48.png';
-      }else if(lang=='zhCHS'){
-        this.currentlangurl='https://www.countryflags.io/CN/flat/48.png';
-      }
       this.$store.commit('changeLang', lang);
       this.menuopen=false;
     },
@@ -121,6 +122,12 @@ export default {
         this.ismobile=false;
       }else{
         this.ismobile=true;
+      }
+    },checkClient(){
+      if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+        this.ismobile=true;
+      } else {
+        this.ismobile=false;
       }
     }
   },

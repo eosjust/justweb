@@ -7,6 +7,7 @@ import MuseUI from 'muse-ui';
 import 'muse-ui/dist/muse-ui.css';
 import store from './store';
 import i18n from './lang';
+import tp from 'tp-js-sdk';
 
 
 
@@ -20,6 +21,7 @@ new Vue({
   i18n,
   router,
   store,
+  tp,
   components: { App },
   template: '<App/>'
 })

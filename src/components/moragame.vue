@@ -64,18 +64,19 @@
       }
     },
     created() {
-      // timeout.timeout('myTimeout', 1000, function () {
-      //   console.log("aaaaaa");
-      //   return true;
-      // });
-      window.tp = tp;
+
     },
     methods: {
       btnFunNewGame() {
-        alert("btnFunNewGame");
+        var tp=this.$tp;
+        var str="isconnected" + tp.isConnected();
+        alert(str);
+
       },
       changeValue() {
-        alert("changeValue");
+        var tp=window.tp;
+        var str="isconnected" + tp.isConnected();
+        alert(str);
       },
       requestMyEosBalance() {
 
