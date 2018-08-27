@@ -2,7 +2,7 @@
 
   <div id="app">
 
-    <mu-appbar style="width: 100%; min-width: 480px;" color="primary">
+    <mu-appbar style="width: 100%; min-width: 1080px;" color="primary">
       <mu-button icon slot="left">
         <mu-icon value="menu"></mu-icon>
       </mu-button>
@@ -34,7 +34,7 @@
               <img src="https://www.countryflags.io/CN/flat/48.png">
             </mu-list-item-action>
             <mu-list-item-action>
-              <mu-list-item-title>简体中文</mu-list-item-title>
+              <mu-list-item-title>中文</mu-list-item-title>
             </mu-list-item-action>
           </mu-list-item>
           <mu-list-item button @click="changeLang('en')">
