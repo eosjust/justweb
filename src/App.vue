@@ -96,7 +96,7 @@
       if (eossdkutil) {
         window.eossdkutil = eossdkutil;
         eossdkutil.init();
-
+        eossdkutil.setScatterNetworkMain();
       }
     },
     mounted() {
