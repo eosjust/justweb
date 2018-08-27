@@ -3,27 +3,28 @@
   <div id="app">
 
     <mu-appbar style="width:100%;" color="primary">
-      <mu-button icon slot="left" @click="menudrawopen = !menudrawopen">
+
+      <mu-button icon slot="left" @click="menudrawopen = !menudrawopen" v-show="ismobile">
         <mu-icon value="menu"></mu-icon>
       </mu-button>
 
-      <!--<mu-menu slot="left">-->
-        <!--<mu-button flat ripple color="primary" to="/">-->
-          <!--{{$t('mainmenu.home')}}-->
-        <!--</mu-button>-->
-        <!--<mu-button flat ripple color="primary" to="/tpdemo">-->
-          <!--{{$t('mainmenu.tpdemo')}}-->
-        <!--</mu-button>-->
-        <!--<mu-button flat ripple color="primary" to="/moragame">-->
-          <!--{{$t('mainmenu.games')}}-->
-        <!--</mu-button>-->
-        <!--<mu-button flat ripple color="primary" to="/setting">-->
-          <!--{{$t('mainmenu.settings')}}-->
-        <!--</mu-button>-->
-        <!--<mu-button flat ripple color="primary" to="/about">-->
-          <!--{{$t('mainmenu.about')}}-->
-        <!--</mu-button>-->
-      <!--</mu-menu>-->
+      <mu-menu slot="left" v-show="!ismobile">
+        <mu-button flat ripple color="primary" to="/">
+          {{$t('mainmenu.home')}}
+        </mu-button>
+        <mu-button flat ripple color="primary" to="/tpdemo">
+          {{$t('mainmenu.tpdemo')}}
+        </mu-button>
+        <mu-button flat ripple color="primary" to="/moragame">
+          {{$t('mainmenu.games')}}
+        </mu-button>
+        <mu-button flat ripple color="primary" to="/setting">
+          {{$t('mainmenu.settings')}}
+        </mu-button>
+        <mu-button flat ripple color="primary" to="/about">
+          {{$t('mainmenu.about')}}
+        </mu-button>
+      </mu-menu>
       <mu-menu slot="right" :open.sync="menuopen">
         <mu-button flat ripple color="primary">
           <img :src="currentlangurl">
@@ -49,7 +50,7 @@
       </mu-menu>
       <mu-button flat slot="right">LOGIN</mu-button>
     </mu-appbar>
-    <mu-drawer :open.sync="menudrawopen" :docked="menudrawdocked">
+    <mu-drawer :open.sync="menudrawopen" :docked="menudrawdocked" v-show="ismobile">
       <mu-list>
         <mu-list-item button to="/" @click="menudrawopen = false">
           <mu-list-item-title> {{$t('mainmenu.home')}}</mu-list-item-title>
@@ -77,6 +78,9 @@ export default {
   name: 'App',
   data() {
     return{
+      clientWidth:1,
+      clientHeight:1,
+      ismobile:false,
       menuopen:false,
       menudrawdocked:false,
       menudrawopen:false,
@@ -86,6 +90,20 @@ export default {
   },
   created() {
     this.changeLang(this.currentlang);
+    if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+      this.ismobile=true;
+    } else {
+      this.ismobile=false;
+    }
+  },
+  mounted() {
+    const that = this;
+    window.onresize = () => {
+      return (() => {
+        that.clientWidth=document.documentElement.clientWidth;
+        that.clientHeight=document.documentElement.clientHeight;
+      })()
+    }
   },
   methods: {
     changeLang(lang) {
@@ -97,6 +115,21 @@ export default {
       }
       this.$store.commit('changeLang', lang);
       this.menuopen=false;
+    },
+    onClientSizeChange(width,height){
+      if(width>height){
+        this.ismobile=false;
+      }else{
+        this.ismobile=true;
+      }
+    }
+  },
+  watch: {
+    clientWidth: function (val) {
+      this.onClientSizeChange(val,this.clientHeight);
+    },
+    clientHeight: function (val) {
+      this.onClientSizeChange(this.clientWidth,val);
     }
   }
 }
