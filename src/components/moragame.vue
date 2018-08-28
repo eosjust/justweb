@@ -4,19 +4,19 @@
     <br>
     <button @click="btnAction">action</button>
     <br>
-    <button @click="">test</button>
+    <button @click="btnTest">test</button>
   </div>
 </template>
 
 <script>
   import timeout from 'timeout';
 
+  var bigInt = require("big-integer");
+  const BN = require('bn.js');
   export default {
     name: 'Moragame',
     data() {
-      return {
-
-      }
+      return {}
     },
     created() {
 
@@ -54,19 +54,41 @@
         }).then(data => {
           //
           alert(data);
+          console.log(data);
         }).catch(error => {
           //
           alert(error);
+          console.log(error);
         });
       },
-      requestMyEosBalance() {
+      btnTest() {
+
+        var maximumByte = bigInt("FFAA12BC", 16);
+        var x = bigInt("9193765241474037917",10);
+        var y = bigInt("9193765241474037917",10);
+        var z=x.multiply(y);
+        console.log(z.toString(2));
+        console.log(z.toString(10));
+        var isoddz = z.isOdd();
+        console.log(maximumByte.toString(10));
+
+        var a = new BN('9193765241474037917', 10);
+        var b = new BN('9193765241474037917', 10);
+        var c=a.mul(b);
+        var isoddc=c.isOdd();
+        console.log(c.toString(10));
+        console.log(c.toString(2));
+
 
       },
-      requestMyTokenBalance() {
-
-      },
-      requestMyGame() {
-
+      ptest(v1, v2) {
+        return new Promise(function (resolve, reject) {
+          if (v1 == v2) {
+            resolve(true);
+          } else {
+            reject(false);
+          }
+        });
       },
       requestGameHistory() {
 
