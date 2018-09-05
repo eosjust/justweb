@@ -2,7 +2,7 @@
 
   <div id="app">
 
-    <mu-appbar style="width:100%;height: 56px;" color="primary">
+    <mu-appbar style="width:100%;height: 56px;" color="secondary">
 
       <mu-button icon slot="left" @click="menudrawopen = !menudrawopen" v-show="ismobile">
         <mu-icon value="menu"></mu-icon>
@@ -14,6 +14,9 @@
         </mu-button>
         <mu-button flat ripple color="primary" to="/tpdemo">
           {{$t('mainmenu.tpdemo')}}
+        </mu-button>
+        <mu-button flat ripple color="primary" to="/investjust">
+          {{$t('mainmenu.investjust')}}
         </mu-button>
         <mu-button flat ripple color="primary" to="/moragame">
           {{$t('mainmenu.games')}}
@@ -57,6 +60,9 @@
         </mu-list-item>
         <mu-list-item button to="tpdemo" @click="menudrawopen = false">
           <mu-list-item-title> {{$t('mainmenu.tpdemo')}}</mu-list-item-title>
+        </mu-list-item>
+        <mu-list-item button to="investjust" @click="menudrawopen = false">
+          <mu-list-item-title> {{$t('mainmenu.investjust')}}</mu-list-item-title>
         </mu-list-item>
         <mu-list-item button to="moragame" @click="menudrawopen = false">
           <mu-list-item-title> {{$t('mainmenu.games')}}</mu-list-item-title>

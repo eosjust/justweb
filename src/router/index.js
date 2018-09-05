@@ -5,6 +5,7 @@ import Moragame from '@/components/Moragame'
 import About from '@/components/About'
 import Navigate from '@/components/Navigate'
 import Setting from '@/components/Setting'
+import InvestJust from '@/components/InvestJust'
 
 Vue.use(Router)
 
@@ -35,7 +36,13 @@ export default new Router({
       path: '/about',
       name: 'About',
       component: About
+    },
+    {
+      path: '/investjust',
+      name: 'InvestJust',
+      component: InvestJust
     }
+
 
   ]
 })

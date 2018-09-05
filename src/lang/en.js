@@ -6,6 +6,7 @@ module.exports={
     hello: 'Hello',
     about: 'About',
     settings:'settings',
-    welcome: "Welcome"
+    welcome: "Welcome",
+    investjust:"JUST",
   }
 }

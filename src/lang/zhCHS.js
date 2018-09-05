@@ -6,6 +6,7 @@ module.exports={
     hello: '你好',
     about: '关于',
     settings:'设置',
-    welcome: "欢迎"
+    welcome: "欢迎",
+    investjust:"JUST",
   }
 }
