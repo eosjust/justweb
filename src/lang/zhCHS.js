@@ -1,5 +1,6 @@
 module.exports={
   mainmenu: {
+    farm:'柚子农场',
     home:'首页',
     games:'游戏',
     tpdemo:'tp-sdk-demo',

@@ -9,8 +9,8 @@
       </mu-button>
 
       <mu-menu slot="left" v-show="!ismobile">
-        <mu-button flat ripple color="primary" to="/">
-          {{$t('mainmenu.home')}}
+        <mu-button flat ripple color="primary" to="/eosfarm">
+          {{$t('mainmenu.farm')}}
         </mu-button>
         <mu-button flat ripple color="primary" to="/tpdemo">
           {{$t('mainmenu.tpdemo')}}
@@ -51,12 +51,21 @@
           </mu-list-item>
         </mu-list>
       </mu-menu>
-      <mu-button flat slot="right">LOGIN</mu-button>
+      <mu-menu slot="right" :open.sync="menuLoginOpen">
+        <mu-button class="just-button-transform" @click="onMenuLogin" flat ripple color="primary">
+          {{ curUserName }}
+        </mu-button>
+        <mu-list slot="content" v-show="isLoginMenuShow">
+          <mu-list-item button v-for="user in eosUsers" :key="user.name" @click="onChoseUser(user.key)">
+            <mu-list-item-title>{{user.name}}</mu-list-item-title>
+          </mu-list-item>
+        </mu-list>
+      </mu-menu>
     </mu-appbar>
     <mu-drawer :open.sync="menudrawopen" :docked="menudrawdocked" v-show="ismobile">
       <mu-list>
-        <mu-list-item button to="/" @click="menudrawopen = false">
-          <mu-list-item-title> {{$t('mainmenu.home')}}</mu-list-item-title>
+        <mu-list-item button to="eosfarm" @click="menudrawopen = false">
+          <mu-list-item-title> {{$t('mainmenu.farm')}}</mu-list-item-title>
         </mu-list-item>
         <mu-list-item button to="tpdemo" @click="menudrawopen = false">
           <mu-list-item-title> {{$t('mainmenu.tpdemo')}}</mu-list-item-title>
@@ -90,20 +99,22 @@
         clientHeight: 1,
         ismobile: false,
         menuopen: false,
+        menuLoginOpen: false,
+        isLoginMenuShow:false,
         menudrawdocked: false,
         menudrawopen: false,
+        curUserName:"Login",
+        eosUsers: [
+          { name: 'liyunhan1111' },
+          { name: 'Google' },
+          { name: 'Taobao' }
+        ]
       }
     },
     created() {
       this.changeLang(this.$store.state.lang);
       this.checkClient();
-      var that = this;
-
-      if (eossdkutil) {
-        window.eossdkutil = eossdkutil;
-        eossdkutil.init();
-        eossdkutil.setScatterNetworkMain();
-      }
+      this.initEosEnv();
     },
     mounted() {
       const that = this;
@@ -132,6 +143,85 @@
         } else {
           this.ismobile = false;
         }
+      },onMenuLogin() {
+        var eossdkutil=window.eossdkutil;
+        var that=this;
+        if(eossdkutil){
+          if(eossdkutil.getEnv()=="scatter"){
+            if(!eossdkutil.getScatterIdentity()){
+              eossdkutil.login().then(function (identity) {
+                that.initScatterName();
+                that.menuLoginOpen=false;
+              });
+              this.menuLoginOpen=false;
+            }
+          }else if(eossdkutil.getEnv()=="tp"){
+            // this.$message('tp环境');
+          }else if(eossdkutil.getEnv()=="none"){
+            this.$message({
+              message: '请安装scatter插件，或在eos dapp浏览器内运行',
+              type: 'warning'
+            });
+          }
+        }
+      },onChoseUser(name) {
+        this.$message(name);
+        if(name=="logout"){
+          eossdkutil.logout();
+          this.curUserName="Login";
+          this.eosUsers=[];
+          this.isLoginMenuShow=false;
+        }else{
+          if(eossdkutil.getEnv()=="tp"){
+            this.curUserName=name;
+          }
+        }
+      },onSetUser(name) {
+        this.curUserName=name;
+      },initEosEnv() {
+        var that = this;
+        if (eossdkutil) {
+          window.eossdkutil = eossdkutil;
+          eossdkutil.setScatterNetworkTest();
+          eossdkutil.init().then(function () {
+            var env=eossdkutil.getEnv();
+            if(env=="tp"){
+              that.initTpName();
+            }else if(env=="scatter"){
+              that.initScatterName();
+            }
+          });
+        }
+      },initScatterName(){
+        var identity=eossdkutil.getScatterIdentity();
+        var that=this;
+        if(identity){
+          var account = identity.accounts.find(account => account.blockchain === 'eos');
+          that.curUserName=account.name;
+        }else{
+          that.curUserName="Login";
+        }
+        var users=new Array();
+        users.push({name:"退出",key:"logout"});
+        that.eosUsers=users;
+        that.isLoginMenuShow=true;
+      },initTpName(){
+        var that=this;
+        eossdkutil.getWallets().then(function (result) {
+          if(result){
+            var users=new Array();
+            var data=result.data;
+            for(var account in data){
+              users.push({name:account.name,key:account.name});
+            }
+            if(users.length>0){
+              that.eosUsers=users;
+              that.curUserName=users[0].name;
+              that.isLoginMenuShow=true;
+            }
+          }
+        });
+
       }
     },
     watch: {
@@ -147,4 +237,7 @@
 
 <style>
   @import 'https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.css';
+  .just-button-transform{
+    text-transform:none;
+  }
 </style>

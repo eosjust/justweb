@@ -77,7 +77,7 @@
 
     <el-row class="investjust-row" type="flex" justify="center" :gutter="20">
       <el-col :span="8">
-        <mu-button full-width color="success">BUY JUST</mu-button>
+        <mu-button full-width color="success" @click="btnBuyJust">BUY JUST</mu-button>
       </el-col>
       <el-col :span="8">
         <mu-button full-width color="error">SELL JUST</mu-button>
@@ -87,6 +87,8 @@
 </template>
 
 <script>
+  import axios from 'axios';
+
   export default {
     name: 'InvestJust',
     data() {
@@ -99,10 +101,22 @@
 
     },
     methods: {
-      btnLogin() {
-
+      btnBuyJust() {
+        let postobj = new Object();
+        postobj.table = "accounts";
+        postobj.code = "eosio.token";
+        postobj.scope = "liyunhan1111";
+        postobj.json = "true";
+        let postdata = JSON.stringify(postobj);
+        axios.post('http://api.eosnewyork.io/v1/chain/get_table_rows', postdata)
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       },
-      btnAction() {
+      btnSellJust() {
 
       }
     }
