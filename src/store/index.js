@@ -21,7 +21,7 @@ export default new vuex.Store({
     lang: 'en',
     langImgUrl: 'https://www.countryflags.io/US/flat/48.png',
     rpsContractAccount: 'justgamemora',
-    eosUserName: 'Login',
+    eosUserName: null,
     eosUserAuth: 'active'
   },
   mutations: {

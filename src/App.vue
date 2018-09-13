@@ -182,13 +182,13 @@
       },onChoseUser(name) {
         if(eossdkutil.getEnv()=="tp"){
           this.curUserName=name;
-          this.menuLoginOpen=false;
+          this.isMenuUserOpen=false;
         }
       },initEosEnv() {
         var that = this;
         if (eossdkutil) {
           window.eossdkutil = eossdkutil;
-          eossdkutil.setScatterNetworkTest();
+          eossdkutil.setScatterNetworkMain();
           eossdkutil.init().then(function () {
             var env=eossdkutil.getEnv();
             if(env=="tp"){
@@ -254,6 +254,9 @@
       },
       clientHeight: function (val) {
         this.onClientSizeChange(this.clientWidth, val);
+      },
+      curUserName: function (val) {
+        this.$store.commit("changeEosUserName",val);
       }
     }
   }
