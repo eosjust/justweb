@@ -28,7 +28,7 @@
           {{$t('mainmenu.about')}}
         </mu-button>
       </mu-menu>
-      <mu-menu slot="right" :open.sync="menuopen">
+      <mu-menu slot="right" :open.sync="isMenuLangOpen">
         <mu-button flat ripple color="primary">
           <img :src="this.$store.state.langImgUrl">
         </mu-button>
@@ -51,15 +51,23 @@
           </mu-list-item>
         </mu-list>
       </mu-menu>
-      <mu-menu slot="right" :open.sync="menuLoginOpen">
-        <mu-button class="just-button-transform" @click="onMenuLogin" flat ripple color="primary">
+      <mu-menu slot="right" :open.sync="isMenuUserOpen" v-show="isMenuUserShow">
+        <mu-button class="just-button-transform" flat ripple color="primary">
           {{ curUserName }}
         </mu-button>
-        <mu-list slot="content" v-show="isLoginMenuShow">
+        <mu-list slot="content">
           <mu-list-item button v-for="user in eosUsers" :key="user.name" @click="onChoseUser(user.key)">
             <mu-list-item-title>{{user.name}}</mu-list-item-title>
           </mu-list-item>
+          <mu-list-item button v-show="isBtnLogoutShow" @click="onBtnLogoutClick()">
+            <mu-list-item-title>{{ $t('mainmenu.logout') }}</mu-list-item-title>
+          </mu-list-item>
         </mu-list>
+      </mu-menu>
+      <mu-menu slot="right" :open.sync="isMenuLoginOpen" v-show="isMenuLoginShow">
+        <mu-button class="just-button-transform" @click="onMenuLoginClick" flat ripple color="primary">
+          {{ $t('mainmenu.login') }}
+        </mu-button>
       </mu-menu>
     </mu-appbar>
     <mu-drawer :open.sync="menudrawopen" :docked="menudrawdocked" v-show="ismobile">
@@ -98,12 +106,16 @@
         clientWidth: 1,
         clientHeight: 1,
         ismobile: false,
-        menuopen: false,
-        menuLoginOpen: false,
-        isLoginMenuShow:false,
+        isMenuLangOpen: false,
+        isMenuUserOpen: false,
+        isMenuLoginOpen: false,
+
+        isMenuUserShow:false,
+        isMenuLoginShow:true,
+        isBtnLogoutShow:true,
         menudrawdocked: false,
         menudrawopen: false,
-        curUserName:"Login",
+        curUserName:null,
         eosUsers: []
       }
     },
@@ -128,7 +140,7 @@
       changeLang(lang) {
         this.$i18n.locale = lang;
         this.$store.commit('changeLang', lang);
-        this.menuopen = false;
+        this.isMenuLangOpen = false;
       },
       onClientSizeChange(width, height) {
         if (width > height) {
@@ -142,17 +154,21 @@
         } else {
           this.ismobile = false;
         }
-      },onMenuLogin() {
-        var eossdkutil=window.eossdkutil;
+      }, onBtnLogoutClick(){
+        eossdkutil.logout();
+        this.curUserName=null;
+        this.eosUsers=[];
+        this.isMenuUserOpen=false;
+        this.isMenuUserShow=false;
+        this.isMenuLoginShow=true;
+      }, onMenuLoginClick(){
         var that=this;
         if(eossdkutil){
           if(eossdkutil.getEnv()=="scatter"){
             if(!eossdkutil.getScatterIdentity()){
               eossdkutil.login().then(function (identity) {
                 that.initScatterName();
-                that.menuLoginOpen=false;
               });
-              that.menuLoginOpen=false;
             }
           }else if(eossdkutil.getEnv()=="tp"){
 
@@ -164,17 +180,9 @@
           }
         }
       },onChoseUser(name) {
-        if(name=="logout"){
-          eossdkutil.logout();
-          this.curUserName=this.$t('mainmenu.login');
-          this.eosUsers=[];
-          this.isLoginMenuShow=false;
+        if(eossdkutil.getEnv()=="tp"){
+          this.curUserName=name;
           this.menuLoginOpen=false;
-        }else{
-          if(eossdkutil.getEnv()=="tp"){
-            this.curUserName=name;
-            this.menuLoginOpen=false;
-          }
         }
       },initEosEnv() {
         var that = this;
@@ -194,22 +202,35 @@
         }else{
 
         }
+      },showUserOrLogin(curUser,users,env){
+        var that=this;
+        that.eosUsers=users;
+        if(curUser){
+          if(env=="tp"){
+            that.isBtnLogoutShow=false;
+          }else if(env=="scatter"){
+            that.isBtnLogoutShow=true;
+          }
+          that.curUserName=curUser;
+          that.isMenuLoginOpen=false;
+          that.isMenuLoginShow=false;
+          that.isMenuUserOpen=false;
+          that.isMenuUserShow=true;
+        }else{
+          that.isBtnLogoutShow=false;
+          that.isMenuUserOpen=false;
+          that.isMenuUserShow=false;
+          that.isMenuLoginOpen=false;
+          that.isMenuLoginShow=true;
+        }
       },initScatterName(){
         var identity=eossdkutil.getScatterIdentity();
         var that=this;
         if(identity){
           var account = identity.accounts.find(account => account.blockchain === 'eos');
-          that.curUserName=account.name;
-          var users=new Array();
-          that.menuLoginOpen=false;
-          that.isLoginMenuShow=true;
-          that.menuLoginOpen=false;
-          users.push({name:that.$t('mainmenu.logout'),key:"logout"});
-          that.eosUsers=users;
+          that.showUserOrLogin(account.name,[],"scatter");
         }else{
-          that.curUserName=this.$t('mainmenu.login');
-          that.isLoginMenuShow=false;
-          that.menuLoginOpen=false;
+          that.showUserOrLogin(null,[],"scatter");
         }
       },initTpName(){
         var that=this;
@@ -223,14 +244,9 @@
               user.key=eosWallets[i].name;
               users.push(user);
             }
-            that.eosUsers=users;
-            that.curUserName=JSON.stringify(users[0].name);
-            that.menuLoginOpen=false;
-            that.isLoginMenuShow=true;
-            that.menuLoginOpen=false;
+            showUserOrLogin(users[0].name,users,"tp");
           }
         });
-
       }
     },
     watch: {
