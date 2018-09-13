@@ -155,8 +155,7 @@
               that.menuLoginOpen=false;
             }
           }else if(eossdkutil.getEnv()=="tp"){
-            // this.$message('tp环境');
-            that.$message(JSON.stringify(eossdkutil.getWallets()));
+
           }else if(eossdkutil.getEnv()=="none"){
             this.$message({
               message: '请安装scatter插件，或在eos dapp浏览器内运行',
@@ -168,12 +167,13 @@
         if(name=="logout"){
           eossdkutil.logout();
           this.curUserName=this.$t('mainmenu.login');
-
           this.eosUsers=[];
           this.isLoginMenuShow=false;
+          this.menuLoginOpen=false;
         }else{
           if(eossdkutil.getEnv()=="tp"){
             this.curUserName=name;
+            this.menuLoginOpen=false;
           }
         }
       },initEosEnv() {
@@ -224,7 +224,7 @@
               users.push(user);
             }
             that.eosUsers=users;
-            that.curUserName=users[0].name;
+            that.curUserName=JSON.stringify(users[0].name);
             that.menuLoginOpen=false;
             that.isLoginMenuShow=true;
             that.menuLoginOpen=false;
