@@ -188,7 +188,6 @@
         var that = this;
         if (eossdkutil) {
           window.eossdkutil = eossdkutil;
-          this.isLoginMenuShow=false;
           eossdkutil.setScatterNetworkTest();
           eossdkutil.init().then(function () {
             var env=eossdkutil.getEnv();
@@ -244,7 +243,7 @@
               user.key=eosWallets[i].name;
               users.push(user);
             }
-            showUserOrLogin(users[0].name,users,"tp");
+            that.showUserOrLogin(users[0].name,users,"tp");
           }
         });
       }
