@@ -53,7 +53,7 @@
       </mu-menu>
       <mu-menu slot="right" :open.sync="menuLoginOpen">
         <mu-button class="just-button-transform" @click="onMenuLogin" flat ripple color="primary">
-          {{ menuLoginText }}
+          {{ curUserName }}
         </mu-button>
         <mu-list slot="content" v-show="isLoginMenuShow">
           <mu-list-item button v-for="user in eosUsers" :key="user.name" @click="onChoseUser(user.key)">
