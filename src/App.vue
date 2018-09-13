@@ -213,21 +213,21 @@
         }
       },initTpName(){
         var that=this;
-        eossdkutil.getWallets().then(function (result) {
-          if(result){
+        eossdkutil.getWallets().then(function (data) {
+          if(data){
             var users=new Array();
-            var wallets=result.wallets['eos'];
-
-            for(var account in wallets){
-              users.push({name:account.name,key:account.name});
+            var eosWallets=data.wallets.eos;
+            for(var i=0;i<eosWallets.length;i++){
+              var user=new Object();
+              user.name=eosWallets[i].name;
+              user.key=eosWallets[i].name;
+              users.push(user);
             }
-            if(users.length>0){
-              that.eosUsers=users;
-              that.curUserName=users[0].name;
-              that.menuLoginOpen=false;
-              that.isLoginMenuShow=true;
-              that.menuLoginOpen=false;
-            }
+            that.eosUsers=users;
+            that.curUserName=users[0].name;
+            that.menuLoginOpen=false;
+            that.isLoginMenuShow=true;
+            that.menuLoginOpen=false;
           }
         });
 

@@ -39,7 +39,7 @@
           var that = this;
           that.walletinfo="hehehehhe";
           eossdkutil.getWallets().then(function (data) {
-            that.walletinfo=JSON.stringify(data);
+            that.walletinfo=data.wallets.eos[0].name;
           });
         }
       }
