@@ -53,7 +53,7 @@
       </mu-menu>
       <mu-menu slot="right" :open.sync="menuLoginOpen">
         <mu-button class="just-button-transform" @click="onMenuLogin" flat ripple color="primary">
-          {{ curUserName }}
+          {{ menuLoginText }}
         </mu-button>
         <mu-list slot="content" v-show="isLoginMenuShow">
           <mu-list-item button v-for="user in eosUsers" :key="user.name" @click="onChoseUser(user.key)">
@@ -112,6 +112,9 @@
       this.checkClient();
       this.initEosEnv();
     },
+    computed : {
+
+    },
     mounted() {
       const that = this;
       window.onresize = () => {
@@ -153,6 +156,7 @@
             }
           }else if(eossdkutil.getEnv()=="tp"){
             // this.$message('tp环境');
+            that.$message(JSON.stringify(eossdkutil.getWallets()));
           }else if(eossdkutil.getEnv()=="none"){
             this.$message({
               message: '请安装scatter插件，或在eos dapp浏览器内运行',
@@ -213,7 +217,7 @@
           if(result){
             var users=new Array();
             var wallets=result.wallets['eos'];
-            that.$message(wallets);
+
             for(var account in wallets){
               users.push({name:account.name,key:account.name});
             }
