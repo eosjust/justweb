@@ -1,6 +1,8 @@
 module.exports={
   mainmenu: {
     home:'Home',
+    login:'Login',
+    logout:'Logout',
     farm:'eosfarm',
     games:'Games',
     tpdemo:'tp-sdk-demo',

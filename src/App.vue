@@ -104,11 +104,7 @@
         menudrawdocked: false,
         menudrawopen: false,
         curUserName:"Login",
-        eosUsers: [
-          { name: 'liyunhan1111' },
-          { name: 'Google' },
-          { name: 'Taobao' }
-        ]
+        eosUsers: []
       }
     },
     created() {
@@ -153,7 +149,7 @@
                 that.initScatterName();
                 that.menuLoginOpen=false;
               });
-              this.menuLoginOpen=false;
+              that.menuLoginOpen=false;
             }
           }else if(eossdkutil.getEnv()=="tp"){
             // this.$message('tp环境');
@@ -165,10 +161,10 @@
           }
         }
       },onChoseUser(name) {
-        this.$message(name);
         if(name=="logout"){
           eossdkutil.logout();
-          this.curUserName="Login";
+          this.curUserName=this.$t('mainmenu.login');
+
           this.eosUsers=[];
           this.isLoginMenuShow=false;
         }else{
@@ -176,12 +172,11 @@
             this.curUserName=name;
           }
         }
-      },onSetUser(name) {
-        this.curUserName=name;
       },initEosEnv() {
         var that = this;
         if (eossdkutil) {
           window.eossdkutil = eossdkutil;
+          this.isLoginMenuShow=false;
           eossdkutil.setScatterNetworkTest();
           eossdkutil.init().then(function () {
             var env=eossdkutil.getEnv();
@@ -189,8 +184,11 @@
               that.initTpName();
             }else if(env=="scatter"){
               that.initScatterName();
+            }else{
             }
           });
+        }else{
+
         }
       },initScatterName(){
         var identity=eossdkutil.getScatterIdentity();
@@ -198,26 +196,32 @@
         if(identity){
           var account = identity.accounts.find(account => account.blockchain === 'eos');
           that.curUserName=account.name;
+          var users=new Array();
+          that.menuLoginOpen=false;
+          that.isLoginMenuShow=true;
+          that.menuLoginOpen=false;
+          users.push({name:that.$t('mainmenu.logout'),key:"logout"});
+          that.eosUsers=users;
         }else{
-          that.curUserName="Login";
+          that.curUserName=this.$t('mainmenu.login');
+          that.isLoginMenuShow=false;
+          that.menuLoginOpen=false;
         }
-        var users=new Array();
-        users.push({name:"退出",key:"logout"});
-        that.eosUsers=users;
-        that.isLoginMenuShow=true;
       },initTpName(){
         var that=this;
         eossdkutil.getWallets().then(function (result) {
           if(result){
             var users=new Array();
-            var data=result.data;
-            for(var account in data){
+            var wallets=result.wallets['eos'];
+            for(var account in wallets){
               users.push({name:account.name,key:account.name});
             }
             if(users.length>0){
               that.eosUsers=users;
               that.curUserName=users[0].name;
+              that.menuLoginOpen=false;
               that.isLoginMenuShow=true;
+              that.menuLoginOpen=false;
             }
           }
         });
