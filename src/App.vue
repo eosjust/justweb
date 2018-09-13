@@ -213,6 +213,7 @@
           if(result){
             var users=new Array();
             var wallets=result.wallets['eos'];
+            that.$message(wallets);
             for(var account in wallets){
               users.push({name:account.name,key:account.name});
             }
