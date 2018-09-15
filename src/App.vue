@@ -145,8 +145,10 @@
       onClientSizeChange(width, height) {
         if (width > height) {
           this.ismobile = false;
+          this.$store.commit('changeIsMobile', this.ismobile);
         } else {
           this.ismobile = true;
+          this.$store.commit('changeIsMobile', this.ismobile);
         }
       }, checkClient() {
         if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
@@ -188,7 +190,7 @@
         var that = this;
         if (eossdkutil) {
           window.eossdkutil = eossdkutil;
-          eossdkutil.setScatterNetworkMain();
+          eossdkutil.setScatterNetworkTest();
           eossdkutil.init().then(function () {
             var env=eossdkutil.getEnv();
             if(env=="tp"){

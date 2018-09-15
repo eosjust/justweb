@@ -22,7 +22,8 @@ export default new vuex.Store({
     langImgUrl: 'https://www.countryflags.io/US/flat/48.png',
     rpsContractAccount: 'justgamemora',
     eosUserName: null,
-    eosUserAuth: 'active'
+    eosUserAuth: 'active',
+    ismobile:false
   },
   mutations: {
     changeEosUserName(state, userName) {
@@ -44,6 +45,9 @@ export default new vuex.Store({
       } else if (lang == 'zhCHS') {
         state.langImgUrl = 'https://www.countryflags.io/CN/flat/48.png';
       }
+    },
+    changeIsMobile(state,ismobile){
+      state.ismobile=ismobile;
     }
   }
 })

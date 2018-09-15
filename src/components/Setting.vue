@@ -17,7 +17,7 @@
     </el-row>
     <el-row type="flex" justify="center" align="middle">
       <el-col :span="8"></el-col>
-      <el-col :span="8" justify="center" align="middle"><h4>{{testinfo}}</h4></el-col>
+      <el-col :span="8" justify="center" align="middle"><div>{{testinfo}}</div></el-col>
       <el-col :span="8"></el-col>
     </el-row>
   </div>
@@ -35,7 +35,7 @@
       // this.$store.commit('changeEnv', 'ooo');
     },
     methods: {
-      btnTest() {
+      btnTest2() {
         var eossdkutil = window.eossdkutil;
         var that = this;
         that.testinfo="hehehehhe";
@@ -57,6 +57,24 @@
           ]
         }).then(function (result) {
           that.testinfo=JSON.stringify(result);
+        }).catch(function (error) {
+          that.testinfo=JSON.stringify(error);
+        });
+      },
+      btnTest() {
+        var eossdkutil = window.eossdkutil;
+        var that = this;
+        that.testinfo="hehehehhe";
+        eossdkutil.getEosTableRows(
+          {
+            json: true,
+            code: 'eosjustaward',
+            scope: 'eosjustaward',
+            table: 'gameinfo',
+            limit: 20
+          }
+        ).then(function (data) {
+          that.testinfo=JSON.stringify(data);
         }).catch(function (error) {
           that.testinfo=JSON.stringify(error);
         });
