@@ -129,6 +129,8 @@
     },
     mounted() {
       const that = this;
+      that.clientWidth = document.documentElement.clientWidth;
+      that.clientHeight = document.documentElement.clientHeight;
       window.onresize = () => {
         return (() => {
           that.clientWidth = document.documentElement.clientWidth;
@@ -153,8 +155,10 @@
       }, checkClient() {
         if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
           this.ismobile = true;
+          this.$store.commit('changeIsMobile', this.ismobile);
         } else {
           this.ismobile = false;
+          this.$store.commit('changeIsMobile', this.ismobile);
         }
       }, onBtnLogoutClick(){
         eossdkutil.logout();

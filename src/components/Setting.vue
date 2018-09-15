@@ -62,22 +62,13 @@
         });
       },
       btnTest() {
-        var eossdkutil = window.eossdkutil;
-        var that = this;
-        that.testinfo="hehehehhe";
-        eossdkutil.getEosTableRows(
-          {
-            json: true,
-            code: 'eosjustaward',
-            scope: 'eosjustaward',
-            table: 'gameinfo',
-            limit: 20
-          }
-        ).then(function (data) {
-          that.testinfo=JSON.stringify(data);
-        }).catch(function (error) {
-          that.testinfo=JSON.stringify(error);
-        });
+        var val="10.1122";
+        var buyEosAmount = parseFloat(val);
+        var eosRealAmount=parseInt(buyEosAmount*10000);
+
+        var abc=12345;
+        abc=abc>>1;
+        console.log(eosRealAmount);
       }
     }
   }
