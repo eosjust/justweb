@@ -106,6 +106,7 @@
         clientWidth: 1,
         clientHeight: 1,
         ismobile: false,
+        isclientmobile:false,
         isMenuLangOpen: false,
         isMenuUserOpen: false,
         isMenuLoginOpen: false,
@@ -145,19 +146,32 @@
         this.isMenuLangOpen = false;
       },
       onClientSizeChange(width, height) {
-        if (width > height) {
-          this.ismobile = false;
-          this.$store.commit('changeIsMobile', this.ismobile);
-        } else {
-          this.ismobile = true;
-          this.$store.commit('changeIsMobile', this.ismobile);
+        if(this.isclientmobile){
+          if (width > height*2) {
+            this.ismobile = false;
+            this.$store.commit('changeIsMobile', this.ismobile);
+          } else {
+            this.ismobile = true;
+            this.$store.commit('changeIsMobile', this.ismobile);
+          }
+        }else{
+          if (width > height) {
+            this.ismobile = false;
+            this.$store.commit('changeIsMobile', this.ismobile);
+          } else {
+            this.ismobile = true;
+            this.$store.commit('changeIsMobile', this.ismobile);
+          }
         }
+
       }, checkClient() {
         if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
           this.ismobile = true;
+          this.isclientmobile=true;
           this.$store.commit('changeIsMobile', this.ismobile);
         } else {
           this.ismobile = false;
+          this.isclientmobile=false;
           this.$store.commit('changeIsMobile', this.ismobile);
         }
       }, onBtnLogoutClick(){
