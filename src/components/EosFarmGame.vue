@@ -151,7 +151,7 @@
         gameinfo: null,
         eostrees: null,
         userinfo: null,
-        tradeinfo: null,
+        alleostrees: null,
         //display info
         countdown: null,
         totaleos: null,
@@ -182,7 +182,7 @@
         that.requestGameInfo();
         that.requestUserInfo();
         that.requestEosTreeInfo();
-        that.requestTradeInfo();
+        that.requestAllEosTreeInfo();
         return true;
       });
       that.requestGameInfo();
@@ -331,7 +331,7 @@
 
         });
       },
-      requestTradeInfo() {
+      requestAllEosTreeInfo() {
         var that = this;
         var eossdkutil = window.eossdkutil;
         eossdkutil.getEosTableRows(
@@ -339,12 +339,12 @@
             json: true,
             code: that.farmcontract,
             scope: that.farmcontract,
-            table: 'tradeinfo',
+            table: 'eostree',
             limit: 20
           }
         ).then(function (result) {
           var rows = result.data.rows;
-          that.tradeinfo = rows;
+          that.alleostrees = rows;
         }).catch(function (error) {
 
         });
@@ -417,7 +417,11 @@
             var pow=(this.gameinfo.dividend_num-val[i].dividend_num);
             var weight=bigInt(val[i].tree_amount);
             var dividend_weight=this.convertChex(this.gameinfo.dividend_weight);
-            var incomebig=weight.multiply(pow).multiply(this.gameinfo.dividend_pool).divide(dividend_weight);
+            var incomebig=bigInt(0);
+            if(!dividend_weight.eq(0)){
+              incomebig=weight.multiply(pow).multiply(this.gameinfo.dividend_pool).divide(dividend_weight);
+            }
+
 
             eostree.income=(parseFloat(incomebig.toJSNumber())/10000).toFixed(4).toString();
             eostree.end_time=val[i].end_time;
