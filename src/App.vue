@@ -12,19 +12,10 @@
         <mu-button flat ripple color="primary" to="/eosfarm">
           {{$t('mainmenu.farm')}}
         </mu-button>
-        <mu-button flat ripple color="primary" to="/tpdemo">
-          {{$t('mainmenu.tpdemo')}}
-        </mu-button>
         <mu-button flat ripple color="primary" to="/investjust">
           {{$t('mainmenu.investjust')}}
         </mu-button>
-        <mu-button flat ripple color="primary" to="/moragame">
-          {{$t('mainmenu.games')}}
-        </mu-button>
         <mu-button flat ripple color="primary" to="/setting">
-          {{$t('mainmenu.settings')}}
-        </mu-button>
-        <mu-button flat ripple color="primary" to="/about">
           {{$t('mainmenu.about')}}
         </mu-button>
       </mu-menu>
@@ -52,7 +43,7 @@
         </mu-list>
       </mu-menu>
       <mu-menu slot="right" :open.sync="isMenuUserOpen" v-show="isMenuUserShow">
-        <mu-button class="just-button-transform" flat ripple color="primary">
+        <mu-button style="text-transform:none;" flat ripple color="primary">
           {{ curUserName }}
         </mu-button>
         <mu-list slot="content">
@@ -65,7 +56,7 @@
         </mu-list>
       </mu-menu>
       <mu-menu slot="right" :open.sync="isMenuLoginOpen" v-show="isMenuLoginShow">
-        <mu-button class="just-button-transform" @click="onMenuLoginClick" flat ripple color="primary">
+        <mu-button style="text-transform:none;" @click="onMenuLoginClick" flat ripple color="primary">
           {{ $t('mainmenu.login') }}
         </mu-button>
       </mu-menu>
@@ -75,19 +66,10 @@
         <mu-list-item button to="eosfarm" @click="menudrawopen = false">
           <mu-list-item-title> {{$t('mainmenu.farm')}}</mu-list-item-title>
         </mu-list-item>
-        <mu-list-item button to="tpdemo" @click="menudrawopen = false">
-          <mu-list-item-title> {{$t('mainmenu.tpdemo')}}</mu-list-item-title>
-        </mu-list-item>
         <mu-list-item button to="investjust" @click="menudrawopen = false">
           <mu-list-item-title> {{$t('mainmenu.investjust')}}</mu-list-item-title>
         </mu-list-item>
-        <mu-list-item button to="moragame" @click="menudrawopen = false">
-          <mu-list-item-title> {{$t('mainmenu.games')}}</mu-list-item-title>
-        </mu-list-item>
         <mu-list-item button to="setting" @click="menudrawopen = false">
-          <mu-list-item-title> {{$t('mainmenu.settings')}}</mu-list-item-title>
-        </mu-list-item>
-        <mu-list-item button to="about" @click="menudrawopen = false">
           <mu-list-item-title> {{$t('mainmenu.about')}}</mu-list-item-title>
         </mu-list-item>
       </mu-list>
@@ -284,7 +266,4 @@
 
 <style>
   @import 'https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.css';
-  .just-button-transform{
-    text-transform:none;
-  }
 </style>
