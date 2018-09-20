@@ -36,7 +36,7 @@
       <el-col :span="$store.state.ismobile?24:12" style="margin-top: 50px;">
         <el-row type="flex" justify="center" align="middle">
           <el-col :span="20" style="background-color: #f5f5f5;border-radius: 5px;">
-            <mu-tabs :value.sync="tab1active" color="#607d8b" style="border-radius: 5px 5px 0px 0px;">
+            <mu-tabs :value.sync="tab1active" color="#009688" style="border-radius: 5px 5px 0px 0px;">
               <mu-tab>买树苗🌱</mu-tab>
               <mu-tab>摘柚子</mu-tab>
               <mu-tab>邀请奖励</mu-tab>
@@ -83,12 +83,23 @@
                   <el-table-column prop="eos_amount" label="花费"></el-table-column>
                   <el-table-column prop="has_withdraw" label="已摘取"></el-table-column>
                   <el-table-column prop="income" label="待摘取"></el-table-column>
-                  <el-table-column prop="end_time" label="倒计时"></el-table-column>
+                  <el-table-column prop="income_show" label="待摘取"></el-table-column>
+                  <el-table-column prop="end_time_show" label="寿命"></el-table-column>
                 </el-table>
               </mu-paper>
             </div>
             <div class="demo-text" v-if="tab1active === 2">
-
+              <el-row >
+                <MyLand></MyLand>
+                <MyLand></MyLand>
+                <MyLand></MyLand>
+                <MyLand></MyLand>
+                <MyLand></MyLand>
+                <MyLand></MyLand>
+                <MyLand></MyLand>
+                <MyLand></MyLand>
+                <MyLand></MyLand>
+              </el-row>
             </div>
           </el-col>
         </el-row>
@@ -96,7 +107,7 @@
       <el-col :span="$store.state.ismobile?24:12" style="margin-top: 50px;">
         <el-row type="flex" justify="center" align="middle">
           <el-col :span="20" style="background-color: #f5f5f5;border-radius: 5px;">
-            <mu-tabs :value.sync="tab2active" color="#607d8b" style="border-radius: 5px 5px 0px 0px;">
+            <mu-tabs :value.sync="tab2active" color="#009688" style="border-radius: 5px 5px 0px 0px;">
               <mu-tab>游戏状态</mu-tab>
               <mu-tab>近期交易</mu-tab>
             </mu-tabs>
@@ -132,9 +143,13 @@
   import timeout from 'timeout';
   import bigInt from "big-integer";
   import Big from 'big.js';
+  import MyLand from '@/components/MyLand'
 
   export default {
     name: "EosFarmGame",
+    components: {
+      MyLand,
+    },
     data() {
       return {
         //tab
@@ -150,8 +165,8 @@
         globalinfo: null,
         gameinfo: null,
         eostrees: null,
+        alleostrees:null,
         userinfo: null,
-        alleostrees: null,
         //display info
         countdown: null,
         totaleos: null,
@@ -159,11 +174,12 @@
         //display info tab buy
         maybeBuyAmount: null,
         //display info tab widthdraw
-        myeostrees:null,
+        myeostrees:new Array(),
         //display info tab invite
         //display info tab gamestate
         mygameinfo:new Object(),
         //display info tab rcentbuy
+        imgEosLand:require("../assets/eos_land_1.png"),
       }
     },
     created() {
@@ -173,8 +189,61 @@
       this.endtime = Date.parse(new Date()) / 1000 + 86400;
       var that = this;
       timeout.timeout(1000, function () {
-        var delta = that.endtime - Date.parse(new Date()) / 1000;
+        let delta = that.endtime - Date.parse(new Date()) / 1000;
         that.countdown = that.formatSeconds(delta);
+
+
+        var val=that.eostrees;
+        if(that.myeostrees.length>0){
+          that.myeostrees.splice(0,that.myeostrees.length);
+        }
+        if(val){
+          for(var i=0;i<val.length;i++){
+            var eostree=new Object();
+            eostree.user=val[i].user;
+            eostree.eos_amount=val[i].eos_amount;
+            eostree.tree_amount=val[i].tree_amount;
+            eostree.start_time=val[i].start_time;
+            eostree.end_time=val[i].end_time;
+            eostree.buy_num=val[i].buy_num;
+            eostree.dividend_num=val[i].dividend_num;
+            eostree.life_ret=val[i].life_ret;
+            eostree.income=val[i].income;
+            eostree.continue_times=val[i].continue_times;
+            eostree.has_withdraw=val[i].has_withdraw;
+
+            eostree.eos_amount= (val[i].eos_amount/10000).toFixed(4);
+            var pow=(that.gameinfo.dividend_num-val[i].dividend_num)+1;
+            var treediv=bigInt(that.gameinfo.dividend_pool).minus(val[i].pre_div);
+            var weight=bigInt(val[i].tree_amount).multiply(treediv);
+            var dividend_weight=that.convertChex(that.gameinfo.dividend_weight);
+            var dvstr=dividend_weight.toString(10);
+            console.log(dvstr);
+            var incomebig=bigInt(0);
+            if(!dividend_weight.eq(0)){
+              incomebig=weight.multiply(that.gameinfo.dividend_pool).divide(dividend_weight);
+            }
+            eostree.income=(parseFloat(incomebig.toJSNumber())/10000).toFixed(4).toString();
+            eostree.income_show=val[i].income;
+
+            if(val[i].life_ret==3){
+              if(val[i].income>0){
+                eostree.income=(parseFloat(val[i].income)/10000).toFixed(4).toString();
+              }
+            }
+            if(val[i].end_time==0){
+              eostree.end_time_show="∞";
+            }else{
+              if(val[i].life_ret==3){
+                eostree.end_time_show="dead";
+              }else{
+                let delta=val[i].end_time-Date.parse(new Date()) / 1000;
+                eostree.end_time_show=that.formatSeconds(delta);
+              }
+            }
+            that.myeostrees.push(eostree);
+          }
+        }
         return true;
       });
 
@@ -245,7 +314,7 @@
           actions: [
             {
               account: that.farmcontract,
-              name: "test",
+              name: "buytree",
               authorization: [
                 {
                   actor: that.$store.state.eosUserName,
@@ -407,27 +476,7 @@
         this.maybeBuyAmount = this.get_buy_amount(eosRealAmount, this.gameinfo.supply);
       },
       eostrees:function (val) {
-        this.myeostrees=new Array();
-        if(val){
-          for(var i=0;i<val.length;i++){
-            var eostree=new Object();
-            eostree.eos_amount= (val[i].eos_amount/10000).toFixed(4);
-            eostree.tree_amount=val[i].tree_amount;
-            eostree.has_withdraw=val[i].has_withdraw;
-            var pow=(this.gameinfo.dividend_num-val[i].dividend_num);
-            var weight=bigInt(val[i].tree_amount);
-            var dividend_weight=this.convertChex(this.gameinfo.dividend_weight);
-            var incomebig=bigInt(0);
-            if(!dividend_weight.eq(0)){
-              incomebig=weight.multiply(pow).multiply(this.gameinfo.dividend_pool).divide(dividend_weight);
-            }
 
-
-            eostree.income=(parseFloat(incomebig.toJSNumber())/10000).toFixed(4).toString();
-            eostree.end_time=val[i].end_time;
-            this.myeostrees.push(eostree);
-          }
-        }
       },
       gameinfo:function (val) {
         var that=this;
