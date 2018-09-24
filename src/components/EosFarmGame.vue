@@ -76,29 +76,37 @@
               </el-row>
             </div>
             <div class="demo-text" v-if="tab1active === 1">
-              <mu-paper :z-depth="1">
-                <el-table :data="myeostrees" border style="width: 100%">
-                  <el-table-column type="selection" width="35"/>
-                  <el-table-column prop="tree_amount" label="数量"></el-table-column>
-                  <el-table-column prop="eos_amount" label="花费"></el-table-column>
-                  <el-table-column prop="has_withdraw" label="已摘取"></el-table-column>
-                  <el-table-column prop="income" label="待摘取"></el-table-column>
-                  <el-table-column prop="income_show" label="待摘取"></el-table-column>
-                  <el-table-column prop="end_time_show" label="寿命"></el-table-column>
-                </el-table>
+
+              <mu-paper class="demo-paper" :z-depth="3">
+              <el-table :data="myeostrees" border style="width: 100%;margin-bottom: 5px;">
+                <el-table-column type="expand">
+                  <template slot-scope="props">
+                    <el-row type="flex" class="row-bg" justify="space-between">
+                      <el-col :span="6"><mu-button ripple color="primary" @click="btnBuyDrug(props.row.id)">治疗</mu-button></el-col>
+                      <el-col :span="6"><mu-button ripple color="primary" @click="btnWithDrawTree(props.row.id)">摘取</mu-button></el-col>
+                      <el-col :span="6"><mu-button ripple color="primary" @click="btnDeleteTree(props.row.id)">铲除</mu-button></el-col>
+                    </el-row>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="tree_amount" label="数量"></el-table-column>
+                <el-table-column prop="eos_amount_show" label="花费"></el-table-column>
+                <el-table-column prop="has_withdraw_show" label="已摘取"></el-table-column>
+                <el-table-column prop="income_show" label="待摘取"></el-table-column>
+                <el-table-column prop="end_time_show" label="寿命"></el-table-column>
+              </el-table>
               </mu-paper>
             </div>
             <div class="demo-text" v-if="tab1active === 2">
               <el-row >
-                <MyLand></MyLand>
-                <MyLand></MyLand>
-                <MyLand></MyLand>
-                <MyLand></MyLand>
-                <MyLand></MyLand>
-                <MyLand></MyLand>
-                <MyLand></MyLand>
-                <MyLand></MyLand>
-                <MyLand></MyLand>
+                <MyLand state="1"></MyLand>
+                <MyLand state="2"></MyLand>
+                <MyLand state="3"></MyLand>
+                <MyLand state="2"></MyLand>
+                <MyLand state="2"></MyLand>
+                <MyLand state="2"></MyLand>
+                <MyLand state="2"></MyLand>
+                <MyLand state="3"></MyLand>
+                <MyLand state="3"></MyLand>
               </el-row>
             </div>
           </el-col>
@@ -111,26 +119,50 @@
               <mu-tab>游戏状态</mu-tab>
               <mu-tab>近期交易</mu-tab>
             </mu-tabs>
-            <div class="demo-text" v-if="tab2active === 0" style="padding: 20px;">
-              <div>
-                最后赢家 {{this.mygameinfo.last_one}}
-              </div>
-              <div>
-                售出种子 {{this.mygameinfo.supply}}
-              </div>
-              <div>
-                空投池 {{this.mygameinfo.airdrop_pool}}
-              </div>
-              <div>
-                分红池 {{this.mygameinfo.dividend_pool}}
-              </div>
-              <div>
-                最终大奖 {{this.mygameinfo.last_reward_pool}}
-              </div>
-            </div>
-            <div class="demo-text" v-if="tab2active === 1">
+            <el-row type="flex" justify="center" align="middle" v-if="tab2active === 0">
+              <el-col :span="24">
+                <div class="demo-text"  style="padding: 20px;">
+                  <div>
+                    最后赢家 {{this.mygameinfo.last_one}}
+                  </div>
+                  <div>
+                    售出树苗 {{this.mygameinfo.supply}}
+                  </div>
+                  <div>
+                    空投池 {{this.mygameinfo.airdrop_pool}}
+                  </div>
+                  <div>
+                    分红池 {{this.mygameinfo.dividend_pool}}
+                  </div>
+                  <div>
+                    分红池恒定 {{this.mygameinfo.dividend_pool_const}}
+                  </div>
+                  <div>
+                    最终大奖 {{this.mygameinfo.last_reward_pool}}
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
 
-            </div>
+            <el-row v-if="tab2active === 1">
+              <el-row type="flex" justify="space-between">
+                <el-col :span="12" class="farm-text-left">
+                  最后赢家
+                </el-col>
+                <el-col :span="12" class="farm-text-right">
+                  {{this.mygameinfo.last_one}}
+                </el-col>
+              </el-row>
+              <el-row type="flex" justify="space-between">
+                <el-col :span="12" class="farm-text-left">
+                  最后赢家
+                </el-col>
+                <el-col :span="12" class="farm-text-right">
+                  {{this.mygameinfo.last_one}}
+                </el-col>
+              </el-row>
+
+            </el-row>
           </el-col>
         </el-row>
       </el-col>
@@ -158,7 +190,10 @@
         //const info
         walletinfo: "ooooooo",
         farmcontract: "eosjustaward",
-
+        LIFE_ALIVE : 20,
+      LIFE_SICK : 18,
+      LIFE_DEAD : 16,
+      LIFE_VOID : 14,
         //input form
         buyeos: null,
         //table info
@@ -191,59 +226,8 @@
       timeout.timeout(1000, function () {
         let delta = that.endtime - Date.parse(new Date()) / 1000;
         that.countdown = that.formatSeconds(delta);
-
-
-        var val=that.eostrees;
-        if(that.myeostrees.length>0){
-          that.myeostrees.splice(0,that.myeostrees.length);
-        }
-        if(val){
-          for(var i=0;i<val.length;i++){
-            var eostree=new Object();
-            eostree.user=val[i].user;
-            eostree.eos_amount=val[i].eos_amount;
-            eostree.tree_amount=val[i].tree_amount;
-            eostree.start_time=val[i].start_time;
-            eostree.end_time=val[i].end_time;
-            eostree.buy_num=val[i].buy_num;
-            eostree.dividend_num=val[i].dividend_num;
-            eostree.life_ret=val[i].life_ret;
-            eostree.income=val[i].income;
-            eostree.continue_times=val[i].continue_times;
-            eostree.has_withdraw=val[i].has_withdraw;
-
-            eostree.eos_amount= (val[i].eos_amount/10000).toFixed(4);
-            var pow=(that.gameinfo.dividend_num-val[i].dividend_num)+1;
-            var treediv=bigInt(that.gameinfo.dividend_pool).minus(val[i].pre_div);
-            var weight=bigInt(val[i].tree_amount).multiply(treediv);
-            var dividend_weight=that.convertChex(that.gameinfo.dividend_weight);
-            var dvstr=dividend_weight.toString(10);
-            console.log(dvstr);
-            var incomebig=bigInt(0);
-            if(!dividend_weight.eq(0)){
-              incomebig=weight.multiply(that.gameinfo.dividend_pool).divide(dividend_weight);
-            }
-            eostree.income=(parseFloat(incomebig.toJSNumber())/10000).toFixed(4).toString();
-            eostree.income_show=val[i].income;
-
-            if(val[i].life_ret==3){
-              if(val[i].income>0){
-                eostree.income=(parseFloat(val[i].income)/10000).toFixed(4).toString();
-              }
-            }
-            if(val[i].end_time==0){
-              eostree.end_time_show="∞";
-            }else{
-              if(val[i].life_ret==3){
-                eostree.end_time_show="dead";
-              }else{
-                let delta=val[i].end_time-Date.parse(new Date()) / 1000;
-                eostree.end_time_show=that.formatSeconds(delta);
-              }
-            }
-            that.myeostrees.push(eostree);
-          }
-        }
+        var eostrees=that.eostrees;
+        that.refreshMyEosTree(eostrees);
         return true;
       });
 
@@ -338,6 +322,113 @@
             message: '购买失败',
             type: 'warning'
           });
+        });
+      },
+      btnBuyDrug(treeid) {
+        var eossdkutil = window.eossdkutil;
+        var that = this;
+        eossdkutil.pushEosAction({
+          actions: [
+            {
+              account: that.farmcontract,
+              name: "buydrug",
+              authorization: [
+                {
+                  actor: that.farmcontract,
+                  permission: "active"
+                }
+              ],
+              data: {
+                treeid:treeid,
+                user:that.$store.state.eosUserName,
+                quantity:"1.0000 EOS"
+              }
+            }
+          ]
+        }).then(function (result) {
+          that.$message("购买成功");
+        }).catch(function (error) {
+          that.$message("购买失败");
+        });
+      },
+      btnDeleteTree(treeid) {
+        var eossdkutil = window.eossdkutil;
+        var that = this;
+        eossdkutil.pushEosAction({
+          actions: [
+            {
+              account: that.farmcontract,
+              name: "deltree",
+              authorization: [
+                {
+                  actor: that.farmcontract,
+                  permission: "active"
+                }
+              ],
+              data: {
+                treeid:treeid,
+                user:that.$store.state.eosUserName
+              }
+            }
+          ]
+        }).then(function (result) {
+          that.$message("操作成功");
+        }).catch(function (error) {
+          that.$message("操作失败");
+        });
+      },
+      btnWithDrawTree(treeid) {
+        var eossdkutil = window.eossdkutil;
+        var that = this;
+        eossdkutil.pushEosAction({
+          actions: [
+            {
+              account: that.farmcontract,
+              name: "withdraw",
+              authorization: [
+                {
+                  actor: that.farmcontract,
+                  permission: "active"
+                }
+              ],
+              data: {
+                treeid:treeid,
+                all:0,
+                user:that.$store.state.eosUserName
+              }
+            }
+          ]
+        }).then(function (result) {
+          that.$message("操作成功");
+        }).catch(function (error) {
+          that.$message("操作失败");
+        });
+      },
+      btnWithDraw() {
+        var eossdkutil = window.eossdkutil;
+        var that = this;
+        eossdkutil.pushEosAction({
+          actions: [
+            {
+              account: that.farmcontract,
+              name: "withdraw",
+              authorization: [
+                {
+                  actor: that.farmcontract,
+                  permission: "active"
+                }
+              ],
+              data: {
+                treeid:0,
+                all:1,
+                user:that.$store.state.eosUserName
+              }
+            }
+          ]
+        }).then(function (result) {
+          that.$message("操作成功");
+        }).catch(function (error) {
+          that.$message("操作失败");
         });
       },
       requestGameInfo() {
@@ -463,11 +554,70 @@
         return tmp;
       },convertChex(chex){
         chex=chex.substring(2);
-        var bbb=bigInt(chex,16);
-        var ccc=bbb.toArray(256);
-        ccc.value.reverse();
-        var ddd=bigInt.fromArray(ccc.value,256,false);
-        return ddd;
+        var jhex="";
+        var len=chex.length/2;
+        for(var i=0;i<len;i++){
+          var j=len-1-i;
+          var c1=chex[2*j];
+          var c2=chex[2*j+1];
+          jhex=jhex+c1+c2;
+        }
+        var bbb=bigInt(jhex,16);
+        // var ccc=bbb.toArray(256);
+        // ccc.value.reverse();
+        // var ddd=bigInt.fromArray(ccc.value,256,false);
+        return bbb;
+      },refreshMyEosTree(eostrees){
+        if(eostrees){
+          var notmatch=false;
+          for(var i=0;i<this.myeostrees.length;i++){
+            var match=false;
+            for(var j=0;j<eostrees.length;j++){
+              if(eostrees[i].id==this.myeostrees[j].id){
+                match=true;
+              }
+            }
+            if(!match){
+              notmatch=true;
+            }
+          }
+          if(notmatch){
+            //存在id不匹配的，则认为更换了账户，清空重建
+            this.myeostrees.splice(0,this.myeostrees.length);
+          }
+          for(var i=0;i<eostrees.length;i++){
+            var match=false;
+            for(var j=0;j<this.myeostrees.length;j++){
+              if(eostrees[i].id==this.myeostrees[j].id){
+                match=true;
+                this.myeostrees[j]=eostrees[i];
+              }
+            }
+            if(!match){
+              this.myeostrees.push(eostrees[i]);
+            }
+          }
+          for(var i=0;i<this.myeostrees.length;i++){
+
+            this.myeostrees[i].eos_amount_show= (this.myeostrees[i].eos_amount/10000).toFixed(4);
+            this.myeostrees[i].income_show= (this.myeostrees[i].income/10000).toFixed(4);
+            this.myeostrees[i].has_withdraw_show= (this.myeostrees[i].has_withdraw/10000).toFixed(4);
+            var end_time_show="∞";
+            var end_time=this.myeostrees[i].end_time;
+            var life_ret=this.myeostrees[i].life_ret;
+            if(life_ret==this.LIFE_DEAD){
+              end_time_show="dead";
+            }else{
+              if(end_time>0){
+                let delta=end_time-Date.parse(new Date()) / 1000;
+                end_time_show=this.formatSeconds(delta);
+              }else{
+                end_time_show="∞";
+              }
+            }
+            this.myeostrees[i].end_time_show=end_time_show;
+          }
+        }
       },
     }, watch: {
       buyeos: function (val) {
@@ -475,21 +625,16 @@
         var eosRealAmount = parseInt(buyEosAmount * 10000);
         this.maybeBuyAmount = this.get_buy_amount(eosRealAmount, this.gameinfo.supply);
       },
-      eostrees:function (val) {
-
-      },
       gameinfo:function (val) {
         var that=this;
         that.endtime = val.end_time;
         that.totaleos = Big(val.total_pool).div(10000).toFixed(4) + " EOS";
         that.mygameinfo.last_one = val.last_one;
-        that.mygameinfo.supply = val.supply + " seeds";
+        that.mygameinfo.supply = val.supply + " trees";
         that.mygameinfo.airdrop_pool = Big(val.airdrop_pool).div(10000).toFixed(4) + " EOS";
         that.mygameinfo.dividend_pool = Big(val.dividend_pool).div(10000).toFixed(4) + " EOS";
+        that.mygameinfo.dividend_pool_const = Big(val.dividend_pool_const).div(10000).toFixed(4) + " EOS";
         that.mygameinfo.last_reward_pool = Big(val.last_reward_pool).div(10000).toFixed(4) + " EOS";
-        var dividend_weight=this.convertChex(val.dividend_weight);
-        that.mygameinfo.dividend_weight=dividend_weight;
-
       }
     }
   }
@@ -503,6 +648,18 @@
   .top_margin {
     margin-top: 20px;
   }
+
+  .farm-text-left{
+    padding: 2px;
+    font-size: 1.8em;
+  }
+
+  .farm-text-right{
+    padding: 2px;
+    font-size: 1.8em;
+    text-align: right;
+  }
+
 
   .p3d-green {
     text-shadow: rgb(43, 0, 43) 0px 0px 5px, rgb(0, 204, 0) 0px 0px 20px, rgb(0, 255, 0) 0px 0px 10px;

@@ -14,7 +14,6 @@
         </div>
       </el-col>
       <el-col :span="4" justify="center" align="middle">
-        <el-progress type="circle" :percentage="0.001" color="#8e71c7"></el-progress>
       </el-col>
       <el-col :span="6">
         <div class="investjust-reserve-panel-up">
