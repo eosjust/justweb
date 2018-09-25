@@ -33,7 +33,7 @@
     </el-row>
 
     <el-row>
-      <el-col :span="$store.state.ismobile?24:12" style="margin-top: 50px;">
+      <el-col :span="$store.state.ismobile?24:12" style="margin-top: 50px;margin-bottom: 20px;">
         <el-row type="flex" justify="center" align="middle">
           <el-col :span="20" style="background-color: #f5f5f5;border-radius: 5px;">
             <mu-tabs :value.sync="tab1active" color="#009688" style="border-radius: 5px 5px 0px 0px;">
@@ -49,7 +49,7 @@
                   </el-input>
                 </el-col>
               </el-row>
-              <el-row type="flex" style="margin-top: 20px;" justify="center" align="middle">
+              <el-row type="flex" class="row-bg" justify="space-around" style="padding: 10px;">
                 <el-col :span="3">
                   <el-button type="primary" size="mini" round>88</el-button>
                 </el-col>
@@ -62,9 +62,6 @@
                 <el-col :span="3">
                   <el-button type="primary" size="mini" round>888</el-button>
                 </el-col>
-                <el-col :span="4">
-                  <el-button type="primary" size="mini" round>8888</el-button>
-                </el-col>
               </el-row>
 
               <el-row class="top_margin" type="flex" justify="center" align="middle">
@@ -76,25 +73,51 @@
               </el-row>
             </div>
             <div class="demo-text" v-if="tab1active === 1">
+              <mu-expansion-panel>
+                <div slot="header">
+                  <mu-list textline="three-line" :ripple="false">
+                    <mu-list-item avatar :ripple="false" button>
+                      <mu-list-item-action>
+                        <mu-avatar>
+                          <mu-icon value="folder"></mu-icon>
+                        </mu-avatar>
+                      </mu-list-item-action>
+                      <mu-list-item-content>
+                        <mu-list-item-title>这个周末一起吃饭么?</mu-list-item-title>
+                        <mu-list-item-sub-title>
+                          <span style="color: rgba(0, 0, 0, .87)">Myron Liu -</span> 周末要来你这里出差，要不要一起吃个饭呀，实在编不下去了,哈哈哈哈哈哈
+                        </mu-list-item-sub-title>
+                      </mu-list-item-content>
+                    </mu-list-item>
+                  </mu-list>
+                </div>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
+                <mu-button slot="action" flat>Cancel</mu-button>
+                <mu-button slot="action" flat color="primary">Save</mu-button>
+              </mu-expansion-panel>
 
-              <mu-paper class="demo-paper" :z-depth="3">
-              <el-table :data="myeostrees" border style="width: 100%;margin-bottom: 5px;">
-                <el-table-column type="expand">
-                  <template slot-scope="props">
-                    <el-row type="flex" class="row-bg" justify="space-between">
-                      <el-col :span="6"><mu-button ripple color="primary" @click="btnBuyDrug(props.row.id)">治疗</mu-button></el-col>
-                      <el-col :span="6"><mu-button ripple color="primary" @click="btnWithDrawTree(props.row.id)">摘取</mu-button></el-col>
-                      <el-col :span="6"><mu-button ripple color="primary" @click="btnDeleteTree(props.row.id)">铲除</mu-button></el-col>
-                    </el-row>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="tree_amount" label="数量"></el-table-column>
-                <el-table-column prop="eos_amount_show" label="花费"></el-table-column>
-                <el-table-column prop="has_withdraw_show" label="已摘取"></el-table-column>
-                <el-table-column prop="income_show" label="待摘取"></el-table-column>
-                <el-table-column prop="end_time_show" label="寿命"></el-table-column>
-              </el-table>
-              </mu-paper>
+              <mu-expansion-panel>
+                <div slot="header">
+                  <mu-list textline="three-line">
+                    <mu-list-item avatar :ripple="false" button>
+                      <mu-list-item-action>
+                        <mu-avatar>
+                          <img src="../assets/eos_tree_3.png">
+                        </mu-avatar>
+                      </mu-list-item-action>
+                      <mu-list-item-content>
+                        <mu-list-item-title>这个周末一起吃饭么?</mu-list-item-title>
+                        <mu-list-item-sub-title>
+                          <span style="color: rgba(0, 0, 0, .87)">Myron Liu -</span> 周末要来你这里出差，要不要一起吃个饭呀，实在编不下去了,哈哈哈哈哈哈
+                        </mu-list-item-sub-title>
+                      </mu-list-item-content>
+                    </mu-list-item>
+                  </mu-list>
+                </div>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
+                <mu-button slot="action" flat>Cancel</mu-button>
+                <mu-button slot="action" flat color="primary">Save</mu-button>
+              </mu-expansion-panel>
             </div>
             <div class="demo-text" v-if="tab1active === 2">
               <el-row >
@@ -209,7 +232,8 @@
         //display info tab buy
         maybeBuyAmount: null,
         //display info tab widthdraw
-        myeostrees:new Array(),
+        myeostrees:[
+        ],
         //display info tab invite
         //display info tab gamestate
         mygameinfo:new Object(),
@@ -226,8 +250,7 @@
       timeout.timeout(1000, function () {
         let delta = that.endtime - Date.parse(new Date()) / 1000;
         that.countdown = that.formatSeconds(delta);
-        var eostrees=that.eostrees;
-        that.refreshMyEosTree(eostrees);
+        that.refreshMyEosTree();
         return true;
       });
 
@@ -567,63 +590,80 @@
         // ccc.value.reverse();
         // var ddd=bigInt.fromArray(ccc.value,256,false);
         return bbb;
-      },refreshMyEosTree(eostrees){
-        if(eostrees){
-          var notmatch=false;
-          for(var i=0;i<this.myeostrees.length;i++){
-            var match=false;
-            for(var j=0;j<eostrees.length;j++){
-              if(eostrees[i].id==this.myeostrees[j].id){
-                match=true;
-              }
-            }
-            if(!match){
-              notmatch=true;
-            }
-          }
-          if(notmatch){
-            //存在id不匹配的，则认为更换了账户，清空重建
-            this.myeostrees.splice(0,this.myeostrees.length);
-          }
-          for(var i=0;i<eostrees.length;i++){
-            var match=false;
-            for(var j=0;j<this.myeostrees.length;j++){
-              if(eostrees[i].id==this.myeostrees[j].id){
-                match=true;
-                this.myeostrees[j]=eostrees[i];
-              }
-            }
-            if(!match){
-              this.myeostrees.push(eostrees[i]);
-            }
-          }
-          for(var i=0;i<this.myeostrees.length;i++){
+      },refreshMyEosTree(){
+        var eostrees=this.eostrees;
+        if(!eostrees){
+          return;
+        }
+        for(var i=0;i<eostrees.length;i++){
+          var match=false;
+          for(var j=0;j<this.myeostrees.length;j++){
+            if(eostrees[i].id==this.myeostrees[j].id){
+              match=true;
+              this.calEosTreeShow(eostrees[i]);
+              this.myeostrees[j].id=eostrees[i].id;
+              this.myeostrees[j].eos_amount=eostrees[i].eos_amount;
+              this.myeostrees[j].income=eostrees[i].income;
+              this.myeostrees[j].has_withdraw=eostrees[i].has_withdraw;
+              this.myeostrees[j].end_time=eostrees[i].end_time;
+              this.myeostrees[j].life_ret=eostrees[i].life_ret;
 
-            this.myeostrees[i].eos_amount_show= (this.myeostrees[i].eos_amount/10000).toFixed(4);
-            this.myeostrees[i].income_show= (this.myeostrees[i].income/10000).toFixed(4);
-            this.myeostrees[i].has_withdraw_show= (this.myeostrees[i].has_withdraw/10000).toFixed(4);
-            var end_time_show="∞";
-            var end_time=this.myeostrees[i].end_time;
-            var life_ret=this.myeostrees[i].life_ret;
-            if(life_ret==this.LIFE_DEAD){
-              end_time_show="dead";
-            }else{
-              if(end_time>0){
-                let delta=end_time-Date.parse(new Date()) / 1000;
-                end_time_show=this.formatSeconds(delta);
-              }else{
-                end_time_show="∞";
-              }
+              this.myeostrees[j].eos_amount_show=eostrees[i].eos_amount_show;
+              this.myeostrees[j].income_show=eostrees[i].income_show;
+              this.myeostrees[j].has_withdraw_show=eostrees[i].has_withdraw_show;
+              this.myeostrees[j].end_time_show=eostrees[i].end_time_show;
             }
-            this.myeostrees[i].end_time_show=end_time_show;
+          }
+          if(!match){
+            this.calEosTreeShow(eostrees[i]);
+            this.myeostrees.push(eostrees[i]);
           }
         }
       },
+      calEosTreeShow(eostree){
+        eostree.eos_amount_show= (eostree.eos_amount/10000).toFixed(4);
+        eostree.income_show= (eostree.income/10000).toFixed(4);
+        eostree.has_withdraw_show= (eostree.has_withdraw/10000).toFixed(4);
+        var end_time_show="∞";
+        var end_time=eostree.end_time;
+        var life_ret=eostree.life_ret;
+        if(life_ret==16){
+          end_time_show="dead";
+        }else{
+          if(end_time>0){
+            var delta=end_time-Date.parse(new Date()) / 1000;
+            end_time_show=this.formatSeconds(delta);
+          }else{
+            end_time_show="∞";
+          }
+        }
+        eostree.end_time_show=end_time_show;
+      }
     }, watch: {
       buyeos: function (val) {
         var buyEosAmount = parseFloat(val);
         var eosRealAmount = parseInt(buyEosAmount * 10000);
         this.maybeBuyAmount = this.get_buy_amount(eosRealAmount, this.gameinfo.supply);
+      },
+      eostrees:function (val) {
+
+        // var notmatch=false;
+        // for(var i=0;i<this.myeostrees.length;i++){
+        //   var match=false;
+        //   for(var j=0;j<eostrees.length;j++){
+        //     if(eostrees[j].id==this.myeostrees[i].id){
+        //       match=true;
+        //     }
+        //   }
+        //   if(!match){
+        //     notmatch=true;
+        //   }
+        // }
+        // if(notmatch){
+        //   //存在id不匹配的，则认为更换了账户，清空重建
+        //   this.myeostrees.splice(0,this.myeostrees.length);
+        // }
+
       },
       gameinfo:function (val) {
         var that=this;
