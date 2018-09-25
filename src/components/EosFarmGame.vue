@@ -73,63 +73,11 @@
               </el-row>
             </div>
             <div class="demo-text" v-if="tab1active === 1">
-              <mu-expansion-panel>
-                <div slot="header">
-                  <mu-list textline="three-line" :ripple="false">
-                    <mu-list-item avatar :ripple="false" button>
-                      <mu-list-item-action>
-                        <mu-avatar>
-                          <mu-icon value="folder"></mu-icon>
-                        </mu-avatar>
-                      </mu-list-item-action>
-                      <mu-list-item-content>
-                        <mu-list-item-title>这个周末一起吃饭么?</mu-list-item-title>
-                        <mu-list-item-sub-title>
-                          <span style="color: rgba(0, 0, 0, .87)">Myron Liu -</span> 周末要来你这里出差，要不要一起吃个饭呀，实在编不下去了,哈哈哈哈哈哈
-                        </mu-list-item-sub-title>
-                      </mu-list-item-content>
-                    </mu-list-item>
-                  </mu-list>
-                </div>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
-                <mu-button slot="action" flat>Cancel</mu-button>
-                <mu-button slot="action" flat color="primary">Save</mu-button>
-              </mu-expansion-panel>
-
-              <mu-expansion-panel>
-                <div slot="header">
-                  <mu-list textline="three-line">
-                    <mu-list-item avatar :ripple="false" button>
-                      <mu-list-item-action>
-                        <mu-avatar>
-                          <img src="../assets/eos_tree_3.png">
-                        </mu-avatar>
-                      </mu-list-item-action>
-                      <mu-list-item-content>
-                        <mu-list-item-title>这个周末一起吃饭么?</mu-list-item-title>
-                        <mu-list-item-sub-title>
-                          <span style="color: rgba(0, 0, 0, .87)">Myron Liu -</span> 周末要来你这里出差，要不要一起吃个饭呀，实在编不下去了,哈哈哈哈哈哈
-                        </mu-list-item-sub-title>
-                      </mu-list-item-content>
-                    </mu-list-item>
-                  </mu-list>
-                </div>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
-                <mu-button slot="action" flat>Cancel</mu-button>
-                <mu-button slot="action" flat color="primary">Save</mu-button>
-              </mu-expansion-panel>
+              <MyEosTree :data="myeostrees"></MyEosTree>
             </div>
             <div class="demo-text" v-if="tab1active === 2">
-              <el-row >
-                <MyLand state="1"></MyLand>
-                <MyLand state="2"></MyLand>
-                <MyLand state="3"></MyLand>
-                <MyLand state="2"></MyLand>
-                <MyLand state="2"></MyLand>
-                <MyLand state="2"></MyLand>
-                <MyLand state="2"></MyLand>
-                <MyLand state="3"></MyLand>
-                <MyLand state="3"></MyLand>
+              <el-row>
+
               </el-row>
             </div>
           </el-col>
@@ -144,7 +92,7 @@
             </mu-tabs>
             <el-row type="flex" justify="center" align="middle" v-if="tab2active === 0">
               <el-col :span="24">
-                <div class="demo-text"  style="padding: 20px;">
+                <div class="demo-text" style="padding: 20px;">
                   <div>
                     最后赢家 {{this.mygameinfo.last_one}}
                   </div>
@@ -198,12 +146,12 @@
   import timeout from 'timeout';
   import bigInt from "big-integer";
   import Big from 'big.js';
-  import MyLand from '@/components/MyLand'
+  import MyEosTree from '@/components/MyEosTree'
 
   export default {
     name: "EosFarmGame",
     components: {
-      MyLand,
+      MyEosTree,
     },
     data() {
       return {
@@ -213,17 +161,17 @@
         //const info
         walletinfo: "ooooooo",
         farmcontract: "eosjustaward",
-        LIFE_ALIVE : 20,
-      LIFE_SICK : 18,
-      LIFE_DEAD : 16,
-      LIFE_VOID : 14,
+        LIFE_ALIVE: 20,
+        LIFE_SICK: 18,
+        LIFE_DEAD: 16,
+        LIFE_VOID: 14,
         //input form
         buyeos: null,
         //table info
         globalinfo: null,
         gameinfo: null,
         eostrees: null,
-        alleostrees:null,
+        alleostrees: null,
         userinfo: null,
         //display info
         countdown: null,
@@ -232,13 +180,12 @@
         //display info tab buy
         maybeBuyAmount: null,
         //display info tab widthdraw
-        myeostrees:[
-        ],
+        myeostrees: [],
         //display info tab invite
         //display info tab gamestate
-        mygameinfo:new Object(),
+        mygameinfo: new Object(),
         //display info tab rcentbuy
-        imgEosLand:require("../assets/eos_land_1.png"),
+        imgEosLand: require("../assets/eos_land_1.png"),
       }
     },
     created() {
@@ -362,9 +309,9 @@
                 }
               ],
               data: {
-                treeid:treeid,
-                user:that.$store.state.eosUserName,
-                quantity:"1.0000 EOS"
+                treeid: treeid,
+                user: that.$store.state.eosUserName,
+                quantity: "1.0000 EOS"
               }
             }
           ]
@@ -389,8 +336,8 @@
                 }
               ],
               data: {
-                treeid:treeid,
-                user:that.$store.state.eosUserName
+                treeid: treeid,
+                user: that.$store.state.eosUserName
               }
             }
           ]
@@ -415,9 +362,9 @@
                 }
               ],
               data: {
-                treeid:treeid,
-                all:0,
-                user:that.$store.state.eosUserName
+                treeid: treeid,
+                all: 0,
+                user: that.$store.state.eosUserName
               }
             }
           ]
@@ -442,9 +389,9 @@
                 }
               ],
               data: {
-                treeid:0,
-                all:1,
-                user:that.$store.state.eosUserName
+                treeid: 0,
+                all: 1,
+                user: that.$store.state.eosUserName
               }
             }
           ]
@@ -575,69 +522,69 @@
         var t_ed = ed;
         var tmp = parseInt(((t_st + t_ed) * (t_ed - t_st + 1)) / 2);
         return tmp;
-      },convertChex(chex){
-        chex=chex.substring(2);
-        var jhex="";
-        var len=chex.length/2;
-        for(var i=0;i<len;i++){
-          var j=len-1-i;
-          var c1=chex[2*j];
-          var c2=chex[2*j+1];
-          jhex=jhex+c1+c2;
+      }, convertChex(chex) {
+        chex = chex.substring(2);
+        var jhex = "";
+        var len = chex.length / 2;
+        for (var i = 0; i < len; i++) {
+          var j = len - 1 - i;
+          var c1 = chex[2 * j];
+          var c2 = chex[2 * j + 1];
+          jhex = jhex + c1 + c2;
         }
-        var bbb=bigInt(jhex,16);
+        var bbb = bigInt(jhex, 16);
         // var ccc=bbb.toArray(256);
         // ccc.value.reverse();
         // var ddd=bigInt.fromArray(ccc.value,256,false);
         return bbb;
-      },refreshMyEosTree(){
-        var eostrees=this.eostrees;
-        if(!eostrees){
+      }, refreshMyEosTree() {
+        var eostrees = this.eostrees;
+        if (!eostrees) {
           return;
         }
-        for(var i=0;i<eostrees.length;i++){
-          var match=false;
-          for(var j=0;j<this.myeostrees.length;j++){
-            if(eostrees[i].id==this.myeostrees[j].id){
-              match=true;
+        for (var i = 0; i < eostrees.length; i++) {
+          var match = false;
+          for (var j = 0; j < this.myeostrees.length; j++) {
+            if (eostrees[i].id == this.myeostrees[j].id) {
+              match = true;
               this.calEosTreeShow(eostrees[i]);
-              this.myeostrees[j].id=eostrees[i].id;
-              this.myeostrees[j].eos_amount=eostrees[i].eos_amount;
-              this.myeostrees[j].income=eostrees[i].income;
-              this.myeostrees[j].has_withdraw=eostrees[i].has_withdraw;
-              this.myeostrees[j].end_time=eostrees[i].end_time;
-              this.myeostrees[j].life_ret=eostrees[i].life_ret;
+              this.myeostrees[j].id = eostrees[i].id;
+              this.myeostrees[j].eos_amount = eostrees[i].eos_amount;
+              this.myeostrees[j].income = eostrees[i].income;
+              this.myeostrees[j].has_withdraw = eostrees[i].has_withdraw;
+              this.myeostrees[j].end_time = eostrees[i].end_time;
+              this.myeostrees[j].life_ret = eostrees[i].life_ret;
 
-              this.myeostrees[j].eos_amount_show=eostrees[i].eos_amount_show;
-              this.myeostrees[j].income_show=eostrees[i].income_show;
-              this.myeostrees[j].has_withdraw_show=eostrees[i].has_withdraw_show;
-              this.myeostrees[j].end_time_show=eostrees[i].end_time_show;
+              this.myeostrees[j].eos_amount_show = eostrees[i].eos_amount_show;
+              this.myeostrees[j].income_show = eostrees[i].income_show;
+              this.myeostrees[j].has_withdraw_show = eostrees[i].has_withdraw_show;
+              this.myeostrees[j].end_time_show = eostrees[i].end_time_show;
             }
           }
-          if(!match){
+          if (!match) {
             this.calEosTreeShow(eostrees[i]);
             this.myeostrees.push(eostrees[i]);
           }
         }
       },
-      calEosTreeShow(eostree){
-        eostree.eos_amount_show= (eostree.eos_amount/10000).toFixed(4);
-        eostree.income_show= (eostree.income/10000).toFixed(4);
-        eostree.has_withdraw_show= (eostree.has_withdraw/10000).toFixed(4);
-        var end_time_show="∞";
-        var end_time=eostree.end_time;
-        var life_ret=eostree.life_ret;
-        if(life_ret==16){
-          end_time_show="dead";
-        }else{
-          if(end_time>0){
-            var delta=end_time-Date.parse(new Date()) / 1000;
-            end_time_show=this.formatSeconds(delta);
-          }else{
-            end_time_show="∞";
+      calEosTreeShow(eostree) {
+        eostree.eos_amount_show = (eostree.eos_amount / 10000).toFixed(4);
+        eostree.income_show = (eostree.income / 10000).toFixed(4);
+        eostree.has_withdraw_show = (eostree.has_withdraw / 10000).toFixed(4);
+        var end_time_show = "∞";
+        var end_time = eostree.end_time;
+        var life_ret = eostree.life_ret;
+        if (life_ret == 16) {
+          end_time_show = "dead";
+        } else {
+          if (end_time > 0) {
+            var delta = end_time - Date.parse(new Date()) / 1000;
+            end_time_show = this.formatSeconds(delta);
+          } else {
+            end_time_show = "∞";
           }
         }
-        eostree.end_time_show=end_time_show;
+        eostree.end_time_show = end_time_show;
       }
     }, watch: {
       buyeos: function (val) {
@@ -645,7 +592,7 @@
         var eosRealAmount = parseInt(buyEosAmount * 10000);
         this.maybeBuyAmount = this.get_buy_amount(eosRealAmount, this.gameinfo.supply);
       },
-      eostrees:function (val) {
+      eostrees: function (val) {
 
         // var notmatch=false;
         // for(var i=0;i<this.myeostrees.length;i++){
@@ -665,8 +612,8 @@
         // }
 
       },
-      gameinfo:function (val) {
-        var that=this;
+      gameinfo: function (val) {
+        var that = this;
         that.endtime = val.end_time;
         that.totaleos = Big(val.total_pool).div(10000).toFixed(4) + " EOS";
         that.mygameinfo.last_one = val.last_one;
@@ -689,17 +636,21 @@
     margin-top: 20px;
   }
 
-  .farm-text-left{
+  .tree-text-small {
+    padding: 0px;
+    font-size: 0.8em;
+  }
+
+  .farm-text-left {
     padding: 2px;
     font-size: 1.8em;
   }
 
-  .farm-text-right{
+  .farm-text-right {
     padding: 2px;
     font-size: 1.8em;
     text-align: right;
   }
-
 
   .p3d-green {
     text-shadow: rgb(43, 0, 43) 0px 0px 5px, rgb(0, 204, 0) 0px 0px 20px, rgb(0, 255, 0) 0px 0px 10px;
