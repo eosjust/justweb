@@ -51,16 +51,16 @@
               </el-row>
               <el-row type="flex" class="row-bg" justify="space-around" style="padding: 10px;">
                 <el-col :span="3">
-                  <el-button type="primary" size="mini" round>88</el-button>
+                  <el-button @click="setBuyAmount(buyeos+88)" type="primary" size="mini" round>88</el-button>
                 </el-col>
                 <el-col :span="3">
-                  <el-button type="primary" size="mini" round>188</el-button>
+                  <el-button @click="setBuyAmount(buyeos+188)" type="primary" size="mini" round>188</el-button>
                 </el-col>
                 <el-col :span="3">
-                  <el-button type="primary" size="mini" round>588</el-button>
+                  <el-button @click="setBuyAmount(buyeos+588)" type="primary" size="mini" round>588</el-button>
                 </el-col>
                 <el-col :span="3">
-                  <el-button type="primary" size="mini" round>888</el-button>
+                  <el-button @click="setBuyAmount(buyeos+888)" type="primary" size="mini" round>888</el-button>
                 </el-col>
               </el-row>
 
@@ -294,85 +294,8 @@
           });
         });
       },
-      btnBuyDrug(treeid) {
-        var eossdkutil = window.eossdkutil;
-        var that = this;
-        eossdkutil.pushEosAction({
-          actions: [
-            {
-              account: that.farmcontract,
-              name: "buydrug",
-              authorization: [
-                {
-                  actor: that.farmcontract,
-                  permission: "active"
-                }
-              ],
-              data: {
-                treeid: treeid,
-                user: that.$store.state.eosUserName,
-                quantity: "1.0000 EOS"
-              }
-            }
-          ]
-        }).then(function (result) {
-          that.$message("购买成功");
-        }).catch(function (error) {
-          that.$message("购买失败");
-        });
-      },
-      btnDeleteTree(treeid) {
-        var eossdkutil = window.eossdkutil;
-        var that = this;
-        eossdkutil.pushEosAction({
-          actions: [
-            {
-              account: that.farmcontract,
-              name: "deltree",
-              authorization: [
-                {
-                  actor: that.farmcontract,
-                  permission: "active"
-                }
-              ],
-              data: {
-                treeid: treeid,
-                user: that.$store.state.eosUserName
-              }
-            }
-          ]
-        }).then(function (result) {
-          that.$message("操作成功");
-        }).catch(function (error) {
-          that.$message("操作失败");
-        });
-      },
-      btnWithDrawTree(treeid) {
-        var eossdkutil = window.eossdkutil;
-        var that = this;
-        eossdkutil.pushEosAction({
-          actions: [
-            {
-              account: that.farmcontract,
-              name: "withdraw",
-              authorization: [
-                {
-                  actor: that.farmcontract,
-                  permission: "active"
-                }
-              ],
-              data: {
-                treeid: treeid,
-                all: 0,
-                user: that.$store.state.eosUserName
-              }
-            }
-          ]
-        }).then(function (result) {
-          that.$message("操作成功");
-        }).catch(function (error) {
-          that.$message("操作失败");
-        });
+      setBuyAmount(amount){
+        this.buyeos=amount;
       },
       btnWithDraw() {
         var eossdkutil = window.eossdkutil;
@@ -542,23 +465,29 @@
         if (!eostrees) {
           return;
         }
+        var notmatch=false;
+        for(var i=0;i<this.myeostrees.length;i++){
+          var match=false;
+          for(var j=0;j<eostrees.length;j++){
+            if(eostrees[j].id==this.myeostrees[i].id){
+              match=true;
+            }
+          }
+          if(!match){
+            notmatch=true;
+          }
+        }
+        if(notmatch){
+          //存在id不匹配的，则认为更换了账户，清空重建
+          this.myeostrees.splice(0,this.myeostrees.length);
+        }
         for (var i = 0; i < eostrees.length; i++) {
           var match = false;
           for (var j = 0; j < this.myeostrees.length; j++) {
             if (eostrees[i].id == this.myeostrees[j].id) {
               match = true;
               this.calEosTreeShow(eostrees[i]);
-              this.myeostrees[j].id = eostrees[i].id;
-              this.myeostrees[j].eos_amount = eostrees[i].eos_amount;
-              this.myeostrees[j].income = eostrees[i].income;
-              this.myeostrees[j].has_withdraw = eostrees[i].has_withdraw;
-              this.myeostrees[j].end_time = eostrees[i].end_time;
-              this.myeostrees[j].life_ret = eostrees[i].life_ret;
-
-              this.myeostrees[j].eos_amount_show = eostrees[i].eos_amount_show;
-              this.myeostrees[j].income_show = eostrees[i].income_show;
-              this.myeostrees[j].has_withdraw_show = eostrees[i].has_withdraw_show;
-              this.myeostrees[j].end_time_show = eostrees[i].end_time_show;
+              this.myeostrees.splice(j, 1, eostrees[i]);
             }
           }
           if (!match) {
@@ -593,23 +522,6 @@
         this.maybeBuyAmount = this.get_buy_amount(eosRealAmount, this.gameinfo.supply);
       },
       eostrees: function (val) {
-
-        // var notmatch=false;
-        // for(var i=0;i<this.myeostrees.length;i++){
-        //   var match=false;
-        //   for(var j=0;j<eostrees.length;j++){
-        //     if(eostrees[j].id==this.myeostrees[i].id){
-        //       match=true;
-        //     }
-        //   }
-        //   if(!match){
-        //     notmatch=true;
-        //   }
-        // }
-        // if(notmatch){
-        //   //存在id不匹配的，则认为更换了账户，清空重建
-        //   this.myeostrees.splice(0,this.myeostrees.length);
-        // }
 
       },
       gameinfo: function (val) {
