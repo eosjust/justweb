@@ -1,16 +1,21 @@
 <template>
-  <el-col :span="6">
+  <el-col style="padding: 3px;" :span="6">
     <el-row type="flex" justify="center" align="middle">
       <el-col :span="24" justify="center" align="middle">
         <img :src="imgEosLand" style="width: 100%; height: auto;"/>
         <div class="land-div-absolute-tree">
-          <img :src="getTreeImg(state)" @click="clickState" style="width: 100%; height: auto;"/>
+          <img :src="getTreeImg(state)" @click="$emit('clickland')" style="width: 100%; height: auto;"/>
         </div>
         <div class="land-div-absolute">
-          <mu-paper style="opacity: 0.5;" class="demo-paper" :z-depth="5">hehe</mu-paper>
+          <mu-paper style="opacity: 0.4;" class="demo-paper" :z-depth="5">
+            <div class="font-small">seeds: 141200</div>
+            <div class="font-small">income: 100</div>
+          </mu-paper>
         </div>
-        <div class="land-div-absolute-r">
-          <mu-paper style="opacity: 0.5;" class="demo-paper" :z-depth="5">hehe</mu-paper>
+        <div class="land-div-absolute-br">
+          <mu-paper style="opacity: 0.5;" class="demo-paper font-small" :z-depth="5">
+            00:00:30
+          </mu-paper>
         </div>
       </el-col>
     </el-row>
@@ -69,20 +74,38 @@
     top: 0px;
     left: 0px;
   }
-  .land-div-absolute {
+
+  .land-div-absolute-lt {
     position: absolute;
     top: 0px;
     left: 0px;
   }
+
+  .land-div-absolute {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+  }
+
   .land-div-absolute-tree {
     position: absolute;
     top: -10%;
     left: 0%;
   }
-  .land-div-absolute-r {
+
+  .land-div-absolute-tr {
     position: absolute;
     top: 0%;
     left: auto;
     right: 0px;
+  }
+  .land-div-absolute-br {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+
+  }
+  .font-small {
+    font-size: 0.7em;
   }
 </style>
