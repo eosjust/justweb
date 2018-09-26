@@ -29,6 +29,8 @@
             has withdraw: {{eostree.has_withdraw_show}}
           </mu-list-item-sub-title>
         </mu-list-item-content>
+      </mu-list-item>
+      <mu-list-item button :ripple="false" slot="nested">
         <mu-list-item-action>
           <mu-button @click="btnBuyDrug(eostree.id)" style="margin-left: 10px;" small color="success">买药</mu-button>
         </mu-list-item-action>

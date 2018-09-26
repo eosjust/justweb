@@ -12,6 +12,9 @@
         <mu-button flat ripple color="primary" to="/eosfarm">
           {{$t('mainmenu.farm')}}
         </mu-button>
+        <mu-button flat ripple color="primary" to="/eosfarmgame">
+          {{$t('mainmenu.farm')}}
+        </mu-button>
         <mu-button flat ripple color="primary" to="/investjust">
           {{$t('mainmenu.investjust')}}
         </mu-button>
@@ -64,6 +67,9 @@
     <mu-drawer :open.sync="menudrawopen" :docked="menudrawdocked" v-show="ismobile">
       <mu-list>
         <mu-list-item button to="eosfarm" @click="menudrawopen = false">
+          <mu-list-item-title> {{$t('mainmenu.farm')}}</mu-list-item-title>
+        </mu-list-item>
+        <mu-list-item button to="eosfarmgame" @click="menudrawopen = false">
           <mu-list-item-title> {{$t('mainmenu.farm')}}</mu-list-item-title>
         </mu-list-item>
         <mu-list-item button to="investjust" @click="menudrawopen = false">
@@ -190,8 +196,8 @@
         var that = this;
         if (eossdkutil) {
           window.eossdkutil = eossdkutil;
-          // eossdkutil.setScatterNetworkTest();
-          eossdkutil.setScatterNetworkMain();
+          eossdkutil.setScatterNetworkTest();
+          // eossdkutil.setScatterNetworkMain();
           eossdkutil.init().then(function () {
             var env=eossdkutil.getEnv();
             if(env=="tp"){
