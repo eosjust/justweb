@@ -1,9 +1,9 @@
 <template>
   <el-row>
-    <el-col :span="4">
+    <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="7">
       <div>&nbsp;</div>
     </el-col>
-    <el-col :span="16">
+    <el-col :xs="22" :sm="18" :md="14" :lg="12" :xl="10">
       <div>
         <el-row>
           <MyLand state="1"></MyLand>
@@ -16,7 +16,7 @@
       </div>
 
     </el-col>
-    <el-col :span="4">
+    <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="7">
       <div>&nbsp;</div>
     </el-col>
   </el-row>
