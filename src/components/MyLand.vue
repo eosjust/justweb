@@ -7,16 +7,12 @@
           <img :src="getTreeImg(state)" @click="$emit('clickland')" style="width: 100%; height: auto;"/>
         </div>
         <div class="land-div-absolute">
-          <mu-paper style="opacity: 0.4;" class="demo-paper" :z-depth="5">
-            <div class="font-small">seeds: 141200</div>
-            <div class="font-small">income: 100</div>
-          </mu-paper>
+          <div class="font-small land-text-green land-text-left">seeds: 141200</div>
+          <div class="font-small land-text-green land-text-left">income: 100.0123</div>
         </div>
-        <div class="land-div-absolute-br">
-          <mu-paper style="opacity: 0.5;" class="demo-paper font-small" :z-depth="5">
-            00:00:30
-          </mu-paper>
-        </div>
+        <!--<div class="land-div-absolute-tr">-->
+          <!--<div class="font-small land-text-green">00:00:30</div>-->
+        <!--</div>-->
       </el-col>
     </el-row>
   </el-col>
@@ -107,5 +103,14 @@
   }
   .font-small {
     font-size: 0.7em;
+  }
+
+  .land-text-left {
+    text-align: left;
+  }
+
+  .land-text-green {
+    text-shadow: rgb(43, 0, 43) 0px 0px 5px, rgb(0, 204, 0) 0px 0px 20px, rgb(0, 255, 0) 0px 0px 10px;
+    color: white;
   }
 </style>
