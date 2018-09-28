@@ -7,12 +7,13 @@
           <img :src="getTreeImg(state)" @click="$emit('clickland')" style="width: 100%; height: auto;"/>
         </div>
         <div class="land-div-absolute">
-          <div class="font-small land-text-green land-text-left">seeds: 141200</div>
-          <div class="font-small land-text-green land-text-left">income: 100.0123</div>
+          <div class="font-small land-text-green land-text-left">seeds: 141200000</div>
+          <div class="font-small land-text-green land-text-left">cost: 10000.0123</div>
+          <div class="font-small land-text-green land-text-left">income: 1000.0123</div>
         </div>
-        <!--<div class="land-div-absolute-tr">-->
-          <!--<div class="font-small land-text-green">00:00:30</div>-->
-        <!--</div>-->
+        <div class="land-div-absolute-tr">
+          <div class="font-small land-text-purple" style="padding-top: 20px;padding-right: 30px;">00:00:30</div>
+        </div>
       </el-col>
     </el-row>
   </el-col>
@@ -87,6 +88,7 @@
     position: absolute;
     top: -10%;
     left: 0%;
+    cursor:pointer;
   }
 
   .land-div-absolute-tr {
@@ -102,7 +104,8 @@
 
   }
   .font-small {
-    font-size: 0.7em;
+    font-size: 0.6em;
+    line-height:1.1em;
   }
 
   .land-text-left {
@@ -111,6 +114,11 @@
 
   .land-text-green {
     text-shadow: rgb(43, 0, 43) 0px 0px 5px, rgb(0, 204, 0) 0px 0px 20px, rgb(0, 255, 0) 0px 0px 10px;
+    color: white;
+  }
+
+  .land-text-purple {
+    text-shadow: rgb(43, 0, 43) 0px 0px 5px, rgb(204, 0, 204) 0px 0px 20px, rgb(255, 0, 255) 0px 0px 10px;
     color: white;
   }
 </style>
