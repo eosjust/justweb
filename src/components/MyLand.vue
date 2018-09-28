@@ -1,37 +1,41 @@
 <template>
-  <el-col style="padding: 3px;" :span="6">
-    <el-row type="flex" justify="center" align="middle">
-      <el-col :span="24" justify="center" align="middle">
-        <img :src="imgEosLand" style="width: 100%; height: auto;"/>
-        <div class="land-div-absolute-tree">
-          <img :src="getTreeImg(state)" @click="$emit('clickland')" style="width: 100%; height: auto;"/>
-        </div>
-        <div class="land-div-absolute">
-          <div class="font-small land-text-green land-text-left">seeds: 141200000</div>
-          <div class="font-small land-text-green land-text-left">cost: 10000.0123</div>
-          <div class="font-small land-text-green land-text-left">income: 1000.0123</div>
-        </div>
-        <div class="land-div-absolute-tr">
-          <div class="font-small land-text-purple" style="padding-top: 20px;padding-right: 30px;">00:00:30</div>
-        </div>
-      </el-col>
-    </el-row>
-  </el-col>
-
-
+  <el-row style="padding-bottom: 100px;">
+    <el-col style="padding: 3px;" :span="6" v-for="eostree in data" :key="eostree.pos">
+      <el-row type="flex" justify="center" align="middle">
+        <el-col :span="24" justify="center" align="middle">
+          <img :src="imgEosLand" style="width: 100%; height: auto;"/>
+          <div class="land-div-absolute-tree">
+            <img :src="getTreeImg(eostree)" @click="onLandClick(eostree)" style="width: 100%; height: auto;"/>
+          </div>
+          <div class="land-div-absolute">
+            <div class="font-small land-text-green land-text-left">{{getLandTip($t('myland.trees'),eostree.tree_amount)}}</div>
+            <div class="font-small land-text-green land-text-left">{{getLandTip($t('myland.cost'),eostree.eos_amount_show)}}</div>
+            <div class="font-small land-text-green land-text-left">{{getLandTip($t('myland.income'),eostree.income_show)}}</div>
+          </div>
+          <div class="land-div-absolute-tr">
+            <div class="font-small land-text-purple" style="padding-top: 20px;padding-right: 30px;">{{eostree.end_time_show}}</div>
+          </div>
+        </el-col>
+      </el-row>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
   export default {
     name: "my-land",
-    props: ['state'],
+    props: ['data'],
     mounted() {
 
     },
     data() {
       return {
+        LIFE_ALIVE: 20,
+        LIFE_SICK: 18,
+        LIFE_DEAD: 16,
+        LIFE_VOID: 14,
         imgEosLand: require("../assets/tudi1.png"),
-        imgEosTree: require("../assets/tree_1.png"),
+        imgEosTree0: require("../assets/tree_0.png"),
         imgEosTree1: require("../assets/tree_1.png"),
         imgEosTree2: require("../assets/tree_2.png"),
         imgEosTree3: require("../assets/tree_3.png"),
@@ -40,25 +44,32 @@
       }
     },
     methods: {
-      getTreeImg(state) {
-        if (state == 1) {
+      getTreeImg(eostree) {
+        if (eostree.life_ret == 0) {
+          return this.imgEosTree0;
+        } else if (eostree.life_ret == this.LIFE_ALIVE) {
+          if(eostree.eos_amount/eostree.income<5){
+            return this.imgEosTree3;
+          }
           return this.imgEosTree1;
-        } else if (state == 2) {
-          return this.imgEosTree2;
-        } else if (state == 3) {
-          return this.imgEosTree3;
-        } else if (state == 4) {
+        }else if (eostree.life_ret == this.LIFE_SICK) {
           return this.imgEosTree4;
-        } else if (state == 5) {
+        }else if (eostree.life_ret == this.LIFE_DEAD) {
           return this.imgEosTree5;
         }
-        return this.imgEosTree;
+        return this.imgEosTree0;
       },
-      clickState() {
-        this.state += 1;
-        if (this.state > 5) {
-          this.state = 1;
+      getLandTip(title,value){
+        // {{$t('myland.trees')+":"}}{{eostree.tree_amount}}
+        if(value&&value>0){
+          return title+":"+value;
+        }else{
+          return "";
         }
+
+      },
+      onLandClick(eostree) {
+        this.$emit('clickland',eostree);
       }
     },
     watch: {}

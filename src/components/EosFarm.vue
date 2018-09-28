@@ -37,6 +37,8 @@
         <mu-tabs :value.sync="tab1active" color="#009688" style="border-radius: 5px 5px 0px 0px;" center>
           <mu-tab>买树苗🌱</mu-tab>
           <mu-tab>邀请奖励</mu-tab>
+          <mu-tab>游戏数据</mu-tab>
+          <mu-tab>玩法说明</mu-tab>
         </mu-tabs>
         <div class="demo-text" v-if="tab1active === 0" style="padding: 20px;">
           <el-row type="flex" justify="center" align="middle">
@@ -67,25 +69,32 @@
               </mu-button>
             </el-col>
           </el-row>
+
+        </div>
+        <div class="demo-text" v-if="tab1active === 1">
+          hehe
+        </div>
+        <div class="demo-text" v-if="tab1active === 2">
           <mu-divider style="margin: 10px;"></mu-divider>
           <el-row>
             <el-col :span="12">
               <div>我的树苗: 12333225</div>
+              <div>我的成本: 1003.1324</div>
               <div>可摘柚子:1003.1324</div>
               <div>邀请佣金:1233.0321</div>
+              <div>累积收益:1233.0321</div>
             </el-col>
             <el-col :span="12">
-              <div>活跃树苗:50000000</div>
+              <div>全部树苗:50000000</div>
               <div>总金额:702343.9012</div>
               <div>空投池:1000.0123</div>
               <div>空投概率:10%</div>
               <div>最终大奖:1500.0143</div>
             </el-col>
           </el-row>
-
           <div></div>
         </div>
-        <div class="demo-text" v-if="tab1active === 1">
+        <div class="demo-text" v-if="tab1active === 3">
           hehe
         </div>
       </el-col>
@@ -101,68 +110,7 @@
         </el-col>
         <el-col :xs="22" :sm="18" :md="14" :lg="12" :xl="10">
           <div>
-            <el-row style="padding-bottom: 100px;">
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="2"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="3"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="4"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="5"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="2"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="3"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="4"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="5"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="2"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="3"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="4"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="5"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="2"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="3"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="4"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="5"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="2"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="3"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="4"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="5"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="2"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="3"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="4"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="5"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="2"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="3"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="4"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="5"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="2"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="3"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="4"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="5"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="2"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="3"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="4"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="5"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="2"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="3"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="4"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="5"></MyLand>
-              <MyLand @clickland="openBotttomSheet" state="1"></MyLand>
-            </el-row>
+            <MyLand @clickland="onMyLandClick" :data="this.myeostrees"></MyLand>
           </div>
 
         </el-col>
@@ -174,8 +122,8 @@
     <el-col :span="24">
       <mu-container>
         <mu-bottom-sheet :open.sync="bottomActionOpen">
-          <mu-list @item-click="closeBottomSheet">
-            <mu-list-item button>
+          <mu-list>
+            <mu-list-item button @click="btnBuyDrug">
               <mu-list-item-action>
                 <mu-avatar>
                   <img style="width: 100%;height: auto;" src="../assets/a_buydrug.png"/>
@@ -183,7 +131,7 @@
               </mu-list-item-action>
               <mu-list-item-title>watering</mu-list-item-title>
             </mu-list-item>
-            <mu-list-item button>
+            <mu-list-item button @click="btnDeleteTree">
               <mu-list-item-action>
                 <mu-avatar>
                   <img style="width: 100%;height: auto;" src="../assets/a_remove.png"/>
@@ -191,7 +139,7 @@
               </mu-list-item-action>
               <mu-list-item-title>remove</mu-list-item-title>
             </mu-list-item>
-            <mu-list-item button>
+            <mu-list-item button @click="btnWithDrawTree">
               <mu-list-item-action>
                 <mu-avatar>
                   <img style="width: 100%;height: auto;" src="../assets/a_withdraw.png"/>
@@ -201,6 +149,41 @@
             </mu-list-item>
           </mu-list>
         </mu-bottom-sheet>
+      </mu-container>
+    </el-col>
+    <el-col :span="24">
+      <mu-container>
+        <mu-dialog title="买树苗" width="90%" :open.sync="buyDialogOpen">
+          <el-row type="flex" justify="center" align="middle">
+            <el-col :span="20">
+              <el-input placeholder="请输入购买数量" v-model="buyeos">
+                <template slot="append">≈{{maybeBuyAmount}} trees</template>
+              </el-input>
+            </el-col>
+          </el-row>
+          <el-row type="flex" class="row-bg" justify="space-around" style="padding: 10px;">
+            <el-col :span="3">
+              <el-button @click="setBuyAmount(buyeos+88)" size="mini" round>88</el-button>
+            </el-col>
+            <el-col :span="3">
+              <el-button @click="setBuyAmount(buyeos+188)" size="mini" round>188</el-button>
+            </el-col>
+            <el-col :span="3">
+              <el-button @click="setBuyAmount(buyeos+588)" size="mini" round>588</el-button>
+            </el-col>
+            <el-col :span="3">
+              <el-button @click="setBuyAmount(buyeos+888)" size="mini" round>888</el-button>
+            </el-col>
+          </el-row>
+          <el-row class="top_margin" type="flex" justify="center" align="middle">
+            <el-col :span="20" justify="center" align="middle">
+              <mu-button full-width ripple color="secondary" @click="btnBuy">
+                Buy
+              </mu-button>
+            </el-col>
+          </el-row>
+          <mu-button slot="actions" flat color="primary" @click="closeBuyDialog">Close</mu-button>
+        </mu-dialog>
       </mu-container>
     </el-col>
   </el-row>
@@ -223,6 +206,7 @@
       return {
         tab1active: 0,
         bottomActionOpen: false,
+        buyDialogOpen:false,
         //tab
         //const info
         farmcontract: "eosjustaward",
@@ -232,6 +216,7 @@
         LIFE_VOID: 14,
         //input form
         buyeos: 1,
+        selecttree:null,
         //table info
         globalinfo: null,
         gameinfo: null,
@@ -273,11 +258,27 @@
       that.requestGameInfo();
     },
     methods: {
-      closeBottomSheet() {
-        this.bottomActionOpen = false;
-      },
       openBotttomSheet() {
         this.bottomActionOpen = true;
+      },
+      closeBottomSheet() {
+        this.selecttree=null;
+        this.bottomActionOpen = false;
+      },
+      openBuyDialog() {
+        this.buyDialogOpen = true;
+      },
+      closeBuyDialog(){
+        this.selecttree=null;
+        this.buyDialogOpen = false;
+      },
+      onMyLandClick(eostree) {
+        this.selecttree=eostree;
+        if(eostree&&eostree.id>-1){
+          this.openBotttomSheet();
+        }else{
+          this.openBuyDialog();
+        }
       },
       btnStart() {
         var eossdkutil = window.eossdkutil;
@@ -330,6 +331,10 @@
           this.$message("请输入要购买的eos值");
           return;
         }
+        if (!this.selecttree) {
+          this.$message("请选择购买的位置");
+          return;
+        }
         var eossdkutil = window.eossdkutil;
         var that = this;
         eossdkutil.pushEosAction({
@@ -346,16 +351,21 @@
               data: {
                 user: that.$store.state.eosUserName,
                 quantity: Big(that.buyeos).toFixed(4) + " EOS",
+                pos:that.selecttree.pos,
                 inviter: "justtest2222"
               }
             }
           ]
         }).then(function (result) {
+          that.closeBottomSheet();
+          that.closeBuyDialog();
           that.$message({
             message: '购买成功',
             type: 'success'
           });
         }).catch(function (error) {
+          that.closeBottomSheet();
+          that.closeBuyDialog();
           that.$message({
             message: '购买失败',
             type: 'warning'
@@ -365,9 +375,94 @@
       setBuyAmount(amount){
         this.buyeos=amount;
       },
-      btnWithDraw() {
+      btnBuyDrug() {
         var eossdkutil = window.eossdkutil;
         var that = this;
+        if(!that.selecttree){
+          this.$message("请选择操作的位置");
+          return;
+        }
+        if(that.selecttree.id<0){
+          this.$message("此位置不可操作");
+          return;
+        }
+        eossdkutil.pushEosAction({
+          actions: [
+            {
+              account: that.farmcontract,
+              name: "buydrug",
+              authorization: [
+                {
+                  actor: that.farmcontract,
+                  permission: "active"
+                }
+              ],
+              data: {
+                treeid: that.selecttree.id,
+                user: that.$store.state.eosUserName,
+                quantity: "1.0000 EOS"
+              }
+            }
+          ]
+        }).then(function (result) {
+          that.closeBottomSheet();
+          that.closeBuyDialog();
+          that.$message("购买成功");
+        }).catch(function (error) {
+          that.closeBottomSheet();
+          that.closeBuyDialog();
+          that.$message("购买失败");
+        });
+      },
+      btnDeleteTree() {
+        var eossdkutil = window.eossdkutil;
+        var that = this;
+        if(!that.selecttree){
+          this.$message("请选择操作的位置");
+          return;
+        }
+        if(that.selecttree.id<0){
+          this.$message("此位置不可操作");
+          return;
+        }
+        eossdkutil.pushEosAction({
+          actions: [
+            {
+              account: that.farmcontract,
+              name: "deltree",
+              authorization: [
+                {
+                  actor: that.farmcontract,
+                  permission: "active"
+                }
+              ],
+              data: {
+                treeid: that.selecttree.id,
+                user: that.$store.state.eosUserName
+              }
+            }
+          ]
+        }).then(function (result) {
+          that.closeBottomSheet();
+          that.closeBuyDialog();
+          that.$message("操作成功");
+        }).catch(function (error) {
+          that.closeBottomSheet();
+          that.closeBuyDialog();
+          that.$message("操作失败");
+        });
+      },
+      btnWithDrawTree() {
+        var eossdkutil = window.eossdkutil;
+        var that = this;
+        if(!that.selecttree){
+          this.$message("请选择操作的位置");
+          return;
+        }
+        if(that.selecttree.id<0){
+          this.$message("此位置不可操作");
+          return;
+        }
         eossdkutil.pushEosAction({
           actions: [
             {
@@ -380,15 +475,19 @@
                 }
               ],
               data: {
-                treeid: 0,
-                all: 1,
+                treeid: that.selecttree.id,
+                all: 0,
                 user: that.$store.state.eosUserName
               }
             }
           ]
         }).then(function (result) {
+          that.closeBottomSheet();
+          that.closeBuyDialog();
           that.$message("操作成功");
         }).catch(function (error) {
+          that.closeBottomSheet();
+          that.closeBuyDialog();
           that.$message("操作失败");
         });
       },
@@ -529,38 +628,34 @@
         // var ddd=bigInt.fromArray(ccc.value,256,false);
         return bbb;
       }, refreshMyEosTree() {
+        var userinfo = this.userinfo;
+        var landNum=16;
+        if(userinfo){
+          landNum=userinfo.land_num;
+        }
+        this.myeostrees.splice(0,this.myeostrees.length);
+        for(var i=0;i<landNum;i++){
+          var tmpeostree=new Object();
+          tmpeostree.id=-1;
+          tmpeostree.pos=i;
+          tmpeostree.life_ret=0;
+          tmpeostree.eos_amount_show="";
+          tmpeostree.income_show="";
+          tmpeostree.has_withdraw_show="";
+          tmpeostree.tree_amount="";
+          this.myeostrees.push(tmpeostree);
+        }
         var eostrees = this.eostrees;
         if (!eostrees) {
           return;
         }
-        var notmatch=false;
-        for(var i=0;i<this.myeostrees.length;i++){
-          var match=false;
-          for(var j=0;j<eostrees.length;j++){
-            if(eostrees[j].id==this.myeostrees[i].id){
-              match=true;
-            }
-          }
-          if(!match){
-            notmatch=true;
-          }
-        }
-        if(notmatch){
-          //存在id不匹配的，则认为更换了账户，清空重建
-          this.myeostrees.splice(0,this.myeostrees.length);
-        }
         for (var i = 0; i < eostrees.length; i++) {
-          var match = false;
-          for (var j = 0; j < this.myeostrees.length; j++) {
-            if (eostrees[i].id == this.myeostrees[j].id) {
-              match = true;
-              this.calEosTreeShow(eostrees[i]);
-              this.myeostrees.splice(j, 1, eostrees[i]);
-            }
-          }
-          if (!match) {
+          if(eostrees[i].life_ret!=this.LIFE_VOID){
             this.calEosTreeShow(eostrees[i]);
-            this.myeostrees.push(eostrees[i]);
+            var tmppos=eostrees[i].pos;
+            if(tmppos&&tmppos>-1){
+              this.myeostrees.splice(tmppos,1,eostrees[i]);
+            }
           }
         }
       },
@@ -568,17 +663,13 @@
         eostree.eos_amount_show = (eostree.eos_amount / 10000).toFixed(4);
         eostree.income_show = (eostree.income / 10000).toFixed(4);
         eostree.has_withdraw_show = (eostree.has_withdraw / 10000).toFixed(4);
-        var end_time_show = "∞";
+        var end_time_show = "";
         var end_time = eostree.end_time;
         var life_ret = eostree.life_ret;
-        if (life_ret == 16) {
-          end_time_show = "dead";
-        } else {
+        if(life_ret==this.LIFE_SICK){
           if (end_time > 0) {
             var delta = end_time - Date.parse(new Date()) / 1000;
             end_time_show = this.formatSeconds(delta);
-          } else {
-            end_time_show = "∞";
           }
         }
         eostree.end_time_show = end_time_show;

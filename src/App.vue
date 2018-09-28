@@ -196,8 +196,8 @@
         var that = this;
         if (eossdkutil) {
           window.eossdkutil = eossdkutil;
-          eossdkutil.setScatterNetworkTest();
-          // eossdkutil.setScatterNetworkMain();
+          // eossdkutil.setScatterNetworkTest();
+          eossdkutil.setScatterNetworkMain();
           eossdkutil.init().then(function () {
             var env=eossdkutil.getEnv();
             if(env=="tp"){

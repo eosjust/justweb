@@ -11,5 +11,10 @@ module.exports={
     settings:'settings',
     welcome: "Welcome",
     investjust:"JUST",
+  },
+  myland: {
+    trees:'trees',
+    cost:'cost',
+    income:'income',
   }
 }

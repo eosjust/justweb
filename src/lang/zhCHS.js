@@ -11,5 +11,10 @@ module.exports={
     settings:'设置',
     welcome: "欢迎",
     investjust:"JUST",
+  },
+  myland: {
+    trees:'树苗',
+    cost:'成本',
+    income:'收益',
   }
 }
