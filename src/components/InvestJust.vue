@@ -1,87 +1,6 @@
 <template>
-  <div class="investjust-content">
+  <div class="investjust-content investjust-bg">
 
-
-    <el-row class="investjust-row" type="flex" justify="center" align="middle" style="margin-top: 50px;">
-      <el-col :span="4">
-      </el-col>
-      <el-col :span="6">
-        <div class="investjust-reserve-panel-up">
-          <div class="investjust-reserve-amount">EOS Reserve</div>
-        </div>
-        <div class="investjust-reserve-panel-down">
-          <div class="investjust-reserve-amount">12273.0062 EOS</div>
-        </div>
-      </el-col>
-      <el-col :span="4" justify="center" align="middle">
-      </el-col>
-      <el-col :span="6">
-        <div class="investjust-reserve-panel-up">
-          <div class="investjust-reserve-amount">JUST Reserve</div>
-        </div>
-        <div class="investjust-reserve-panel-down">
-          <div class="investjust-reserve-amount">714304.8726 JUST</div>
-        </div>
-      </el-col>
-      <el-col :span="4">
-      </el-col>
-    </el-row>
-    <el-row type="flex" justify="center" align="middle" style="margin-top: 20px;">
-      <el-col :span="8">
-        <div class="investjust-supply-text">supply ratio</div>
-      </el-col>
-      <el-col :span="8" justify="center" align="middle">
-        <el-progress :text-inside="true" :stroke-width="18" :percentage="10" status="success"></el-progress>
-      </el-col>
-      <el-col :span="8">
-        <img style="width: 50px;" src="https://static.eos.io/images/Landing/SectionTokenSale/eos_spinning_logo.gif"
-             alt="">
-      </el-col>
-    </el-row>
-
-    <el-row class="investjust-row" type="flex" justify="center" :gutter="20">
-      <el-col :span="8">
-        <el-input v-model="buyjustprice" :disabled="true">
-          <template slot="prepend">Price</template>
-          <template slot="append">EOS</template>
-        </el-input>
-      </el-col>
-      <el-col :span="8">
-        <el-input v-model="selljustprice" :disabled="true">
-          <template slot="prepend">Price</template>
-          <template slot="append">EOS</template>
-        </el-input>
-      </el-col>
-    </el-row>
-    <el-row class="investjust-row" type="flex" justify="center" :gutter="20">
-      <el-col :span="8">
-        <label class="p3d-green">Available: 1000.7120 EOS </label>
-      </el-col>
-      <el-col :span="8">
-        <label class="p3d-green">Available: 1000.7120 JUST </label>
-      </el-col>
-    </el-row>
-    <el-row class="investjust-row" style="margin-top: 10px;" type="flex" justify="center" :gutter="20">
-      <el-col :span="8">
-        <el-input type="number" :step="1" placeholder="" v-model="input3">
-          <template slot="append">EOS</template>
-        </el-input>
-      </el-col>
-      <el-col :span="8">
-        <el-input type="number" :step="1" placeholder="" v-model="input3">
-          <template slot="append">JUST</template>
-        </el-input>
-      </el-col>
-    </el-row>
-
-    <el-row class="investjust-row" type="flex" justify="center" :gutter="20">
-      <el-col :span="8">
-        <mu-button full-width color="success" @click="btnBuyJust">BUY JUST</mu-button>
-      </el-col>
-      <el-col :span="8">
-        <mu-button full-width color="error">SELL JUST</mu-button>
-      </el-col>
-    </el-row>
   </div>
 </template>
 
@@ -101,19 +20,7 @@
     },
     methods: {
       btnBuyJust() {
-        let postobj = new Object();
-        postobj.table = "accounts";
-        postobj.code = "eosio.token";
-        postobj.scope = "liyunhan1111";
-        postobj.json = "true";
-        let postdata = JSON.stringify(postobj);
-        axios.post('http://api.eosnewyork.io/v1/chain/get_table_rows', postdata)
-          .then(function (response) {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+
       },
       btnSellJust() {
 
@@ -123,6 +30,16 @@
 </script>
 
 <style scoped>
+
+  .investjust-bg {
+    background-image: url("../assets/invest_bg.jpg");
+    background-repeat:no-repeat;
+    background-size:100% auto;-moz-background-size:100% auto;
+    width: 100%;
+    height: 1000px;
+
+  }
+
   .investjust-row {
     margin-top: 20px;
   }
