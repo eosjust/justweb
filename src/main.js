@@ -8,11 +8,12 @@ import 'muse-ui/dist/muse-ui.css';
 import store from './store';
 import i18n from './lang';
 import ElementUI from 'element-ui';
+import Icon from 'vue-svg-icon/Icon.vue';
 import 'element-ui/lib/theme-chalk/index.css';
 
 
-
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+Vue.component('icon', Icon);
 Vue.use(MuseUI);
 Vue.use(ElementUI);
 

@@ -26,6 +26,7 @@
     "vue": "^2.5.2",
     "vue-i18n": "^8.0.0",
     "vue-router": "^3.0.1",
+    "vue-svg-icon": "^1.2.9",
     "vuex": "^3.0.1",
     "vuex-persistedstate": "^2.5.4"
   },

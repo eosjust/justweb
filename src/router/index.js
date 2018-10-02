@@ -6,7 +6,6 @@ import About from '@/components/About'
 import Navigate from '@/components/Navigate'
 import Setting from '@/components/Setting'
 import InvestJust from '@/components/InvestJust'
-import EosFarmGame from '@/components/EosFarmGame'
 import EosFarm from '@/components/EosFarm'
 
 Vue.use(Router)
@@ -15,8 +14,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'EosFarmGame',
-      component: EosFarmGame
+      name: 'index',
+      component: EosFarm
     },
     {
       path: '/moragame',
@@ -43,11 +42,6 @@ export default new Router({
       path: '/investjust',
       name: 'InvestJust',
       component: InvestJust
-    },
-    {
-      path: '/eosfarmgame',
-      name: 'EosFarmGame',
-      component: EosFarmGame
     },
     {
       path: '/eosfarm',
