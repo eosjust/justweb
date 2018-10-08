@@ -94,8 +94,9 @@
         </div>
 
         <div class="demo-text" v-if="tab1active === 0">
-          <mu-button @click="btnChkMyTree">fresh</mu-button>
-          <mu-button @click="btnChkAllTree">fresh</mu-button>
+          <mu-button @click="btnChkMyTree">更新收益</mu-button>
+          <mu-button @click="btnWithdrawAward">提现奖励</mu-button>
+          <mu-button @click="btnWithdrawTree(1)">提现柚子</mu-button>
           <mu-divider style="margin: 10px;"></mu-divider>
           <el-row>
             <el-col :span="12">
@@ -177,7 +178,7 @@
                 </mu-list-item-action>
                 <mu-list-item-title>remove</mu-list-item-title>
               </mu-list-item>
-              <mu-list-item button @click="btnWithDrawTree">
+              <mu-list-item button @click="btnWithDrawTree(0)">
                 <mu-list-item-action>
                   <mu-avatar>
                     <img style="width: 100%;height: auto;" src="../assets/a_withdraw.png"/>
@@ -572,7 +573,36 @@
           that.$message("操作失败");
         });
       },
-      btnWithDrawTree() {
+      btnWithdrawAward(){
+        var eossdkutil = window.eossdkutil;
+        var that = this;
+        eossdkutil.pushEosAction({
+          actions: [
+            {
+              account: that.farmcontract,
+              name: "withdraw2",
+              authorization: [
+                {
+                  actor: that.$store.state.eosUserName,
+                  permission: "active"
+                }
+              ],
+              data: {
+                user: that.$store.state.eosUserName,
+              }
+            }
+          ]
+        }).then(function (result) {
+          that.closeBottomSheet();
+          that.closeBuyDialog();
+          that.$message("操作成功");
+        }).catch(function (error) {
+          that.closeBottomSheet();
+          that.closeBuyDialog();
+          that.$message("操作失败");
+        });
+      },
+      btnWithDrawTree(all) {
         var eossdkutil = window.eossdkutil;
         var that = this;
         if(!that.selecttree){
@@ -596,7 +626,7 @@
               ],
               data: {
                 treeid: that.selecttree.id,
-                all: 0,
+                all: all,
                 user: that.$store.state.eosUserName
               }
             }

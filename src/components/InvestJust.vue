@@ -193,8 +193,8 @@
         justRest: "0.0000",
         myEosAmount: "0.0000",
         myJustAmount: "0.0000",
-        mayBuyAmount:"0.0000 JUST",
-        maySellAmount:"0.0000 EOS",
+        mayBuyAmount:"0.0000",
+        maySellAmount:"0.0000",
         inputBuyAmount:"0.0000",
         inputSellAmount:"0.0000",
       }
@@ -234,7 +234,7 @@
               data: {
                 from:that.$store.state.eosUserName,
                 to:that.bancorcontract,
-                quantity:that.inputBuyAmount+" EOS",
+                quantity:Big(that.inputBuyAmount).toFixed(4)+" EOS",
                 memo:""
               }
             }
@@ -262,7 +262,7 @@
               data: {
                 from:that.$store.state.eosUserName,
                 to:that.bancorcontract,
-                quantity:that.inputSellAmount+" JUST",
+                quantity:Big(that.inputSellAmount).toFixed(4)+" JUST",
                 memo:""
               }
             }
@@ -370,6 +370,26 @@
         }).catch(function (error) {
 
         });
+      },
+    },watch: {
+      inputBuyAmount: function (val) {
+        try{
+          this.mayBuyAmount= Big(this.justRest).mul(Big(val)).div(Big(this.eosRest).plus(Big(val))).toFixed(4);
+        }catch (e){
+          this.mayBuyAmount="0.0000";
+        }
+      },
+      inputSellAmount: function (val) {
+        try{
+          if(  Big(this.justRest).minus(Big(val))>0  ){
+            this.maySellAmount= Big(this.eosRest).mul(Big(val)).div(Big(this.justRest).minus(Big(val))).toFixed(4);
+          }else{
+            this.maySellAmount="0.0000";
+          }
+          // this.maySellAmount= Big(this.eosRest*val/(this.justRest-val)).toFixed(4);
+        }catch (e){
+          this.maySellAmount="0.0000";
+        }
       },
     }
   }
