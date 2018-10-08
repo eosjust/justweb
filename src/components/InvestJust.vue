@@ -36,24 +36,24 @@
     </el-row>
     <el-row>
       <el-col :span="$store.state.ismobile?24:12" style="margin-top: 50px;margin-bottom: 20px;">
-        <el-row class="investjust-row" type="flex" justify="center" :gutter="20">
+        <el-row class="investjust-row" type="flex" justify="center" >
           <el-col :span="$store.state.ismobile?20:16">
-            <el-input type="number" :step="0.001" placeholder="" v-model="input3">
+            <el-input type="number" :step="0.001" placeholder="" v-model="inputBuyAmount">
               <template slot="append">EOS</template>
             </el-input>
           </el-col>
         </el-row>
-        <el-row class="investjust-row" type="flex" justify="center" :gutter="20">
+        <el-row class="investjust-row" type="flex" justify="center" >
           <el-col :span="$store.state.ismobile?20:16">
-            <label class="p3d-white investjust-ex-may-amount">可购买JUST: 1000.7120 JUST</label>
+            <label class="p3d-white investjust-ex-may-amount">可购买JUST: {{mayBuyAmount}}</label>
           </el-col>
         </el-row>
-        <el-row class="investjust-row" type="flex" justify="center" :gutter="20">
+        <el-row class="investjust-row" type="flex" justify="center" >
           <el-col :span="$store.state.ismobile?20:16">
             <mu-button full-width color="success" @click="btnBuyJust">BUY JUST</mu-button>
           </el-col>
         </el-row>
-        <el-row class="investjust-row" type="flex" justify="center" :gutter="20">
+        <el-row class="investjust-row" type="flex" justify="center" >
           <el-col :span="$store.state.ismobile?20:16">
             <mu-paper :z-depth="1" :round="true">
               <mu-list>
@@ -62,7 +62,7 @@
                     <mu-list-item-title>JUST 价格:</mu-list-item-title>
                   </mu-list-item-content>
                   <mu-list-item-action>
-                    <mu-list-item-text>0.0012 EOS</mu-list-item-text>
+                    <mu-list-item-sub-title>{{justPrice}}</mu-list-item-sub-title>
                   </mu-list-item-action>
                 </mu-list-item>
                 <mu-list-item button>
@@ -70,7 +70,7 @@
                     <mu-list-item-title>JUST 发行量:</mu-list-item-title>
                   </mu-list-item-content>
                   <mu-list-item-action>
-                    <mu-list-item-text>1335669</mu-list-item-text>
+                    <mu-list-item-sub-title>{{justSupply}}</mu-list-item-sub-title>
                   </mu-list-item-action>
                 </mu-list-item>
                 <mu-list-item button>
@@ -78,7 +78,7 @@
                     <mu-list-item-title>JUST 流通量:</mu-list-item-title>
                   </mu-list-item-content>
                   <mu-list-item-action>
-                    <mu-list-item-text>335669</mu-list-item-text>
+                    <mu-list-item-sub-title>{{justTurnover}}</mu-list-item-sub-title>
                   </mu-list-item-action>
                 </mu-list-item>
                 <mu-list-item button>
@@ -86,7 +86,7 @@
                     <mu-list-item-title>EOS 储备金:</mu-list-item-title>
                   </mu-list-item-content>
                   <mu-list-item-action>
-                    <mu-list-item-text>1000 EOS</mu-list-item-text>
+                    <mu-list-item-sub-title>{{eosRest}}</mu-list-item-sub-title>
                   </mu-list-item-action>
                 </mu-list-item>
                 <mu-list-item button>
@@ -94,7 +94,7 @@
                     <mu-list-item-title>JUST 最大发行量:</mu-list-item-title>
                   </mu-list-item-content>
                   <mu-list-item-action>
-                    <mu-list-item-text>100000000</mu-list-item-text>
+                    <mu-list-item-sub-title>{{justMaxSupply}}</mu-list-item-sub-title>
                   </mu-list-item-action>
                 </mu-list-item>
               </mu-list>
@@ -103,24 +103,24 @@
         </el-row>
       </el-col>
       <el-col :span="$store.state.ismobile?24:12" style="margin-top: 50px;margin-bottom: 20px;">
-        <el-row class="investjust-row" type="flex" justify="center" :gutter="20">
+        <el-row class="investjust-row" type="flex" justify="center" >
           <el-col :span="$store.state.ismobile?20:16">
-            <el-input type="number" :step="0.001" placeholder="" v-model="input3">
+            <el-input type="number" :step="0.001" placeholder="" v-model="inputSellAmount">
               <template slot="append">JUST</template>
             </el-input>
           </el-col>
         </el-row>
-        <el-row class="investjust-row" type="flex" justify="center" :gutter="20">
+        <el-row class="investjust-row" type="flex" justify="center" >
           <el-col :span="$store.state.ismobile?20:16">
-            <label class="p3d-white investjust-ex-may-amount">可获得EOS: 1000.7120 EOS </label>
+            <label class="p3d-white investjust-ex-may-amount">可获得EOS: {{maySellAmount}} </label>
           </el-col>
         </el-row>
-        <el-row class="investjust-row" type="flex" justify="center" :gutter="20">
+        <el-row class="investjust-row" type="flex" justify="center" >
           <el-col :span="$store.state.ismobile?20:16">
-            <mu-button full-width color="error">SELL JUST</mu-button>
+            <mu-button full-width color="error" @click="btnSellJust">SELL JUST</mu-button>
           </el-col>
         </el-row>
-        <el-row class="investjust-row" type="flex" justify="center" :gutter="20">
+        <el-row class="investjust-row" type="flex" justify="center" >
           <el-col :span="$store.state.ismobile?20:16">
             <mu-paper :z-depth="1" :round="true">
               <mu-list>
@@ -129,7 +129,7 @@
                     <mu-list-item-title>EOS 余额:</mu-list-item-title>
                   </mu-list-item-content>
                   <mu-list-item-action>
-                    <mu-list-item-text>100.0012 EOS</mu-list-item-text>
+                    <mu-list-item-sub-title>{{myEosAmount}}</mu-list-item-sub-title>
                   </mu-list-item-action>
                 </mu-list-item>
                 <mu-list-item button>
@@ -137,7 +137,7 @@
                     <mu-list-item-title>JUST 余额:</mu-list-item-title>
                   </mu-list-item-content>
                   <mu-list-item-action>
-                    <mu-list-item-text>33232</mu-list-item-text>
+                    <mu-list-item-sub-title>{{myJustAmount}}</mu-list-item-sub-title>
                   </mu-list-item-action>
                 </mu-list-item>
               </mu-list>
@@ -171,25 +171,206 @@
 </template>
 
 <script>
+
+  import timeout from 'timeout';
+  import Big from 'big.js';
+
   export default {
     name: 'InvestJust',
     data() {
       return {
         chosecss: true,
-        buyjustprice: "0.0168",
-        selljustprice: "0.0168",
+        timerLoop:true,
+        bancorcontract:"eosjustioexe",
+        justtokencontract:"eosjusttoken",
+        eoscontract:"eosio.token",
+        justSymbolName:"JUST",
+        justPrice: "0.0000 EOS/JUST",
+        justSupply: "0.0000",
+        justMaxSupply: "0.0000",
+        justTurnover: "0.0000",
+        eosRest: "0.0000",
+        justRest: "0.0000",
+        myEosAmount: "0.0000",
+        myJustAmount: "0.0000",
+        mayBuyAmount:"0.0000 JUST",
+        maySellAmount:"0.0000 EOS",
+        inputBuyAmount:"0.0000",
+        inputSellAmount:"0.0000",
       }
     },
     created() {
-
+      this.timerLoop=true;
+    },
+    mounted() {
+      var that = this;
+      that.timerLoop=true;
+      timeout.timeout(3000, function () {
+        that.requestMyEosAmount();
+        that.requestMyJustAmount();
+        that.requestMarketInfo();
+        that.requestSupplyInfo();
+        return that.timerLoop;
+      });
+    },
+    destroyed: function () {
+      this.timerLoop=false;
     },
     methods: {
       btnBuyJust() {
-
+        var eossdkutil = window.eossdkutil;
+        var that = this;
+        eossdkutil.pushEosAction({
+          actions: [
+            {
+              account: that.eoscontract,
+              name: "transfer",
+              authorization: [
+                {
+                  actor: that.$store.state.eosUserName,
+                  permission: "active",
+                }
+              ],
+              data: {
+                from:that.$store.state.eosUserName,
+                to:that.bancorcontract,
+                quantity:that.inputBuyAmount+" EOS",
+                memo:""
+              }
+            }
+          ]
+        }).then(function (result) {
+          that.$message("操作成功");
+        }).catch(function (error) {
+          that.$message("操作失败");
+        });
       },
       btnSellJust() {
+        var eossdkutil = window.eossdkutil;
+        var that = this;
+        eossdkutil.pushEosAction({
+          actions: [
+            {
+              account: that.justtokencontract,
+              name: "transfer",
+              authorization: [
+                {
+                  actor: that.$store.state.eosUserName,
+                  permission: "active",
+                }
+              ],
+              data: {
+                from:that.$store.state.eosUserName,
+                to:that.bancorcontract,
+                quantity:that.inputSellAmount+" JUST",
+                memo:""
+              }
+            }
+          ]
+        }).then(function (result) {
+          that.$message("操作成功");
+        }).catch(function (error) {
+          that.$message("操作失败");
+        });
+      },
+      requestMyEosAmount() {
+        var that = this;
+        var eossdkutil = window.eossdkutil;
+        eossdkutil.getEosTableRows(
+          {
+            json: true,
+            code: that.eoscontract,
+            scope: that.$store.state.eosUserName,
+            table: 'accounts',
+            limit: 20
+          }
+        ).then(function (result) {
+          var rows = result.data.rows;
+          var len = rows.length;
+          var inx = len - 1;
+          var accounts = rows[inx];
+          that.myEosAmount=accounts.balance;
+        }).catch(function (error) {
 
-      }
+        });
+      },
+      requestMyJustAmount() {
+        var that = this;
+        var eossdkutil = window.eossdkutil;
+        eossdkutil.getEosTableRows(
+          {
+            json: true,
+            code: that.justtokencontract,
+            scope: that.$store.state.eosUserName,
+            table: 'accounts',
+            limit: 20
+          }
+        ).then(function (result) {
+          var rows = result.data.rows;
+          var len = rows.length;
+          var inx = len - 1;
+          var accounts = rows[inx];
+          that.myJustAmount=accounts.balance;
+        }).catch(function (error) {
+
+        });
+      },
+      requestMarketInfo() {
+        var that = this;
+        var eossdkutil = window.eossdkutil;
+        eossdkutil.getEosTableRows(
+          {
+            json: true,
+            code: that.bancorcontract,
+            scope: that.bancorcontract,
+            table: 'tokenmarket',
+            limit: 20
+          }
+        ).then(function (result) {
+          var rows = result.data.rows;
+          var len = rows.length;
+          var inx = len - 1;
+          var marketinfo = rows[inx];
+
+          if(marketinfo.quote){
+            var eosRestAsset=marketinfo.quote.balance;
+            var assetAry=eosRestAsset.split(" ");
+            that.eosRest=assetAry[0];
+          }
+          if(marketinfo.base){
+            var justRestAsset=marketinfo.base.balance;
+            var assetAry=justRestAsset.split(" ");
+            that.justRest=assetAry[0];
+          }
+          if(that.eosRest&&that.justRest){
+            that.justPrice=that.eosRest/that.justRest;
+          }
+        }).catch(function (error) {
+
+        });
+      },
+      requestSupplyInfo() {
+        var that = this;
+        var eossdkutil = window.eossdkutil;
+        eossdkutil.getEosTableRows(
+          {
+            json: true,
+            code: that.justtokencontract,
+            scope: that.justSymbolName,
+            table: 'stat',
+            limit: 20
+          }
+        ).then(function (result) {
+          var rows = result.data.rows;
+          var len = rows.length;
+          var inx = len - 1;
+          var statinfo=rows[inx];
+          that.justMaxSupply=statinfo.max_supply;
+          that.justSupply=statinfo.supply;
+        }).catch(function (error) {
+
+        });
+      },
     }
   }
 </script>
@@ -211,7 +392,7 @@
 
   .investjust-bg {
     /*background-image: url("../assets/just-invest-bg.jpg");*/
-    background-image: linear-gradient(300deg, #212121, #4a148c);
+    background-image: linear-gradient(300deg,#4a148c,#212121);
     background-repeat: no-repeat;
     background-position: center top;
     background-size: 100% auto;

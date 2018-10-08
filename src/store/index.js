@@ -12,6 +12,7 @@ export default new vuex.Store({
       'bpNodeUrl',
       'lang',
       'langImgUrl',
+      'myEostreesCache',
     ]
   })],
   state: {
@@ -23,7 +24,8 @@ export default new vuex.Store({
     rpsContractAccount: 'justgamemora',
     eosUserName: null,
     eosUserAuth: 'active',
-    ismobile:false
+    ismobile:false,
+    myEostreesCache:[],
   },
   mutations: {
     changeEosUserName(state, userName) {
@@ -48,6 +50,9 @@ export default new vuex.Store({
     },
     changeIsMobile(state,ismobile){
       state.ismobile=ismobile;
+    },
+    changeMyEosTree(state,trees){
+      state.myEostreesCache=trees;
     }
   }
 })
