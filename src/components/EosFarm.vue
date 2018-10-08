@@ -952,16 +952,16 @@
         var that=this;
         that.myplayerinfo.tree_amount=val.tree_amount;
         that.myplayerinfo.income_inx=val.income_inx;
-        that.myplayerinfo.income_tree=val.income_tree;
-        that.myplayerinfo.income_tree_with=val.income_tree_with;
-        that.myplayerinfo.income_airdrop=val.income_airdrop;
-        that.myplayerinfo.income_airdrop_with=val.income_airdrop_with;
-        that.myplayerinfo.income_invited=val.income_invited;
-        that.myplayerinfo.income_invited_with=val.income_invited_with;
-        that.myplayerinfo.income_award=val.income_award;
-        that.myplayerinfo.income_award_with=val.income_award_with;
-        that.myplayerinfo.income_share=val.income_share;
-        that.myplayerinfo.income_share_with=val.income_share_with;
+        that.myplayerinfo.income_tree=Big(val.income_tree).div(10000).toFixed(4) + " EOS";
+        that.myplayerinfo.income_tree_with=Big(val.income_tree_with).div(10000).toFixed(4) + " EOS";
+        that.myplayerinfo.income_airdrop=Big(val.income_airdrop).div(10000).toFixed(4) + " EOS";
+        that.myplayerinfo.income_airdrop_with=Big(val.income_airdrop_with).div(10000).toFixed(4) + " EOS";
+        that.myplayerinfo.income_invited=Big(val.income_invited).div(10000).toFixed(4) + " EOS";
+        that.myplayerinfo.income_invited_with=Big(val.income_invited_with).div(10000).toFixed(4) + " EOS";
+        that.myplayerinfo.income_award=Big(val.income_award).div(10000).toFixed(4) + " EOS";
+        that.myplayerinfo.income_award_with=Big(val.income_award_with).div(10000).toFixed(4) + " EOS";
+        that.myplayerinfo.income_share=Big(val.income_share).div(10000).toFixed(4) + " EOS";
+        that.myplayerinfo.income_share_with=Big(val.income_share_with).div(10000).toFixed(4) + " EOS";
       }
     }
   }
