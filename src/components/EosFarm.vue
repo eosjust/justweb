@@ -57,12 +57,12 @@
       </el-col>
       <el-col :xs="22" :sm="18" :md="14" :lg="12" :xl="12" style="background-color: #f5f5f5;border-radius: 5px;">
         <mu-tabs :value.sync="tab1active" color="#009688" style="border-radius: 5px 5px 0px 0px;" center>
-          <mu-tab>买树苗</mu-tab>
-          <mu-tab>邀请奖励</mu-tab>
+          <!--<mu-tab>买树苗</mu-tab>-->
           <mu-tab>游戏数据</mu-tab>
+          <mu-tab>邀请奖励</mu-tab>
           <mu-tab>玩法说明</mu-tab>
         </mu-tabs>
-        <div class="demo-text" v-if="tab1active === 0" style="padding: 20px;">
+        <div class="demo-text" v-show="false" style="padding: 20px;">
           <el-row type="flex" justify="center" align="middle">
             <el-col :span="20">
               <el-input placeholder="请输入购买数量" v-model="buyeos">
@@ -91,34 +91,48 @@
               </mu-button>
             </el-col>
           </el-row>
+        </div>
 
-        </div>
-        <div class="demo-text" v-if="tab1active === 1">
-          hehe
-        </div>
-        <div class="demo-text" v-if="tab1active === 2">
+        <div class="demo-text" v-if="tab1active === 0">
           <mu-button @click="btnChkMyTree">fresh</mu-button>
           <mu-button @click="btnChkAllTree">fresh</mu-button>
           <mu-divider style="margin: 10px;"></mu-divider>
           <el-row>
             <el-col :span="12">
-              <div>我的树苗: 12333225</div>
-              <div>我的成本: 1003.1324</div>
-              <div>可摘柚子:1003.1324</div>
-              <div>邀请佣金:1233.0321</div>
-              <div>累积收益:1233.0321</div>
+              <div>我的EOS: {{myEosAmount}}</div>
+              <div>我的JUST: {{myJustAmount}}</div>
+              <div>我的树苗: {{myplayerinfo.tree_amount}}</div>
+              <div>我的成本: </div>
+              <div>收益同步: {{myplayerinfo.income_inx}}</div>
+              <div>树苗收益: {{myplayerinfo.income_tree}}</div>
+              <div>树苗已提现: {{myplayerinfo.income_tree_with}}</div>
+              <div>空投收益: {{myplayerinfo.income_airdrop}}</div>
+              <div>空投已提现: {{myplayerinfo.income_airdrop_with}}</div>
+              <div>邀请奖励: {{myplayerinfo.income_invited}}</div>
+              <div>邀请已提现: {{myplayerinfo.income_invited_with}}</div>
+              <div>最终大奖: {{myplayerinfo.income_award}}</div>
+              <div>最终大奖已提现: {{myplayerinfo.income_award_with}}</div>
+              <div>股东收益: {{myplayerinfo.income_share}}</div>
+              <div>股东收益提现: {{myplayerinfo.income_share_with}}</div>
             </el-col>
             <el-col :span="12">
-              <div>全部树苗:50000000</div>
-              <div>总金额:702343.9012</div>
-              <div>空投池:1000.0123</div>
-              <div>空投概率:10%</div>
-              <div>最终大奖:1500.0143</div>
+              <div>全部树苗:{{mygameinfo.supply}}</div>
+              <div>已开垦:{{mygameinfo.tree_id}}</div>
+              <div>总金额:{{mygameinfo.total_pool}}</div>
+              <div>最后赢家:{{mygameinfo.last_one}}</div>
+              <div>下轮股东:{{mygameinfo.share_user}}</div>
+              <div>空投池:{{mygameinfo.airdrop_pool}}</div>
+              <div>最终大奖:{{mygameinfo.last_reward_pool}}</div>
+              <div>开发分成:{{mygameinfo.dev_pool}}</div>
+              <div>分红累积:{{mygameinfo.dividend_pool}}</div>
             </el-col>
           </el-row>
           <div></div>
         </div>
-        <div class="demo-text" v-if="tab1active === 3">
+        <div class="demo-text" v-if="tab1active === 1">
+          hehe
+        </div>
+        <div class="demo-text" v-if="tab1active === 2">
           hehe
         </div>
       </el-col>
@@ -238,6 +252,8 @@
         //tab
         //const info
         farmcontract: "eosjustaward",
+        eostokencontract: "eosio.token",
+        justtokencontract:"eosjusttoken",
         LIFE_ALIVE: 20,
         LIFE_SICK: 18,
         LIFE_DEAD: 16,
@@ -268,6 +284,9 @@
         //display info tab gamestate
         mygameinfo: new Object(),
         //display info tab rcentbuy
+        myplayerinfo:new Object(),
+        myEosAmount:"",
+        myJustAmount:"",
 
       }
     },
@@ -300,6 +319,8 @@
         that.requestPlayerInfo();
         that.requestEosTreeInfo();
         that.requestAllEosTreeInfo();
+        that.requestMyEosAmount();
+        that.requestMyJustAmount();
         return that.timerLoop;
       });
       that.requestGameInfo();
@@ -439,8 +460,8 @@
         eossdkutil.pushEosAction({
           actions: [
             {
-              account: that.farmcontract,
-              name: "buytree",
+              account: that.eostokencontract,
+              name: "transfer",
               authorization: [
                 {
                   actor: that.$store.state.eosUserName,
@@ -448,10 +469,10 @@
                 }
               ],
               data: {
-                user: that.$store.state.eosUserName,
+                from: that.$store.state.eosUserName,
+                to:that.farmcontract,
                 quantity: Big(that.buyeos).toFixed(4) + " EOS",
-                pos:that.selecttree.pos,
-                inviter: "justtest2222"
+                memo:"buytree:"+that.selecttree.pos+";"+"justtest2222",
               }
             }
           ]
@@ -675,9 +696,10 @@
           {
             json: true,
             code: that.farmcontract,
-            scope: that.$store.state.eosUserName,
+            scope: that.farmcontract,
+            lower_bound:that.$store.state.eosUserName,
             table: 'playerinfo',
-            limit: 20
+            limit: 1
           }
         ).then(function (result) {
           var rows = result.data.rows;
@@ -721,6 +743,48 @@
         ).then(function (result) {
           var rows = result.data.rows;
           that.alleostrees = rows;
+        }).catch(function (error) {
+
+        });
+      },
+      requestMyEosAmount() {
+        var that = this;
+        var eossdkutil = window.eossdkutil;
+        eossdkutil.getEosTableRows(
+          {
+            json: true,
+            code: that.eostokencontract,
+            scope: that.$store.state.eosUserName,
+            table: 'accounts',
+            limit: 20
+          }
+        ).then(function (result) {
+          var rows = result.data.rows;
+          var len = rows.length;
+          var inx = len - 1;
+          var accounts = rows[inx];
+          that.myEosAmount=accounts.balance;
+        }).catch(function (error) {
+
+        });
+      },
+      requestMyJustAmount() {
+        var that = this;
+        var eossdkutil = window.eossdkutil;
+        eossdkutil.getEosTableRows(
+          {
+            json: true,
+            code: that.justtokencontract,
+            scope: that.$store.state.eosUserName,
+            table: 'accounts',
+            limit: 20
+          }
+        ).then(function (result) {
+          var rows = result.data.rows;
+          var len = rows.length;
+          var inx = len - 1;
+          var accounts = rows[inx];
+          that.myJustAmount=accounts.balance;
         }).catch(function (error) {
 
         });
@@ -843,12 +907,31 @@
       gameinfo: function (val) {
         var that = this;
         that.totaleos = Big(val.total_pool).div(10000).toFixed(4) + " EOS";
+        that.mygameinfo.tree_id=val.tree_id;
         that.mygameinfo.end_time=val.end_time;
         that.mygameinfo.last_one = val.last_one;
+        that.mygameinfo.share_user=val.share_user;
         that.mygameinfo.supply = val.supply + " trees";
         that.mygameinfo.airdrop_pool = Big(val.airdrop_pool).div(10000).toFixed(4) + " EOS";
         that.mygameinfo.last_reward_pool = Big(val.last_reward_pool).div(10000).toFixed(4) + " EOS";
+        that.mygameinfo.total_pool = Big(val.total_pool).div(10000).toFixed(4) + " EOS";
+        that.mygameinfo.dev_pool = Big(val.dev_pool).div(10000).toFixed(4) + " EOS";
+        that.mygameinfo.dividend_pool = Big(val.dividend_pool).div(10000).toFixed(4) + " EOS";
         that.mygameinfo.game_state=val.game_state;
+      },playerinfo:function (val) {
+        var that=this;
+        that.myplayerinfo.tree_amount=val.tree_amount;
+        that.myplayerinfo.income_inx=val.income_inx;
+        that.myplayerinfo.income_tree=val.income_tree;
+        that.myplayerinfo.income_tree_with=val.income_tree_with;
+        that.myplayerinfo.income_airdrop=val.income_airdrop;
+        that.myplayerinfo.income_airdrop_with=val.income_airdrop_with;
+        that.myplayerinfo.income_invited=val.income_invited;
+        that.myplayerinfo.income_invited_with=val.income_invited_with;
+        that.myplayerinfo.income_award=val.income_award;
+        that.myplayerinfo.income_award_with=val.income_award_with;
+        that.myplayerinfo.income_share=val.income_share;
+        that.myplayerinfo.income_share_with=val.income_share_with;
       }
     }
   }

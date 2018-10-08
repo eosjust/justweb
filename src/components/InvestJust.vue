@@ -183,7 +183,7 @@
         timerLoop:true,
         bancorcontract:"eosjustioexe",
         justtokencontract:"eosjusttoken",
-        eoscontract:"eosio.token",
+        eostokencontract:"eosio.token",
         justSymbolName:"JUST",
         justPrice: "0.0000 EOS/JUST",
         justSupply: "0.0000",
@@ -223,7 +223,7 @@
         eossdkutil.pushEosAction({
           actions: [
             {
-              account: that.eoscontract,
+              account: that.eostokencontract,
               name: "transfer",
               authorization: [
                 {
@@ -279,7 +279,7 @@
         eossdkutil.getEosTableRows(
           {
             json: true,
-            code: that.eoscontract,
+            code: that.eostokencontract,
             scope: that.$store.state.eosUserName,
             table: 'accounts',
             limit: 20
