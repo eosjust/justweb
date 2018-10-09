@@ -61,7 +61,8 @@
       },
       getLandTip(title,value){
         // {{$t('myland.trees')+":"}}{{eostree.tree_amount}}
-        if(value&&value>0){
+
+        if(value){
           return title+":"+value;
         }else{
           return "";

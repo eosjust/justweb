@@ -96,7 +96,7 @@
         <div class="demo-text" v-if="tab1active === 0">
           <mu-button @click="btnChkMyTree">更新收益</mu-button>
           <mu-button @click="btnWithdrawAward">提现奖励</mu-button>
-          <mu-button @click="btnWithdrawTree(1)">提现柚子</mu-button>
+          <mu-button @click="btnWithDrawTree(1)">提现柚子</mu-button>
           <mu-divider style="margin: 10px;"></mu-divider>
           <el-row>
             <el-col :span="12">
@@ -297,15 +297,17 @@
       if(cacheEosTree&&cacheEosTree.length>0){
         this.myeostrees=cacheEosTree;
       }
+
     },
     mounted() {
       var that = this;
       that.timerLoop=true;
+      console.log(that.$route.query.name);
       timeout.timeout(1000, function () {
         if(that.mygameinfo&&that.mygameinfo.game_state==that.GAME_START){
           let delta = that.mygameinfo.end_time - Date.parse(new Date()) / 1000;
           that.countdown = that.formatSeconds(delta);
-          console.log(delta);
+
         }else if(that.mygameinfo.game_state==that.GAME_END){
           that.countdown = that.formatSeconds(0);
         }else{
@@ -605,13 +607,17 @@
       btnWithDrawTree(all) {
         var eossdkutil = window.eossdkutil;
         var that = this;
-        if(!that.selecttree){
-          this.$message("请选择操作的位置");
-          return;
-        }
-        if(that.selecttree.id<0){
-          this.$message("此位置不可操作");
-          return;
+        var selectId=0;
+        if(all==0){
+          if(!that.selecttree){
+            this.$message("请选择操作的位置");
+            return;
+          }
+          if(that.selecttree.id<0){
+            this.$message("此位置不可操作");
+            return;
+          }
+          selectId=that.selecttree.id;
         }
         eossdkutil.pushEosAction({
           actions: [
@@ -625,7 +631,7 @@
                 }
               ],
               data: {
-                treeid: that.selecttree.id,
+                treeid: selectId,
                 all: all,
                 user: that.$store.state.eosUserName
               }
@@ -912,7 +918,7 @@
       },
       calEosTreeShow(eostree) {
         eostree.eos_amount_show = (eostree.eos_amount / 10000).toFixed(4);
-        eostree.income_show = (eostree.income / 10000).toFixed(4);
+        eostree.income_show = ((eostree.income-eostree.has_withdraw) / 10000).toFixed(4);
         eostree.has_withdraw_show = (eostree.has_withdraw / 10000).toFixed(4);
         var end_time_show = "";
         var end_time = eostree.end_time;
