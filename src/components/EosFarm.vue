@@ -75,15 +75,15 @@
                   <mu-list-item-action>
                     <icon name="tree3" scale="3"></icon>
                   </mu-list-item-action>
-                  <mu-list-item-title>树苗数量:{{myplayerinfo.tree_amount}}</mu-list-item-title>
+                  <mu-list-item-sub-title>树苗数量:{{myplayerinfo.tree_amount}}</mu-list-item-sub-title>
                 </mu-list-item>
                 <mu-list-item button>
                   <mu-list-item-action>
                     <icon name="wallet" scale="3"></icon>
                   </mu-list-item-action>
                   <mu-list-item-content>
-                    <mu-list-item-title>可提现:{{myplayerinfo.income_tree}}</mu-list-item-title>
-                    <mu-list-item-sub-title>已提现:{{myplayerinfo.income_tree}}</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>可提现:{{myplayerinfo.income_total}}</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>已提现:{{myplayerinfo.income_total_with}}</mu-list-item-sub-title>
                   </mu-list-item-content>
                 </mu-list-item>
                 <mu-list-item button :ripple="false" nested :open="infoDetailOpen === 'player_detail'"
@@ -94,28 +94,32 @@
                   </mu-list-item-action>
                   <mu-list-item button :ripple="false" slot="nested">
                     <mu-list-item-content>
-                      <mu-list-item-title>树苗可提:{{myplayerinfo.income_tree}}</mu-list-item-title>
-                      <mu-list-item-sub-title>树苗已提:{{myplayerinfo.income_tree}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>EOS余额:{{myEosAmount}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>JUST余额:{{myJustAmount}}</mu-list-item-sub-title>
                     </mu-list-item-content>
                     <mu-list-item-content>
-                      <mu-list-item-title>邀请可提:{{myplayerinfo.income_tree}}</mu-list-item-title>
-                      <mu-list-item-sub-title>邀请已提:{{myplayerinfo.income_tree}}</mu-list-item-sub-title>
-                    </mu-list-item-content>
-                  </mu-list-item>
-                  <mu-list-item button :ripple="false" slot="nested">
-                    <mu-list-item-content>
-                      <mu-list-item-title>股东可提:{{myplayerinfo.income_tree}}</mu-list-item-title>
-                      <mu-list-item-sub-title>股东已提:{{myplayerinfo.income_tree}}</mu-list-item-sub-title>
-                    </mu-list-item-content>
-                    <mu-list-item-content>
-                      <mu-list-item-title>最终大奖:{{myplayerinfo.income_tree}}</mu-list-item-title>
-                      <mu-list-item-sub-title>大奖已提:{{myplayerinfo.income_tree}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>树苗可提:{{myplayerinfo.income_tree}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>树苗已提:{{myplayerinfo.income_tree_with}}</mu-list-item-sub-title>
                     </mu-list-item-content>
                   </mu-list-item>
                   <mu-list-item button :ripple="false" slot="nested">
                     <mu-list-item-content>
-                      <mu-list-item-title>空投可提:{{myplayerinfo.income_tree}}</mu-list-item-title>
-                      <mu-list-item-sub-title>空投已提:{{myplayerinfo.income_tree}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>空投可提:{{myplayerinfo.income_airdrop}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>空投已提:{{myplayerinfo.income_airdrop_with}}</mu-list-item-sub-title>
+                    </mu-list-item-content>
+                    <mu-list-item-content>
+                      <mu-list-item-sub-title>邀请可提:{{myplayerinfo.income_invited}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>邀请已提:{{myplayerinfo.income_invited_with}}</mu-list-item-sub-title>
+                    </mu-list-item-content>
+                  </mu-list-item>
+                  <mu-list-item button :ripple="false" slot="nested">
+                    <mu-list-item-content>
+                      <mu-list-item-sub-title>股东可提:{{myplayerinfo.income_share}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>股东已提:{{myplayerinfo.income_share_with}}</mu-list-item-sub-title>
+                    </mu-list-item-content>
+                    <mu-list-item-content>
+                      <mu-list-item-sub-title>最终大奖:{{myplayerinfo.income_award}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>大奖已提:{{myplayerinfo.income_award_with}}</mu-list-item-sub-title>
                     </mu-list-item-content>
                   </mu-list-item>
                 </mu-list-item>
@@ -127,31 +131,31 @@
                   <mu-list-item-action>
                     <icon name="tree3" scale="3"></icon>
                   </mu-list-item-action>
-                  <mu-list-item-title>树苗数量:{{mygameinfo.supply}}</mu-list-item-title>
+                  <mu-list-item-sub-title>树苗数量:{{mygameinfo.supply}}</mu-list-item-sub-title>
                 </mu-list-item>
                 <mu-list-item button>
                   <mu-list-item-action>
                     <icon name="airdrop" scale="3"></icon>
                   </mu-list-item-action>
-                  <mu-list-item-title>空投奖池:{{mygameinfo.airdrop_pool}}</mu-list-item-title>
+                  <mu-list-item-sub-title>空投奖池:{{mygameinfo.airdrop_pool}}</mu-list-item-sub-title>
                 </mu-list-item>
                 <mu-list-item button>
                   <mu-list-item-action>
                     <icon name="gift" scale="3"></icon>
                   </mu-list-item-action>
-                  <mu-list-item-title>最终奖池:{{mygameinfo.last_reward_pool}}</mu-list-item-title>
+                  <mu-list-item-sub-title>最终奖池:{{mygameinfo.last_reward_pool}}</mu-list-item-sub-title>
                 </mu-list-item>
                 <mu-list-item button>
                   <mu-list-item-action>
                     <icon name="vip" scale="3"></icon>
                   </mu-list-item-action>
-                  <mu-list-item-title>最终赢家:{{mygameinfo.last_one}}</mu-list-item-title>
+                  <mu-list-item-sub-title>最终赢家:{{mygameinfo.last_one}}</mu-list-item-sub-title>
                 </mu-list-item>
                 <mu-list-item button>
                   <mu-list-item-action>
                     <icon name="bglass" scale="3"></icon>
                   </mu-list-item-action>
-                  <mu-list-item-title>下轮股东:{{mygameinfo.share_user}}</mu-list-item-title>
+                  <mu-list-item-sub-title>下轮股东:{{mygameinfo.share_user}}</mu-list-item-sub-title>
                 </mu-list-item>
                 <mu-list-item button :ripple="false" nested :open="infoDetailOpen === 'game_detail'"
                               @toggle-nested="infoDetailOpen = arguments[0] ? 'game_detail' : ''">
@@ -160,13 +164,13 @@
                     <mu-icon class="toggle-icon" size="24" value="keyboard_arrow_down"></mu-icon>
                   </mu-list-item-action>
                   <mu-list-item button :ripple="false" slot="nested">
-                    <mu-list-item-title>树苗收益:</mu-list-item-title>
+                    <mu-list-item-sub-title>树苗收益:</mu-list-item-sub-title>
                   </mu-list-item>
                   <mu-list-item button :ripple="false" slot="nested">
-                    <mu-list-item-title>List Item 2</mu-list-item-title>
+                    <mu-list-item-sub-title>List Item 2</mu-list-item-sub-title>
                   </mu-list-item>
                   <mu-list-item button :ripple="false" slot="nested">
-                    <mu-list-item-title>List Item 3</mu-list-item-title>
+                    <mu-list-item-sub-title>List Item 3</mu-list-item-sub-title>
                   </mu-list-item>
                 </mu-list-item>
               </mu-list>
@@ -250,7 +254,7 @@
                     <img style="width: 100%;height: auto;" src="../assets/a_buydrug.png"/>
                   </mu-avatar>
                 </mu-list-item-action>
-                <mu-list-item-title>watering</mu-list-item-title>
+                <mu-list-item-sub-title>watering</mu-list-item-sub-title>
               </mu-list-item>
               <mu-list-item button @click="btnDeleteTree">
                 <mu-list-item-action>
@@ -258,7 +262,7 @@
                     <img style="width: 100%;height: auto;" src="../assets/a_remove.png"/>
                   </mu-avatar>
                 </mu-list-item-action>
-                <mu-list-item-title>remove</mu-list-item-title>
+                <mu-list-item-sub-title>remove</mu-list-item-sub-title>
               </mu-list-item>
               <mu-list-item button @click="btnWithDrawTree(0)">
                 <mu-list-item-action>
@@ -266,7 +270,7 @@
                     <img style="width: 100%;height: auto;" src="../assets/a_withdraw.png"/>
                   </mu-avatar>
                 </mu-list-item-action>
-                <mu-list-item-title>withdraw</mu-list-item-title>
+                <mu-list-item-sub-title>withdraw</mu-list-item-sub-title>
               </mu-list-item>
             </mu-list>
           </mu-bottom-sheet>
@@ -1066,16 +1070,23 @@
         var that = this;
         that.myplayerinfo.tree_amount = val.tree_amount;
         that.myplayerinfo.income_inx = val.income_inx;
-        that.myplayerinfo.income_tree = Big(val.income_tree).div(10000).toFixed(4) + " EOS";
-        that.myplayerinfo.income_tree_with = Big(val.income_tree_with).div(10000).toFixed(4) + " EOS";
-        that.myplayerinfo.income_airdrop = Big(val.income_airdrop).div(10000).toFixed(4) + " EOS";
-        that.myplayerinfo.income_airdrop_with = Big(val.income_airdrop_with).div(10000).toFixed(4) + " EOS";
-        that.myplayerinfo.income_invited = Big(val.income_invited).div(10000).toFixed(4) + " EOS";
-        that.myplayerinfo.income_invited_with = Big(val.income_invited_with).div(10000).toFixed(4) + " EOS";
-        that.myplayerinfo.income_award = Big(val.income_award).div(10000).toFixed(4) + " EOS";
-        that.myplayerinfo.income_award_with = Big(val.income_award_with).div(10000).toFixed(4) + " EOS";
-        that.myplayerinfo.income_share = Big(val.income_share).div(10000).toFixed(4) + " EOS";
-        that.myplayerinfo.income_share_with = Big(val.income_share_with).div(10000).toFixed(4) + " EOS";
+        that.myplayerinfo.income_tree = Big(val.income_tree-val.income_tree_with).div(10000).toFixed(4);
+        that.myplayerinfo.income_tree_with = Big(val.income_tree_with).div(10000).toFixed(4);
+        that.myplayerinfo.income_airdrop = Big(val.income_airdrop-val.income_airdrop_with).div(10000).toFixed(4);
+        that.myplayerinfo.income_airdrop_with = Big(val.income_airdrop_with).div(10000).toFixed(4);
+        that.myplayerinfo.income_invited = Big(val.income_invited-val.income_invited_with).div(10000).toFixed(4);
+        that.myplayerinfo.income_invited_with = Big(val.income_invited_with).div(10000).toFixed(4);
+        that.myplayerinfo.income_award = Big(val.income_award-val.income_award_with).div(10000).toFixed(4);
+        that.myplayerinfo.income_award_with = Big(val.income_award_with).div(10000).toFixed(4);
+        that.myplayerinfo.income_share = Big(val.income_share-val.income_share_with).div(10000).toFixed(4);
+        that.myplayerinfo.income_share_with = Big(val.income_share_with).div(10000).toFixed(4);
+        //
+        that.myplayerinfo.income_total_1=Big(val.income_tree).add(val.income_airdrop)
+          .add(val.income_invited).add(val.income_award).add(val.income_share).div(10000);
+        that.myplayerinfo.income_total_2=Big(val.income_tree_with).add(val.income_airdrop_with)
+          .add(val.income_invited_with).add(val.income_award_with).add(val.income_share_with).div(10000);
+        that.myplayerinfo.income_total=that.myplayerinfo.income_total_1.minus(that.myplayerinfo.income_total_2).toFixed(4);
+        that.myplayerinfo.income_total_with=that.myplayerinfo.income_total_2.toFixed(4);
       }
     }
   }
