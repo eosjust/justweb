@@ -55,7 +55,6 @@
       </el-col>
       <el-col :span="8"></el-col>
     </el-row>
-
     <el-row type="flex" justify="center" align="middle"
             style="margin-top: 50px;margin-bottom: 50px;padding-left: 5%;padding-right: 5%;">
       <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="6">
@@ -67,7 +66,6 @@
           <mu-tab>统计信息</mu-tab>
           <mu-tab>玩法说明</mu-tab>
         </mu-tabs>
-
         <div class="demo-text" v-if="tab1active === 0">
           <el-row>
             <el-col :span="24">
