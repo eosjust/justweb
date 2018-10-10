@@ -17,18 +17,25 @@
       <el-col :span="8"></el-col>
     </el-row>
     <el-row type="flex" justify="center" align="middle">
-      <el-col :span="6"></el-col>
-      <el-col :span="12" justify="center" align="middle">
-        <el-progress :text-inside="true" :stroke-width="18" :percentage="24" status="success"></el-progress>
+      <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="7">
       </el-col>
-      <el-col :span="6"></el-col>
+      <el-col :xs="22" :sm="18" :md="14" :lg="12" :xl="10">
+        <el-progress :text-inside="true" :color="airdropcolor" :stroke-width="18" :percentage="airdropperc" status="success"></el-progress>
+      </el-col>
+      <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="7">
+      </el-col>
     </el-row>
     <el-row type="flex" justify="center" align="middle">
-      <el-col :span="6"></el-col>
-      <el-col :span="12" justify="center" align="middle">
-        <div class="p3d-green farm-title2-size">距离下一次空投</div>
+      <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="7">
       </el-col>
-      <el-col :span="6"></el-col>
+      <el-col :xs="11" :sm="9" :md="7" :lg="6" :xl="5">
+        <div class="p3d-green farm-title2-size" >{{needairdrop}}EOS</div>
+      </el-col>
+      <el-col :xs="11" :sm="9" :md="7" :lg="6" :xl="5">
+        <div class="p3d-green farm-title2-size" style="text-align: right">{{mayairdrop_min}}~{{mayairdrop_max}}EOS</div>
+      </el-col>
+      <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="7">
+      </el-col>
     </el-row>
 
 
@@ -51,59 +58,144 @@
       <el-col :span="8"></el-col>
     </el-row>
 
-    <el-row type="flex" justify="center" align="middle" style="margin-top: 50px;margin-bottom: 50px;padding-left: 5%;padding-right: 5%;">
+    <el-row type="flex" justify="center" align="middle"
+            style="margin-top: 50px;margin-bottom: 50px;padding-left: 5%;padding-right: 5%;">
       <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="6">
         <div>&nbsp;</div>
       </el-col>
       <el-col :xs="22" :sm="18" :md="14" :lg="12" :xl="12" style="background-color: #f5f5f5;border-radius: 5px;">
         <mu-tabs :value.sync="tab1active" color="#009688" style="border-radius: 5px 5px 0px 0px;" center>
           <!--<mu-tab>买树苗</mu-tab>-->
-          <mu-tab>游戏数据</mu-tab>
-          <mu-tab>邀请奖励</mu-tab>
+          <mu-tab>统计信息</mu-tab>
           <mu-tab>玩法说明</mu-tab>
         </mu-tabs>
-        <div class="demo-text" v-show="false" style="padding: 20px;">
-          <el-row type="flex" justify="center" align="middle">
-            <el-col :span="20">
-              <el-input placeholder="请输入购买数量" v-model="buyeos">
-                <template slot="append">≈{{maybeBuyAmount}} trees</template>
-              </el-input>
-            </el-col>
-          </el-row>
-          <el-row type="flex" class="row-bg" justify="space-around" style="padding: 10px;">
-            <el-col :span="3">
-              <el-button @click="setBuyAmount(buyeos+88)" size="mini" round>88</el-button>
-            </el-col>
-            <el-col :span="3">
-              <el-button @click="setBuyAmount(buyeos+188)" size="mini" round>188</el-button>
-            </el-col>
-            <el-col :span="3">
-              <el-button @click="setBuyAmount(buyeos+588)" size="mini" round>588</el-button>
-            </el-col>
-            <el-col :span="3">
-              <el-button @click="setBuyAmount(buyeos+888)" size="mini" round>888</el-button>
-            </el-col>
-          </el-row>
-          <el-row class="top_margin" type="flex" justify="center" align="middle">
-            <el-col :span="20" justify="center" align="middle">
-              <mu-button full-width ripple color="secondary" @click="btnBuy">
-                Buy
-              </mu-button>
+
+        <div class="demo-text" v-if="tab1active === 0">
+          <el-row>
+            <el-col :span="24">
+              <mu-list toggle-nested >
+                <mu-sub-header>个人数据</mu-sub-header>
+                <mu-list-item button>
+                  <mu-list-item-action>
+                    <icon name="tree3" scale="3"></icon>
+                  </mu-list-item-action>
+                  <mu-list-item-title>树苗数量:{{myplayerinfo.tree_amount}}</mu-list-item-title>
+                </mu-list-item>
+                <mu-list-item button>
+                  <mu-list-item-action>
+                    <icon name="wallet" scale="3"></icon>
+                  </mu-list-item-action>
+                  <mu-list-item-content>
+                    <mu-list-item-title>可提现:{{myplayerinfo.income_tree}}</mu-list-item-title>
+                    <mu-list-item-sub-title>已提现:{{myplayerinfo.income_tree}}</mu-list-item-sub-title>
+                  </mu-list-item-content>
+                </mu-list-item>
+                <mu-list-item button :ripple="false" nested :open="infoDetailOpen === 'player_detail'"
+                              @toggle-nested="infoDetailOpen = arguments[0] ? 'player_detail' : ''">
+                  <mu-list-item-sub-title>详情</mu-list-item-sub-title>
+                  <mu-list-item-action>
+                    <mu-icon class="toggle-icon" size="24" value="keyboard_arrow_down"></mu-icon>
+                  </mu-list-item-action>
+                  <mu-list-item button :ripple="false" slot="nested">
+                    <mu-list-item-content>
+                      <mu-list-item-title>树苗可提:{{myplayerinfo.income_tree}}</mu-list-item-title>
+                      <mu-list-item-sub-title>树苗已提:{{myplayerinfo.income_tree}}</mu-list-item-sub-title>
+                    </mu-list-item-content>
+                    <mu-list-item-content>
+                      <mu-list-item-title>邀请可提:{{myplayerinfo.income_tree}}</mu-list-item-title>
+                      <mu-list-item-sub-title>邀请已提:{{myplayerinfo.income_tree}}</mu-list-item-sub-title>
+                    </mu-list-item-content>
+                  </mu-list-item>
+                  <mu-list-item button :ripple="false" slot="nested">
+                    <mu-list-item-content>
+                      <mu-list-item-title>股东可提:{{myplayerinfo.income_tree}}</mu-list-item-title>
+                      <mu-list-item-sub-title>股东已提:{{myplayerinfo.income_tree}}</mu-list-item-sub-title>
+                    </mu-list-item-content>
+                    <mu-list-item-content>
+                      <mu-list-item-title>最终大奖:{{myplayerinfo.income_tree}}</mu-list-item-title>
+                      <mu-list-item-sub-title>大奖已提:{{myplayerinfo.income_tree}}</mu-list-item-sub-title>
+                    </mu-list-item-content>
+                  </mu-list-item>
+                  <mu-list-item button :ripple="false" slot="nested">
+                    <mu-list-item-content>
+                      <mu-list-item-title>空投可提:{{myplayerinfo.income_tree}}</mu-list-item-title>
+                      <mu-list-item-sub-title>空投已提:{{myplayerinfo.income_tree}}</mu-list-item-sub-title>
+                    </mu-list-item-content>
+                  </mu-list-item>
+                </mu-list-item>
+              </mu-list>
+              <mu-divider></mu-divider>
+              <mu-list toggle-nested >
+                <mu-sub-header>游戏数据</mu-sub-header>
+                <mu-list-item button>
+                  <mu-list-item-action>
+                    <icon name="tree3" scale="3"></icon>
+                  </mu-list-item-action>
+                  <mu-list-item-title>树苗数量:{{mygameinfo.supply}}</mu-list-item-title>
+                </mu-list-item>
+                <mu-list-item button>
+                  <mu-list-item-action>
+                    <icon name="airdrop" scale="3"></icon>
+                  </mu-list-item-action>
+                  <mu-list-item-title>空投奖池:{{mygameinfo.airdrop_pool}}</mu-list-item-title>
+                </mu-list-item>
+                <mu-list-item button>
+                  <mu-list-item-action>
+                    <icon name="gift" scale="3"></icon>
+                  </mu-list-item-action>
+                  <mu-list-item-title>最终奖池:{{mygameinfo.last_reward_pool}}</mu-list-item-title>
+                </mu-list-item>
+                <mu-list-item button>
+                  <mu-list-item-action>
+                    <icon name="vip" scale="3"></icon>
+                  </mu-list-item-action>
+                  <mu-list-item-title>最终赢家:{{mygameinfo.last_one}}</mu-list-item-title>
+                </mu-list-item>
+                <mu-list-item button>
+                  <mu-list-item-action>
+                    <icon name="bglass" scale="3"></icon>
+                  </mu-list-item-action>
+                  <mu-list-item-title>下轮股东:{{mygameinfo.share_user}}</mu-list-item-title>
+                </mu-list-item>
+                <mu-list-item button :ripple="false" nested :open="infoDetailOpen === 'game_detail'"
+                              @toggle-nested="infoDetailOpen = arguments[0] ? 'game_detail' : ''">
+                  <mu-list-item-sub-title>详情</mu-list-item-sub-title>
+                  <mu-list-item-action>
+                    <mu-icon class="toggle-icon" size="24" value="keyboard_arrow_down"></mu-icon>
+                  </mu-list-item-action>
+                  <mu-list-item button :ripple="false" slot="nested">
+                    <mu-list-item-title>树苗收益:</mu-list-item-title>
+                  </mu-list-item>
+                  <mu-list-item button :ripple="false" slot="nested">
+                    <mu-list-item-title>List Item 2</mu-list-item-title>
+                  </mu-list-item>
+                  <mu-list-item button :ripple="false" slot="nested">
+                    <mu-list-item-title>List Item 3</mu-list-item-title>
+                  </mu-list-item>
+                </mu-list-item>
+              </mu-list>
+
             </el-col>
           </el-row>
         </div>
-
-        <div class="demo-text" v-if="tab1active === 0">
-          <mu-button @click="btnChkMyTree">更新收益</mu-button>
-          <mu-button @click="btnWithdrawAward">提现奖励</mu-button>
-          <mu-button @click="btnWithDrawTree(1)">提现柚子</mu-button>
-          <mu-divider style="margin: 10px;"></mu-divider>
+        <div class="demo-text" v-if="tab1active === 1">
+          <el-row type="flex" class="row-bg" justify="space-around">
+            <el-col :span="6">
+              <mu-button @click="btnChkMyTree">更新收益</mu-button>
+            </el-col>
+            <el-col :span="6">
+              <mu-button @click="btnWithdrawAward">提现奖励</mu-button>
+            </el-col>
+            <el-col :span="6">
+              <mu-button @click="btnWithDrawTree(1)">提现柚子</mu-button>
+            </el-col>
+          </el-row>
           <el-row>
             <el-col :span="12">
               <div>我的EOS: {{myEosAmount}}</div>
               <div>我的JUST: {{myJustAmount}}</div>
               <div>我的树苗: {{myplayerinfo.tree_amount}}</div>
-              <div>我的成本: </div>
+              <div>我的成本:</div>
               <div>收益同步: {{myplayerinfo.income_inx}}</div>
               <div>树苗收益: {{myplayerinfo.income_tree}}</div>
               <div>树苗已提现: {{myplayerinfo.income_tree_with}}</div>
@@ -129,12 +221,6 @@
             </el-col>
           </el-row>
           <div></div>
-        </div>
-        <div class="demo-text" v-if="tab1active === 1">
-          hehe
-        </div>
-        <div class="demo-text" v-if="tab1active === 2">
-          hehe
         </div>
       </el-col>
       <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="6">
@@ -248,13 +334,15 @@
       return {
         tab1active: 0,
         bottomActionOpen: false,
-        buyDialogOpen:false,
-        timerLoop:true,
+        buyDialogOpen: false,
+        timerLoop: true,
+        infoDetailOpen:'',
+        inviterName:"",
         //tab
         //const info
         farmcontract: "eosjustaward",
         eostokencontract: "eosio.token",
-        justtokencontract:"eosjusttoken",
+        justtokencontract: "eosjusttoken",
         LIFE_ALIVE: 20,
         LIFE_SICK: 18,
         LIFE_DEAD: 16,
@@ -263,11 +351,11 @@
         GAME_INIT: 2,
         GAME_START: 4,
         GAME_CHK: 6,
-        GAME_CAL: 8,
+        GAME_DEL: 8,
         GAME_END: 10,
         //input form
         buyeos: 1,
-        selecttree:null,
+        selecttree: null,
         //table info
         globalinfo: null,
         gameinfo: null,
@@ -277,6 +365,11 @@
         //display info
         countdown: null,
         totaleos: "0.0000 EOS",
+        airdropcolor:"rgba(142, 113, 199, 0.7)",
+        airdropperc:0,
+        needairdrop: "0",
+        mayairdrop_min: "0",
+        mayairdrop_max: "0",
         //display info tab buy
         maybeBuyAmount: null,
         //display info tab widthdraw
@@ -285,33 +378,39 @@
         //display info tab gamestate
         mygameinfo: new Object(),
         //display info tab rcentbuy
-        myplayerinfo:new Object(),
-        myEosAmount:"",
-        myJustAmount:"",
+        myplayerinfo: new Object(),
+        myEosAmount: "",
+        myJustAmount: "",
 
       }
     },
     created() {
-      this.timerLoop=true;
-      var cacheEosTree=this.$store.state.myEostreesCache;
-      if(cacheEosTree&&cacheEosTree.length>0){
-        this.myeostrees=cacheEosTree;
+      this.timerLoop = true;
+      var cacheEosTree = this.$store.state.myEostreesCache;
+      if (cacheEosTree && cacheEosTree.length > 0) {
+        this.myeostrees = cacheEosTree;
       }
 
     },
     mounted() {
       var that = this;
-      that.timerLoop=true;
-      console.log(that.$route.query.name);
+      that.timerLoop = true;
+      if(that.$route.query.ref){
+        that.inviterName=that.$route.query.ref;
+      }else{
+        that.inviterName="";
+      }
+      console.log("inviter:"+that.inviterName);
+
       timeout.timeout(1000, function () {
-        if(that.mygameinfo&&that.mygameinfo.game_state==that.GAME_START){
+        if (that.mygameinfo && that.mygameinfo.game_state == that.GAME_START) {
           let delta = that.mygameinfo.end_time - Date.parse(new Date()) / 1000;
           that.countdown = that.formatSeconds(delta);
 
-        }else if(that.mygameinfo.game_state==that.GAME_END){
-          that.countdown = that.formatSeconds(0);
-        }else{
+        } else if (that.mygameinfo.game_state == that.GAME_INIT) {
           that.countdown = that.formatSeconds(86400);
+        } else {
+          that.countdown = that.formatSeconds(0);
         }
         that.refreshMyEosTree();
         return that.timerLoop;
@@ -329,8 +428,8 @@
       that.requestGameInfo();
     },
     destroyed: function () {
-      this.timerLoop=false;
-      if(this.myeostrees.length>0){
+      this.timerLoop = false;
+      if (this.myeostrees.length > 0) {
         this.$store.commit('changeMyEosTree', this.myeostrees);
       }
     },
@@ -339,21 +438,21 @@
         this.bottomActionOpen = true;
       },
       closeBottomSheet() {
-        this.selecttree=null;
+        this.selecttree = null;
         this.bottomActionOpen = false;
       },
       openBuyDialog() {
         this.buyDialogOpen = true;
       },
-      closeBuyDialog(){
-        this.selecttree=null;
+      closeBuyDialog() {
+        this.selecttree = null;
         this.buyDialogOpen = false;
       },
       onMyLandClick(eostree) {
-        this.selecttree=eostree;
-        if(eostree&&eostree.id>-1){
+        this.selecttree = eostree;
+        if (eostree && eostree.id > -1) {
           this.openBotttomSheet();
-        }else{
+        } else {
           this.openBuyDialog();
         }
       },
@@ -473,9 +572,9 @@
               ],
               data: {
                 from: that.$store.state.eosUserName,
-                to:that.farmcontract,
+                to: that.farmcontract,
                 quantity: Big(that.buyeos).toFixed(4) + " EOS",
-                memo:"buytree:"+that.selecttree.pos+";"+"justtest2222",
+                memo: "buytree:" + that.selecttree.pos + ";" + that.inviterName+";",
               }
             }
           ]
@@ -495,17 +594,17 @@
           });
         });
       },
-      setBuyAmount(amount){
-        this.buyeos=amount;
+      setBuyAmount(amount) {
+        this.buyeos = amount;
       },
       btnBuyDrug() {
         var eossdkutil = window.eossdkutil;
         var that = this;
-        if(!that.selecttree){
+        if (!that.selecttree) {
           this.$message("请选择操作的位置");
           return;
         }
-        if(that.selecttree.id<0){
+        if (that.selecttree.id < 0) {
           this.$message("此位置不可操作");
           return;
         }
@@ -540,11 +639,11 @@
       btnDeleteTree() {
         var eossdkutil = window.eossdkutil;
         var that = this;
-        if(!that.selecttree){
+        if (!that.selecttree) {
           this.$message("请选择操作的位置");
           return;
         }
-        if(that.selecttree.id<0){
+        if (that.selecttree.id < 0) {
           this.$message("此位置不可操作");
           return;
         }
@@ -575,7 +674,7 @@
           that.$message("操作失败");
         });
       },
-      btnWithdrawAward(){
+      btnWithdrawAward() {
         var eossdkutil = window.eossdkutil;
         var that = this;
         eossdkutil.pushEosAction({
@@ -607,17 +706,17 @@
       btnWithDrawTree(all) {
         var eossdkutil = window.eossdkutil;
         var that = this;
-        var selectId=0;
-        if(all==0){
-          if(!that.selecttree){
+        var selectId = 0;
+        if (all == 0) {
+          if (!that.selecttree) {
             this.$message("请选择操作的位置");
             return;
           }
-          if(that.selecttree.id<0){
+          if (that.selecttree.id < 0) {
             this.$message("此位置不可操作");
             return;
           }
-          selectId=that.selecttree.id;
+          selectId = that.selecttree.id;
         }
         eossdkutil.pushEosAction({
           actions: [
@@ -690,8 +789,7 @@
                   permission: "active"
                 }
               ],
-              data: {
-              }
+              data: {}
             }
           ]
         }).then(function (result) {
@@ -733,7 +831,7 @@
             json: true,
             code: that.farmcontract,
             scope: that.farmcontract,
-            lower_bound:that.$store.state.eosUserName,
+            lower_bound: that.$store.state.eosUserName,
             table: 'playerinfo',
             limit: 1
           }
@@ -799,7 +897,7 @@
           var len = rows.length;
           var inx = len - 1;
           var accounts = rows[inx];
-          that.myEosAmount=accounts.balance;
+          that.myEosAmount = accounts.balance;
         }).catch(function (error) {
 
         });
@@ -820,7 +918,7 @@
           var len = rows.length;
           var inx = len - 1;
           var accounts = rows[inx];
-          that.myJustAmount=accounts.balance;
+          that.myJustAmount = accounts.balance;
         }).catch(function (error) {
 
         });
@@ -885,20 +983,20 @@
         return bbb;
       }, refreshMyEosTree() {
         var playerinfo = this.playerinfo;
-        var landNum=16;
-        if(playerinfo){
-          landNum=playerinfo.land_num;
+        var landNum = 16;
+        if (playerinfo) {
+          landNum = playerinfo.land_num;
         }
-        this.myeostrees.splice(0,this.myeostrees.length);
-        for(var i=0;i<landNum;i++){
-          var tmpeostree=new Object();
-          tmpeostree.id=-1;
-          tmpeostree.pos=i;
-          tmpeostree.life_ret=0;
-          tmpeostree.eos_amount_show="";
-          tmpeostree.income_show="";
-          tmpeostree.has_withdraw_show="";
-          tmpeostree.tree_amount="";
+        this.myeostrees.splice(0, this.myeostrees.length);
+        for (var i = 0; i < landNum; i++) {
+          var tmpeostree = new Object();
+          tmpeostree.id = -1;
+          tmpeostree.pos = i;
+          tmpeostree.life_ret = 0;
+          tmpeostree.eos_amount_show = "";
+          tmpeostree.income_show = "";
+          tmpeostree.has_withdraw_show = "";
+          tmpeostree.tree_amount = "";
           this.myeostrees.push(tmpeostree);
         }
         var eostrees = this.eostrees;
@@ -906,11 +1004,11 @@
           return;
         }
         for (var i = 0; i < eostrees.length; i++) {
-          if(eostrees[i].life_ret!=this.LIFE_VOID){
+          if (eostrees[i].life_ret != this.LIFE_VOID) {
             this.calEosTreeShow(eostrees[i]);
-            var tmppos=eostrees[i].pos;
-            if(tmppos!=undefined&&tmppos>-1){
-              this.myeostrees.splice(tmppos,1,eostrees[i]);
+            var tmppos = eostrees[i].pos;
+            if (tmppos != undefined && tmppos > -1) {
+              this.myeostrees.splice(tmppos, 1, eostrees[i]);
             }
           }
         }
@@ -918,12 +1016,12 @@
       },
       calEosTreeShow(eostree) {
         eostree.eos_amount_show = (eostree.eos_amount / 10000).toFixed(4);
-        eostree.income_show = ((eostree.income-eostree.has_withdraw) / 10000).toFixed(4);
+        eostree.income_show = ((eostree.income - eostree.has_withdraw) / 10000).toFixed(4);
         eostree.has_withdraw_show = (eostree.has_withdraw / 10000).toFixed(4);
         var end_time_show = "";
         var end_time = eostree.end_time;
         var life_ret = eostree.life_ret;
-        if(life_ret==this.LIFE_SICK){
+        if (life_ret == this.LIFE_SICK) {
           if (end_time > 0) {
             var delta = end_time - Date.parse(new Date()) / 1000;
             end_time_show = this.formatSeconds(delta);
@@ -931,7 +1029,7 @@
         }
         eostree.end_time_show = end_time_show;
       }
-    },watch: {
+    }, watch: {
       buyeos: function (val) {
         var buyEosAmount = parseFloat(val);
         var eosRealAmount = parseInt(buyEosAmount * 10000);
@@ -943,31 +1041,45 @@
       gameinfo: function (val) {
         var that = this;
         that.totaleos = Big(val.total_pool).div(10000).toFixed(4) + " EOS";
-        that.mygameinfo.tree_id=val.tree_id;
-        that.mygameinfo.end_time=val.end_time;
+        that.mygameinfo.tree_id = val.tree_id;
+        that.mygameinfo.end_time = val.end_time;
         that.mygameinfo.last_one = val.last_one;
-        that.mygameinfo.share_user=val.share_user;
-        that.mygameinfo.supply = val.supply + " trees";
+        that.mygameinfo.share_user = val.share_user;
+        that.mygameinfo.supply = val.supply;
         that.mygameinfo.airdrop_pool = Big(val.airdrop_pool).div(10000).toFixed(4) + " EOS";
         that.mygameinfo.last_reward_pool = Big(val.last_reward_pool).div(10000).toFixed(4) + " EOS";
         that.mygameinfo.total_pool = Big(val.total_pool).div(10000).toFixed(4) + " EOS";
+        var airdrop1=(val.total_pool/10000)%1000;
+        that.airdropperc=parseInt(airdrop1/10);
+        that.needairdrop=(1000-airdrop1).toFixed(2);
+        var expAirDropPool=(val.airdrop_pool/10000)+that.needairdrop/10;
+          that.mayairdrop_min=(expAirDropPool*0.04).toFixed(2);
+          that.mayairdrop_max=(expAirDropPool*0.12).toFixed(2);
+        that.airdropcolor="rgba("+50+", "+200+", 0, 1)";
+        if(that.airdropperc>0&&that.airdropperc<50){
+          that.airdropcolor="rgba("+(50+that.airdropperc*4)+", "+200+", 0, 1)";
+        }else{
+          that.airdropcolor="rgba("+250+", "+(400-that.airdropperc*4)+", 0, 1)";
+        }
+
+        console.log(that.airdropperc);
         that.mygameinfo.dev_pool = Big(val.dev_pool).div(10000).toFixed(4) + " EOS";
         that.mygameinfo.dividend_pool = Big(val.dividend_pool).div(10000).toFixed(4) + " EOS";
-        that.mygameinfo.game_state=val.game_state;
-      },playerinfo:function (val) {
-        var that=this;
-        that.myplayerinfo.tree_amount=val.tree_amount;
-        that.myplayerinfo.income_inx=val.income_inx;
-        that.myplayerinfo.income_tree=Big(val.income_tree).div(10000).toFixed(4) + " EOS";
-        that.myplayerinfo.income_tree_with=Big(val.income_tree_with).div(10000).toFixed(4) + " EOS";
-        that.myplayerinfo.income_airdrop=Big(val.income_airdrop).div(10000).toFixed(4) + " EOS";
-        that.myplayerinfo.income_airdrop_with=Big(val.income_airdrop_with).div(10000).toFixed(4) + " EOS";
-        that.myplayerinfo.income_invited=Big(val.income_invited).div(10000).toFixed(4) + " EOS";
-        that.myplayerinfo.income_invited_with=Big(val.income_invited_with).div(10000).toFixed(4) + " EOS";
-        that.myplayerinfo.income_award=Big(val.income_award).div(10000).toFixed(4) + " EOS";
-        that.myplayerinfo.income_award_with=Big(val.income_award_with).div(10000).toFixed(4) + " EOS";
-        that.myplayerinfo.income_share=Big(val.income_share).div(10000).toFixed(4) + " EOS";
-        that.myplayerinfo.income_share_with=Big(val.income_share_with).div(10000).toFixed(4) + " EOS";
+        that.mygameinfo.game_state = val.game_state;
+      }, playerinfo: function (val) {
+        var that = this;
+        that.myplayerinfo.tree_amount = val.tree_amount;
+        that.myplayerinfo.income_inx = val.income_inx;
+        that.myplayerinfo.income_tree = Big(val.income_tree).div(10000).toFixed(4) + " EOS";
+        that.myplayerinfo.income_tree_with = Big(val.income_tree_with).div(10000).toFixed(4) + " EOS";
+        that.myplayerinfo.income_airdrop = Big(val.income_airdrop).div(10000).toFixed(4) + " EOS";
+        that.myplayerinfo.income_airdrop_with = Big(val.income_airdrop_with).div(10000).toFixed(4) + " EOS";
+        that.myplayerinfo.income_invited = Big(val.income_invited).div(10000).toFixed(4) + " EOS";
+        that.myplayerinfo.income_invited_with = Big(val.income_invited_with).div(10000).toFixed(4) + " EOS";
+        that.myplayerinfo.income_award = Big(val.income_award).div(10000).toFixed(4) + " EOS";
+        that.myplayerinfo.income_award_with = Big(val.income_award_with).div(10000).toFixed(4) + " EOS";
+        that.myplayerinfo.income_share = Big(val.income_share).div(10000).toFixed(4) + " EOS";
+        that.myplayerinfo.income_share_with = Big(val.income_share_with).div(10000).toFixed(4) + " EOS";
       }
     }
   }
