@@ -1,7 +1,5 @@
 <template>
   <el-row>
-
-
     <el-row type="flex" justify="center" align="middle" style="margin-top: 50px;">
       <el-col :span="8"></el-col>
       <el-col :span="8" justify="center" align="middle">
