@@ -18,7 +18,8 @@
       <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="7">
       </el-col>
       <el-col :xs="22" :sm="18" :md="14" :lg="12" :xl="10">
-        <el-progress :text-inside="true" :color="airdropcolor" :stroke-width="18" :percentage="airdropperc" status="success"></el-progress>
+        <el-progress :text-inside="true" :color="airdropcolor" :stroke-width="18" :percentage="airdropperc"
+                     status="success"></el-progress>
       </el-col>
       <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="7">
       </el-col>
@@ -27,7 +28,7 @@
       <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="7">
       </el-col>
       <el-col :xs="11" :sm="9" :md="7" :lg="6" :xl="5">
-        <div class="p3d-green farm-title2-size" >{{needairdrop}}EOS</div>
+        <div class="p3d-green farm-title2-size">{{needairdrop}}EOS</div>
       </el-col>
       <el-col :xs="11" :sm="9" :md="7" :lg="6" :xl="5">
         <div class="p3d-green farm-title2-size" style="text-align: right">{{mayairdrop_min}}~{{mayairdrop_max}}EOS</div>
@@ -65,44 +66,89 @@
           <!--<mu-tab>买树苗</mu-tab>-->
           <mu-tab>统计信息</mu-tab>
           <mu-tab>玩法说明</mu-tab>
+          <mu-tab>排行榜</mu-tab>
         </mu-tabs>
         <div class="demo-text" v-if="tab1active === 0">
           <el-row>
             <el-col :span="24">
-              <mu-list toggle-nested >
+              <mu-list toggle-nested>
                 <mu-sub-header>个人数据</mu-sub-header>
+
                 <mu-list-item button>
                   <mu-list-item-action>
                     <icon name="tree3" scale="3"></icon>
                   </mu-list-item-action>
-                  <mu-list-item-sub-title>树苗数量:{{myplayerinfo.tree_amount}}</mu-list-item-sub-title>
+                  <mu-list-item-content>
+                    <mu-list-item-sub-title>树苗总量:{{myplayerinfo.tree_amount}}</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>收益同步:{{myplayerinfo.income_sync}}</mu-list-item-sub-title>
+                  </mu-list-item-content>
+                  <!--<mu-list-item-action>-->
+                    <!--<mu-button small flat color="pink" @click="btnChkMyTree">-->
+                      <!--购买-->
+                    <!--</mu-button>-->
+                  <!--</mu-list-item-action>-->
+                </mu-list-item>
+                <mu-list-item button>
+                  <mu-list-item-action>
+                    <icon name="wallet2" scale="3"></icon>
+                  </mu-list-item-action>
+                  <mu-list-item-content>
+                    <mu-list-item-sub-title>可提现:{{myplayerinfo.income_total}}</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>已提现:{{myplayerinfo.income_total_with}}</mu-list-item-sub-title>
+                  </mu-list-item-content>
+                  <mu-list-item-action>
+                    <mu-button small flat color="pink" @click="btnChkMyTree">
+                      刷新
+                      <mu-icon value="sync"></mu-icon>
+                    </mu-button>
+                  </mu-list-item-action>
+                  <mu-list-item-action>
+                    <mu-button small flat color="pink" @click="btnWithdrawAll">
+                      提现
+                    </mu-button>
+                  </mu-list-item-action>
                 </mu-list-item>
                 <mu-list-item button>
                   <mu-list-item-action>
                     <icon name="wallet" scale="3"></icon>
                   </mu-list-item-action>
                   <mu-list-item-content>
-                    <mu-list-item-sub-title>可提现:{{myplayerinfo.income_total}}</mu-list-item-sub-title>
-                    <mu-list-item-sub-title>已提现:{{myplayerinfo.income_total_with}}</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>EOS余额:{{myEosAmount}}</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>JUST余额:{{myJustAmount}}</mu-list-item-sub-title>
                   </mu-list-item-content>
+                  <mu-list-item-action>
+                    <mu-button small flat color="pink" @click="btnOpenEosflare">
+                      查看
+                    </mu-button>
+                  </mu-list-item-action>
                 </mu-list-item>
-                <mu-list-item button :ripple="false" nested :open="infoDetailOpen === 'player_detail'"
+                <mu-list-item button>
+                  <mu-list-item-action>
+                    <icon name="share" scale="3"></icon>
+                  </mu-list-item-action>
+                  <mu-list-item-content>
+                    <mu-list-item-sub-title>推广链接:</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>{{myplayerinfo.share_url}}</mu-list-item-sub-title>
+                  </mu-list-item-content>
+                  <mu-list-item-action>
+                    <mu-button small flat color="pink" @click="copyShareUrl">
+                      复制
+                    </mu-button>
+                  </mu-list-item-action>
+                </mu-list-item>
+                <mu-list-item button nested :open="infoDetailOpen === 'player_detail'"
                               @toggle-nested="infoDetailOpen = arguments[0] ? 'player_detail' : ''">
                   <mu-list-item-sub-title>详情</mu-list-item-sub-title>
                   <mu-list-item-action>
                     <mu-icon class="toggle-icon" size="24" value="keyboard_arrow_down"></mu-icon>
                   </mu-list-item-action>
-                  <mu-list-item button :ripple="false" slot="nested">
-                    <mu-list-item-content>
-                      <mu-list-item-sub-title>EOS余额:{{myEosAmount}}</mu-list-item-sub-title>
-                      <mu-list-item-sub-title>JUST余额:{{myJustAmount}}</mu-list-item-sub-title>
-                    </mu-list-item-content>
+                  <mu-list-item button slot="nested">
                     <mu-list-item-content>
                       <mu-list-item-sub-title>树苗可提:{{myplayerinfo.income_tree}}</mu-list-item-sub-title>
                       <mu-list-item-sub-title>树苗已提:{{myplayerinfo.income_tree_with}}</mu-list-item-sub-title>
                     </mu-list-item-content>
                   </mu-list-item>
-                  <mu-list-item button :ripple="false" slot="nested">
+                  <mu-list-item button slot="nested">
                     <mu-list-item-content>
                       <mu-list-item-sub-title>空投可提:{{myplayerinfo.income_airdrop}}</mu-list-item-sub-title>
                       <mu-list-item-sub-title>空投已提:{{myplayerinfo.income_airdrop_with}}</mu-list-item-sub-title>
@@ -112,7 +158,7 @@
                       <mu-list-item-sub-title>邀请已提:{{myplayerinfo.income_invited_with}}</mu-list-item-sub-title>
                     </mu-list-item-content>
                   </mu-list-item>
-                  <mu-list-item button :ripple="false" slot="nested">
+                  <mu-list-item button slot="nested">
                     <mu-list-item-content>
                       <mu-list-item-sub-title>股东可提:{{myplayerinfo.income_share}}</mu-list-item-sub-title>
                       <mu-list-item-sub-title>股东已提:{{myplayerinfo.income_share_with}}</mu-list-item-sub-title>
@@ -125,19 +171,16 @@
                 </mu-list-item>
               </mu-list>
               <mu-divider></mu-divider>
-              <mu-list toggle-nested >
+              <mu-list>
                 <mu-sub-header>游戏数据</mu-sub-header>
                 <mu-list-item button>
                   <mu-list-item-action>
                     <icon name="tree3" scale="3"></icon>
                   </mu-list-item-action>
-                  <mu-list-item-sub-title>树苗数量:{{mygameinfo.supply}}</mu-list-item-sub-title>
-                </mu-list-item>
-                <mu-list-item button>
-                  <mu-list-item-action>
-                    <icon name="airdrop" scale="3"></icon>
-                  </mu-list-item-action>
-                  <mu-list-item-sub-title>空投奖池:{{mygameinfo.airdrop_pool}}</mu-list-item-sub-title>
+                  <mu-list-item-content>
+                    <mu-list-item-sub-title>树苗总量:{{mygameinfo.supply}}</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>已开垦:{{mygameinfo.tree_cnt}}</mu-list-item-sub-title>
+                  </mu-list-item-content>
                 </mu-list-item>
                 <mu-list-item button>
                   <mu-list-item-action>
@@ -147,80 +190,83 @@
                 </mu-list-item>
                 <mu-list-item button>
                   <mu-list-item-action>
+                    <icon name="airdrop" scale="3"></icon>
+                  </mu-list-item-action>
+                  <mu-list-item-sub-title>空投奖池:{{mygameinfo.airdrop_pool}}</mu-list-item-sub-title>
+                </mu-list-item>
+                <mu-list-item button>
+                  <mu-list-item-action>
                     <icon name="vip" scale="3"></icon>
                   </mu-list-item-action>
                   <mu-list-item-sub-title>最终赢家:{{mygameinfo.last_one}}</mu-list-item-sub-title>
                 </mu-list-item>
-                <mu-list-item button>
-                  <mu-list-item-action>
-                    <icon name="bglass" scale="3"></icon>
-                  </mu-list-item-action>
-                  <mu-list-item-sub-title>下轮股东:{{mygameinfo.share_user}}</mu-list-item-sub-title>
-                </mu-list-item>
-                <mu-list-item button :ripple="false" nested :open="infoDetailOpen === 'game_detail'"
-                              @toggle-nested="infoDetailOpen = arguments[0] ? 'game_detail' : ''">
-                  <mu-list-item-sub-title>详情</mu-list-item-sub-title>
-                  <mu-list-item-action>
-                    <mu-icon class="toggle-icon" size="24" value="keyboard_arrow_down"></mu-icon>
-                  </mu-list-item-action>
-                  <mu-list-item button :ripple="false" slot="nested">
-                    <mu-list-item-sub-title>树苗收益:</mu-list-item-sub-title>
-                  </mu-list-item>
-                  <mu-list-item button :ripple="false" slot="nested">
-                    <mu-list-item-sub-title>List Item 2</mu-list-item-sub-title>
-                  </mu-list-item>
-                  <mu-list-item button :ripple="false" slot="nested">
-                    <mu-list-item-sub-title>List Item 3</mu-list-item-sub-title>
-                  </mu-list-item>
-                </mu-list-item>
               </mu-list>
-
             </el-col>
           </el-row>
         </div>
         <div class="demo-text" v-if="tab1active === 1">
-          <el-row type="flex" class="row-bg" justify="space-around">
-            <el-col :span="6">
-              <mu-button @click="btnChkMyTree">更新收益</mu-button>
-            </el-col>
-            <el-col :span="6">
-              <mu-button @click="btnWithdrawAward">提现奖励</mu-button>
-            </el-col>
-            <el-col :span="6">
-              <mu-button @click="btnWithDrawTree(1)">提现柚子</mu-button>
-            </el-col>
+          <el-row style="padding: 20px;">
+
+            <p>
+            <h3>游戏规则</h3></p>
+            <p>1.玩家可以购买树苗，初始价格0.005一颗，随着卖出量的增加，树苗越来越贵</p>
+            <p>
+              2.购买树苗后资金用途：<br/>
+              &nbsp;&nbsp;&nbsp;60% 分红给之前玩家，11%进入空投池，10%作为最终大奖<br/>
+              &nbsp;&nbsp;&nbsp;3%奖励推广玩家，3%支付合约内存费用，10%进入bancor池，提高JUST代币价格<br/>
+              &nbsp;&nbsp;&nbsp;3%奖励本轮股东，股东为上一轮购买树苗最多的玩家<br/>
+            </p>
+            <p>
+              3.树苗收益达到成本的130%，出现8小时倒计时<br/>
+              &nbsp;&nbsp;&nbsp;可通过浇水延续分红时间，价格为成本1%，每次递增树苗成本1%，每次续命8小时
+            </p>
+            <p>
+              4.树苗倒计时结束，不再享受分红，由此树苗发行量下降，购买新树苗价格将降低
+            </p>
+            <p>
+              5.玩家固定16块土地，用完即不能再购买树苗<br/>
+              &nbsp;&nbsp;&nbsp;如果还需购买树苗，需要将树苗铲除，已铲除的树苗不再享受分红
+            </p>
+            <p>
+              6.每售出1000 EOS的树苗，从空投池中发送4~12%的EOS奖励买家<br/>
+              &nbsp;&nbsp;&nbsp;空投池初始资金1000 EOS
+            </p>
+            <p>
+              7.游戏倒计时24小时，每购买一颗树苗延长5秒<br/>
+              &nbsp;&nbsp;&nbsp;游戏后期无人购买，倒计时结束，最终大奖发给最后一个买入的玩家
+            </p>
+
+            <p>
+            <h3>操作说明</h3></p>
+            <p>1.点击空土地<img class="img-in-text" src="../assets/tudi1_text.png"/>购买树苗</p>
+            <p>2.树苗出现倒计时，说明收益已超过130%<img class="img-in-text" src="../assets/tree_countdown.png"/>此时需要点击树苗浇水<img
+              class="img-in-text" src="../assets/a_buydrug.png"/><br/>
+              &nbsp;&nbsp;&nbsp;否则树枯死后，便不再享受分红<img class="img-in-text" src="../assets/tree_dead.png"/>
+            </p>
+            <p>3.由于游戏是定时更新收益的，所以玩家的收益值不一定是最新的，玩家可以手动刷新收益值<br/>
+              &nbsp;&nbsp;&nbsp;此操作不消耗EOS<img style="width: 50%;height: auto;" src="../assets/intro_refresh.png"/>
+            </p>
           </el-row>
+        </div>
+        <div class="demo-text" v-if="tab1active === 2">
           <el-row>
-            <el-col :span="12">
-              <div>我的EOS: {{myEosAmount}}</div>
-              <div>我的JUST: {{myJustAmount}}</div>
-              <div>我的树苗: {{myplayerinfo.tree_amount}}</div>
-              <div>我的成本:</div>
-              <div>收益同步: {{myplayerinfo.income_inx}}</div>
-              <div>树苗收益: {{myplayerinfo.income_tree}}</div>
-              <div>树苗已提现: {{myplayerinfo.income_tree_with}}</div>
-              <div>空投收益: {{myplayerinfo.income_airdrop}}</div>
-              <div>空投已提现: {{myplayerinfo.income_airdrop_with}}</div>
-              <div>邀请奖励: {{myplayerinfo.income_invited}}</div>
-              <div>邀请已提现: {{myplayerinfo.income_invited_with}}</div>
-              <div>最终大奖: {{myplayerinfo.income_award}}</div>
-              <div>最终大奖已提现: {{myplayerinfo.income_award_with}}</div>
-              <div>股东收益: {{myplayerinfo.income_share}}</div>
-              <div>股东收益提现: {{myplayerinfo.income_share_with}}</div>
-            </el-col>
-            <el-col :span="12">
-              <div>全部树苗:{{mygameinfo.supply}}</div>
-              <div>已开垦:{{mygameinfo.tree_id}}</div>
-              <div>总金额:{{mygameinfo.total_pool}}</div>
-              <div>最后赢家:{{mygameinfo.last_one}}</div>
-              <div>下轮股东:{{mygameinfo.share_user}}</div>
-              <div>空投池:{{mygameinfo.airdrop_pool}}</div>
-              <div>最终大奖:{{mygameinfo.last_reward_pool}}</div>
-              <div>开发分成:{{mygameinfo.dev_pool}}</div>
-              <div>分红累积:{{mygameinfo.dividend_pool}}</div>
-            </el-col>
+            <mu-list>
+              <mu-list-item button v-for="rankUser in myRankUsers" :key="rankUser.user">
+                <mu-list-item-action>
+                  <mu-avatar>
+                    <img :src="rankUser.imgUrl"/>
+                  </mu-avatar>
+                </mu-list-item-action>
+                <mu-list-item-content>
+                  <mu-list-item-sub-title>用户名:{{rankUser.user}}</mu-list-item-sub-title>
+                  <mu-list-item-sub-title>树苗总量:{{rankUser.tree_amount}}</mu-list-item-sub-title>
+                </mu-list-item-content>
+                <mu-list-item-action v-show="rankUser.inx==0">
+                  <mu-list-item-after-text>下轮股东</mu-list-item-after-text>
+                </mu-list-item-action>
+              </mu-list-item>
+            </mu-list>
           </el-row>
-          <div></div>
         </div>
       </el-col>
       <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="6">
@@ -254,7 +300,10 @@
                     <img style="width: 100%;height: auto;" src="../assets/a_buydrug.png"/>
                   </mu-avatar>
                 </mu-list-item-action>
-                <mu-list-item-sub-title>watering</mu-list-item-sub-title>
+                <mu-list-item-content>
+                  <mu-list-item-sub-title>浇水</mu-list-item-sub-title>
+                  <mu-list-item-sub-title>延长分红时间</mu-list-item-sub-title>
+                </mu-list-item-content>
               </mu-list-item>
               <mu-list-item button @click="btnDeleteTree">
                 <mu-list-item-action>
@@ -262,15 +311,15 @@
                     <img style="width: 100%;height: auto;" src="../assets/a_remove.png"/>
                   </mu-avatar>
                 </mu-list-item-action>
-                <mu-list-item-sub-title>remove</mu-list-item-sub-title>
+                <mu-list-item-sub-title>铲除</mu-list-item-sub-title>
               </mu-list-item>
-              <mu-list-item button @click="btnWithDrawTree(0)">
+              <mu-list-item button @click="btnWithDrawTree">
                 <mu-list-item-action>
                   <mu-avatar>
                     <img style="width: 100%;height: auto;" src="../assets/a_withdraw.png"/>
                   </mu-avatar>
                 </mu-list-item-action>
-                <mu-list-item-sub-title>withdraw</mu-list-item-sub-title>
+                <mu-list-item-sub-title>摘柚子</mu-list-item-sub-title>
               </mu-list-item>
             </mu-list>
           </mu-bottom-sheet>
@@ -322,8 +371,11 @@
 <script>
   import timeout from 'timeout';
   import bigInt from "big-integer";
+  import Identicon from "identicon.js";
   import Big from 'big.js';
-  import MyLand from '@/components/MyLand'
+  import copy from 'clipboard-copy';
+  var hash = require('object-hash');
+  import MyLand from '@/components/MyLand';
 
   export default {
     name: "eosfarm",
@@ -336,8 +388,8 @@
         bottomActionOpen: false,
         buyDialogOpen: false,
         timerLoop: true,
-        infoDetailOpen:'',
-        inviterName:"",
+        infoDetailOpen: '',
+        inviterName: "",
         //tab
         //const info
         farmcontract: "eosjustaward",
@@ -365,22 +417,20 @@
         //display info
         countdown: null,
         totaleos: "0.0000 EOS",
-        airdropcolor:"rgba(142, 113, 199, 0.7)",
-        airdropperc:0,
+        airdropcolor: "rgba(142, 113, 199, 0.7)",
+        airdropperc: 0,
         needairdrop: "0",
         mayairdrop_min: "0",
         mayairdrop_max: "0",
-        //display info tab buy
         maybeBuyAmount: null,
-        //display info tab widthdraw
-        myeostrees: [],
-        //display info tab invite
-        //display info tab gamestate
+        rankusers: [],
+        //caculate info
         mygameinfo: new Object(),
-        //display info tab rcentbuy
         myplayerinfo: new Object(),
         myEosAmount: "",
         myJustAmount: "",
+        myeostrees: [],
+        myRankUsers: [],
 
       }
     },
@@ -390,17 +440,16 @@
       if (cacheEosTree && cacheEosTree.length > 0) {
         this.myeostrees = cacheEosTree;
       }
-
     },
     mounted() {
       var that = this;
       that.timerLoop = true;
-      if(that.$route.query.ref){
-        that.inviterName=that.$route.query.ref;
-      }else{
-        that.inviterName="";
+      if (that.$route.query.ref) {
+        that.inviterName = that.$route.query.ref;
+      } else {
+        that.inviterName = "";
       }
-      console.log("inviter:"+that.inviterName);
+      console.log("inviter:" + that.inviterName);
 
       timeout.timeout(1000, function () {
         if (that.mygameinfo && that.mygameinfo.game_state == that.GAME_START) {
@@ -418,11 +467,13 @@
 
       timeout.timeout(3000, function () {
         that.requestGameInfo();
-        that.requestPlayerInfo();
-        that.requestEosTreeInfo();
-        that.requestAllEosTreeInfo();
-        that.requestMyEosAmount();
-        that.requestMyJustAmount();
+        if (that.$store.state.eosUserName) {
+          that.requestPlayerInfo();
+          that.requestEosTreeInfo();
+          that.requestRankUsers();
+          that.requestMyEosAmount();
+          that.requestMyJustAmount();
+        }
         return that.timerLoop;
       });
       that.requestGameInfo();
@@ -548,6 +599,9 @@
           that.$message("fail");
         });
       },
+      btnOpenEosflare() {
+        window.open("https://eosflare.io/account/" + this.$store.state.eosUserName);
+      },
       btnBuy() {
         if (!this.buyeos) {
           this.$message("请输入要购买的eos值");
@@ -574,7 +628,7 @@
                 from: that.$store.state.eosUserName,
                 to: that.farmcontract,
                 quantity: Big(that.buyeos).toFixed(4) + " EOS",
-                memo: "buytree:" + that.selecttree.pos + ";" + that.inviterName+";",
+                memo: "buytree:" + that.selecttree.pos + ";" + that.inviterName + ";",
               }
             }
           ]
@@ -596,6 +650,14 @@
       },
       setBuyAmount(amount) {
         this.buyeos = amount;
+      },
+      copyShareUrl() {
+        var that = this;
+        copy(this.myplayerinfo.share_url);
+        that.$message({
+          message: '复制成功',
+          type: 'success'
+        });
       },
       btnBuyDrug() {
         var eossdkutil = window.eossdkutil;
@@ -674,7 +736,7 @@
           that.$message("操作失败");
         });
       },
-      btnWithdrawAward() {
+      btnWithdrawAll() {
         var eossdkutil = window.eossdkutil;
         var that = this;
         eossdkutil.pushEosAction({
@@ -703,21 +765,19 @@
           that.$message("操作失败");
         });
       },
-      btnWithDrawTree(all) {
+      btnWithDrawTree() {
         var eossdkutil = window.eossdkutil;
         var that = this;
         var selectId = 0;
-        if (all == 0) {
-          if (!that.selecttree) {
-            this.$message("请选择操作的位置");
-            return;
-          }
-          if (that.selecttree.id < 0) {
-            this.$message("此位置不可操作");
-            return;
-          }
-          selectId = that.selecttree.id;
+        if (!that.selecttree) {
+          this.$message("请选择操作的位置");
+          return;
         }
+        if (that.selecttree.id < 0) {
+          this.$message("此位置不可操作");
+          return;
+        }
+        selectId = that.selecttree.id;
         eossdkutil.pushEosAction({
           actions: [
             {
@@ -731,7 +791,6 @@
               ],
               data: {
                 treeid: selectId,
-                all: all,
                 user: that.$store.state.eosUserName
               }
             }
@@ -863,7 +922,7 @@
 
         });
       },
-      requestAllEosTreeInfo() {
+      requestRankUsers() {
         var that = this;
         var eossdkutil = window.eossdkutil;
         eossdkutil.getEosTableRows(
@@ -871,12 +930,13 @@
             json: true,
             code: that.farmcontract,
             scope: that.farmcontract,
-            table: 'eostree',
+            table: 'playerrank',
             limit: 20
           }
         ).then(function (result) {
           var rows = result.data.rows;
-          that.alleostrees = rows;
+          that.rankusers = rows;
+          that.refreshRankUser();
         }).catch(function (error) {
 
         });
@@ -1012,7 +1072,28 @@
             }
           }
         }
+      },
+      refreshRankUser(){
+        if(this.rankusers){
+          var sortRankUser = this.rankusers.sort(this.sortRankFun);
+          if(sortRankUser.length!=this.myRankUsers.length){
+            this.myRankUsers.splice(0, this.myRankUsers.length);
+          }
+          for (var i = 0; i < sortRankUser.length; i++) {
+            sortRankUser[i].imgUrl=this.getImgByStr(sortRankUser[i].user);
+            sortRankUser[i].inx=i;
+            this.myRankUsers.splice(i, 1, sortRankUser[i]);
+          }
+        }
+      },
+      getImgByStr(str){
+        console.log(str);
+        var hstr=hash(str);
+        console.log(hstr);
+        var data = new Identicon(hstr, 50).toString();
 
+        var base64="data:image/png;base64,"+data;
+        return base64;
       },
       calEosTreeShow(eostree) {
         eostree.eos_amount_show = (eostree.eos_amount / 10000).toFixed(4);
@@ -1028,6 +1109,13 @@
           }
         }
         eostree.end_time_show = end_time_show;
+      },
+      sortRankFun(user1, user2) {
+        if (user1.tree_amount < user2.tree_amount) {
+          return 1;
+        } else {
+          return -1;
+        }
       }
     }, watch: {
       buyeos: function (val) {
@@ -1035,13 +1123,10 @@
         var eosRealAmount = parseInt(buyEosAmount * 10000);
         this.maybeBuyAmount = this.get_buy_amount(eosRealAmount, this.gameinfo.supply);
       },
-      eostrees: function (val) {
-
-      },
       gameinfo: function (val) {
         var that = this;
         that.totaleos = Big(val.total_pool).div(10000).toFixed(4) + " EOS";
-        that.mygameinfo.tree_id = val.tree_id;
+        that.mygameinfo.tree_cnt = val.tree_id + 1;
         that.mygameinfo.end_time = val.end_time;
         that.mygameinfo.last_one = val.last_one;
         that.mygameinfo.share_user = val.share_user;
@@ -1049,44 +1134,46 @@
         that.mygameinfo.airdrop_pool = Big(val.airdrop_pool).div(10000).toFixed(4) + " EOS";
         that.mygameinfo.last_reward_pool = Big(val.last_reward_pool).div(10000).toFixed(4) + " EOS";
         that.mygameinfo.total_pool = Big(val.total_pool).div(10000).toFixed(4) + " EOS";
-        var airdrop1=(val.total_pool/10000)%1000;
-        that.airdropperc=parseInt(airdrop1/10);
-        that.needairdrop=(1000-airdrop1).toFixed(2);
-        var expAirDropPool=(val.airdrop_pool/10000)+that.needairdrop/10;
-          that.mayairdrop_min=(expAirDropPool*0.04).toFixed(2);
-          that.mayairdrop_max=(expAirDropPool*0.12).toFixed(2);
-        that.airdropcolor="rgba("+50+", "+200+", 0, 1)";
-        if(that.airdropperc>0&&that.airdropperc<50){
-          that.airdropcolor="rgba("+(50+that.airdropperc*4)+", "+200+", 0, 1)";
-        }else{
-          that.airdropcolor="rgba("+250+", "+(400-that.airdropperc*4)+", 0, 1)";
+        var airdrop1 = (val.total_pool / 10000) % 1000;
+        that.airdropperc = parseInt(airdrop1 / 10);
+        that.needairdrop = (1000 - airdrop1).toFixed(2);
+        var expAirDropPool = (val.airdrop_pool / 10000) + that.needairdrop / 10;
+        that.mayairdrop_min = (expAirDropPool * 0.04).toFixed(2);
+        that.mayairdrop_max = (expAirDropPool * 0.12).toFixed(2);
+        that.airdropcolor = "rgba(" + 50 + ", " + 200 + ", 0, 1)";
+        if (that.airdropperc > 0 && that.airdropperc < 50) {
+          that.airdropcolor = "rgba(" + (50 + that.airdropperc * 4) + ", " + 200 + ", 0, 1)";
+        } else {
+          that.airdropcolor = "rgba(" + 250 + ", " + (400 - that.airdropperc * 4) + ", 0, 1)";
         }
-
-        console.log(that.airdropperc);
         that.mygameinfo.dev_pool = Big(val.dev_pool).div(10000).toFixed(4) + " EOS";
         that.mygameinfo.dividend_pool = Big(val.dividend_pool).div(10000).toFixed(4) + " EOS";
         that.mygameinfo.game_state = val.game_state;
       }, playerinfo: function (val) {
         var that = this;
         that.myplayerinfo.tree_amount = val.tree_amount;
-        that.myplayerinfo.income_inx = val.income_inx;
-        that.myplayerinfo.income_tree = Big(val.income_tree-val.income_tree_with).div(10000).toFixed(4);
+        that.myplayerinfo.share_url = "购买后获得";
+        if (val.tree_amount > 0) {
+          that.myplayerinfo.share_url = "https://www.eosjust.io/#/eosfarm?ref=" + val.user;
+        }
+        that.myplayerinfo.income_sync = val.income_inx + 1;
+        that.myplayerinfo.income_tree = Big(val.income_tree - val.income_tree_with).div(10000).toFixed(4);
         that.myplayerinfo.income_tree_with = Big(val.income_tree_with).div(10000).toFixed(4);
-        that.myplayerinfo.income_airdrop = Big(val.income_airdrop-val.income_airdrop_with).div(10000).toFixed(4);
+        that.myplayerinfo.income_airdrop = Big(val.income_airdrop - val.income_airdrop_with).div(10000).toFixed(4);
         that.myplayerinfo.income_airdrop_with = Big(val.income_airdrop_with).div(10000).toFixed(4);
-        that.myplayerinfo.income_invited = Big(val.income_invited-val.income_invited_with).div(10000).toFixed(4);
+        that.myplayerinfo.income_invited = Big(val.income_invited - val.income_invited_with).div(10000).toFixed(4);
         that.myplayerinfo.income_invited_with = Big(val.income_invited_with).div(10000).toFixed(4);
-        that.myplayerinfo.income_award = Big(val.income_award-val.income_award_with).div(10000).toFixed(4);
+        that.myplayerinfo.income_award = Big(val.income_award - val.income_award_with).div(10000).toFixed(4);
         that.myplayerinfo.income_award_with = Big(val.income_award_with).div(10000).toFixed(4);
-        that.myplayerinfo.income_share = Big(val.income_share-val.income_share_with).div(10000).toFixed(4);
+        that.myplayerinfo.income_share = Big(val.income_share - val.income_share_with).div(10000).toFixed(4);
         that.myplayerinfo.income_share_with = Big(val.income_share_with).div(10000).toFixed(4);
         //
-        that.myplayerinfo.income_total_1=Big(val.income_tree).add(val.income_airdrop)
+        that.myplayerinfo.income_total_1 = Big(val.income_tree).add(val.income_airdrop)
           .add(val.income_invited).add(val.income_award).add(val.income_share).div(10000);
-        that.myplayerinfo.income_total_2=Big(val.income_tree_with).add(val.income_airdrop_with)
+        that.myplayerinfo.income_total_2 = Big(val.income_tree_with).add(val.income_airdrop_with)
           .add(val.income_invited_with).add(val.income_award_with).add(val.income_share_with).div(10000);
-        that.myplayerinfo.income_total=that.myplayerinfo.income_total_1.minus(that.myplayerinfo.income_total_2).toFixed(4);
-        that.myplayerinfo.income_total_with=that.myplayerinfo.income_total_2.toFixed(4);
+        that.myplayerinfo.income_total = that.myplayerinfo.income_total_1.minus(that.myplayerinfo.income_total_2).toFixed(4);
+        that.myplayerinfo.income_total_with = that.myplayerinfo.income_total_2.toFixed(4);
       }
     }
   }
@@ -1108,6 +1195,11 @@
 
   .farm-title2-size {
     font-size: 1.6em;
+  }
+
+  .img-in-text {
+    width: 5em;
+    height: auto;
   }
 
   .p3d-green {
