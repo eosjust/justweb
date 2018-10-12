@@ -96,9 +96,11 @@
                     <mu-list-item-sub-title>可提现:{{myplayerinfo.income_total}}</mu-list-item-sub-title>
                     <mu-list-item-sub-title>已提现:{{myplayerinfo.income_total_with}}</mu-list-item-sub-title>
                   </mu-list-item-content>
-                  <mu-list-item-action>
-                    <mu-button small flat color="pink" @click="btnChkMyTree">
-                      刷新
+                  <mu-list-item-action >
+                    <!--<mu-button icon color="primary">-->
+                      <!--<mu-icon value="grade"></mu-icon>-->
+                    <!--</mu-button>-->
+                    <mu-button icon small color="pink" @click="btnChkMyTree">
                       <mu-icon value="sync"></mu-icon>
                     </mu-button>
                   </mu-list-item-action>
@@ -301,7 +303,7 @@
                   </mu-avatar>
                 </mu-list-item-action>
                 <mu-list-item-content>
-                  <mu-list-item-sub-title>浇水</mu-list-item-sub-title>
+                  <mu-list-item-sub-title>浇水--{{drugPrice}}</mu-list-item-sub-title>
                   <mu-list-item-sub-title>延长分红时间</mu-list-item-sub-title>
                 </mu-list-item-content>
               </mu-list-item>
@@ -319,7 +321,11 @@
                     <img style="width: 100%;height: auto;" src="../assets/a_withdraw.png"/>
                   </mu-avatar>
                 </mu-list-item-action>
-                <mu-list-item-sub-title>摘柚子</mu-list-item-sub-title>
+                <mu-list-item-content>
+                  <mu-list-item-sub-title>摘柚子</mu-list-item-sub-title>
+                  <mu-list-item-sub-title>可摘:{{selectTreeIncome}}，已摘:{{selectTreeWith}}</mu-list-item-sub-title>
+                </mu-list-item-content>
+
               </mu-list-item>
             </mu-list>
           </mu-bottom-sheet>
@@ -407,7 +413,10 @@
         GAME_END: 10,
         //input form
         buyeos: 1,
-        selecttree: null,
+        selectTree: null,
+        drugPrice:"",
+        selectTreeIncome:"",
+        selectTreeWith:"",
         //table info
         globalinfo: null,
         gameinfo: null,
@@ -489,19 +498,27 @@
         this.bottomActionOpen = true;
       },
       closeBottomSheet() {
-        this.selecttree = null;
+        this.selectTree = null;
         this.bottomActionOpen = false;
       },
       openBuyDialog() {
         this.buyDialogOpen = true;
       },
       closeBuyDialog() {
-        this.selecttree = null;
+        this.selectTree = null;
         this.buyDialogOpen = false;
       },
       onMyLandClick(eostree) {
-        this.selecttree = eostree;
+        this.selectTree = eostree;
         if (eostree && eostree.id > -1) {
+          var buyDrugTimes=this.selectTree.continue_times+1;
+          var priceAmount = this.selectTree.eos_amount * buyDrugTimes / 100;
+          if(priceAmount<1){
+            priceAmount=1;
+          }
+          this.drugPrice=(priceAmount / 10000).toFixed(4)+ " EOS";
+          this.selectTreeIncome=((this.selectTree.income-this.selectTree.has_withdraw) / 10000).toFixed(4)+ " EOS";
+          this.selectTreeWith=(this.selectTree.has_withdraw / 10000).toFixed(4)+ " EOS";
           this.openBotttomSheet();
         } else {
           this.openBuyDialog();
@@ -527,7 +544,7 @@
         }).then(function (result) {
           that.$message("ok");
         }).catch(function (error) {
-          that.$message("fail");
+          that.$message(error);
         });
       },
       btnReset() {
@@ -550,7 +567,7 @@
         }).then(function (result) {
           that.$message("yes");
         }).catch(function (error) {
-          that.$message("fail");
+          that.$message(error);
         });
       },
       btnFinish() {
@@ -573,7 +590,7 @@
         }).then(function (result) {
           that.$message("yes");
         }).catch(function (error) {
-          that.$message("fail");
+          that.$message(error);
         });
       },
       btnCheck() {
@@ -596,7 +613,7 @@
         }).then(function (result) {
           that.$message("yes");
         }).catch(function (error) {
-          that.$message("fail");
+          that.$message(error);
         });
       },
       btnOpenEosflare() {
@@ -607,7 +624,7 @@
           this.$message("请输入要购买的eos值");
           return;
         }
-        if (!this.selecttree) {
+        if (!this.selectTree) {
           this.$message("请选择购买的位置");
           return;
         }
@@ -628,7 +645,7 @@
                 from: that.$store.state.eosUserName,
                 to: that.farmcontract,
                 quantity: Big(that.buyeos).toFixed(4) + " EOS",
-                memo: "buytree:" + that.selecttree.pos + ";" + that.inviterName + ";",
+                memo: "buytree:" + that.selectTree.pos + ";" + that.inviterName + ";",
               }
             }
           ]
@@ -643,7 +660,7 @@
           that.closeBottomSheet();
           that.closeBuyDialog();
           that.$message({
-            message: '购买失败',
+            message: error,
             type: 'warning'
           });
         });
@@ -662,19 +679,19 @@
       btnBuyDrug() {
         var eossdkutil = window.eossdkutil;
         var that = this;
-        if (!that.selecttree) {
+        if (!that.selectTree) {
           this.$message("请选择操作的位置");
           return;
         }
-        if (that.selecttree.id < 0) {
+        if (that.selectTree.id < 0) {
           this.$message("此位置不可操作");
           return;
         }
         eossdkutil.pushEosAction({
           actions: [
             {
-              account: that.farmcontract,
-              name: "buydrug",
+              account: that.eostokencontract,
+              name: "transfer",
               authorization: [
                 {
                   actor: that.$store.state.eosUserName,
@@ -682,9 +699,10 @@
                 }
               ],
               data: {
-                treeid: that.selecttree.id,
-                user: that.$store.state.eosUserName,
-                quantity: "1.0000 EOS"
+                from: that.$store.state.eosUserName,
+                to: that.farmcontract,
+                quantity: that.drugPrice,
+                memo: "buydrug:" + that.selectTree.id + ";",
               }
             }
           ]
@@ -695,17 +713,17 @@
         }).catch(function (error) {
           that.closeBottomSheet();
           that.closeBuyDialog();
-          that.$message("购买失败");
+          that.$message(error);
         });
       },
       btnDeleteTree() {
         var eossdkutil = window.eossdkutil;
         var that = this;
-        if (!that.selecttree) {
+        if (!that.selectTree) {
           this.$message("请选择操作的位置");
           return;
         }
-        if (that.selecttree.id < 0) {
+        if (that.selectTree.id < 0) {
           this.$message("此位置不可操作");
           return;
         }
@@ -721,7 +739,7 @@
                 }
               ],
               data: {
-                treeid: that.selecttree.id,
+                treeid: that.selectTree.id,
                 user: that.$store.state.eosUserName
               }
             }
@@ -733,7 +751,7 @@
         }).catch(function (error) {
           that.closeBottomSheet();
           that.closeBuyDialog();
-          that.$message("操作失败");
+          that.$message(error);
         });
       },
       btnWithdrawAll() {
@@ -762,22 +780,22 @@
         }).catch(function (error) {
           that.closeBottomSheet();
           that.closeBuyDialog();
-          that.$message("操作失败");
+          that.$message(error);
         });
       },
       btnWithDrawTree() {
         var eossdkutil = window.eossdkutil;
         var that = this;
         var selectId = 0;
-        if (!that.selecttree) {
+        if (!that.selectTree) {
           this.$message("请选择操作的位置");
           return;
         }
-        if (that.selecttree.id < 0) {
+        if (that.selectTree.id < 0) {
           this.$message("此位置不可操作");
           return;
         }
-        selectId = that.selecttree.id;
+        selectId = that.selectTree.id;
         eossdkutil.pushEosAction({
           actions: [
             {
@@ -802,7 +820,7 @@
         }).catch(function (error) {
           that.closeBottomSheet();
           that.closeBuyDialog();
-          that.$message("操作失败");
+          that.$message(error);
         });
       },
       btnChkMyTree() {
@@ -831,7 +849,7 @@
         }).catch(function (error) {
           that.closeBottomSheet();
           that.closeBuyDialog();
-          that.$message("操作失败");
+          that.$message(error);
         });
       },
       btnChkAllTree() {
@@ -858,7 +876,7 @@
         }).catch(function (error) {
           that.closeBottomSheet();
           that.closeBuyDialog();
-          that.$message("操作失败");
+          that.$message(error);
         });
       },
       requestGameInfo() {
