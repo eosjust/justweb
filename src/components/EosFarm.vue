@@ -50,7 +50,7 @@
         <mu-tabs :value.sync="tab1active" color="#009688" indicator-color="#009688" style="border-radius: 5px 5px 0px 0px;" left>
           <mu-tab>购买树苗</mu-tab>
         </mu-tabs>
-        <div style="padding: 20px;" class="demo-text" v-if="tab1active === 0">
+        <div style="padding: 20px;" class="demo-text" v-if="true">
           <el-row type="flex" justify="center" align="middle">
             <el-col :span="20">
               <el-input placeholder="请输入EOS数量" v-model="buyeos">
