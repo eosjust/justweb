@@ -1170,7 +1170,7 @@
         that.myplayerinfo.tree_amount = val.tree_amount;
         that.myplayerinfo.share_url = "购买后获得";
         if (val.tree_amount > 0) {
-          that.myplayerinfo.share_url = "https://www.eosjust.io/#/eosfarm?ref=" + val.user;
+          that.myplayerinfo.share_url = "https://www.eosjust.com/#/eosfarm?ref=" + val.user;
         }
         that.myplayerinfo.income_sync = val.income_inx + 1;
         that.myplayerinfo.income_tree = Big(val.income_tree - val.income_tree_with).div(10000).toFixed(4);
