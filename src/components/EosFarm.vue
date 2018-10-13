@@ -65,16 +65,16 @@
           </el-row>
           <el-row type="flex" class="row-bg" justify="space-around" style="padding: 0 10px 20px 10px;">
             <el-col :span="3">
-              <el-button @click="setBuyAmount(parseFloat(buyeos)+88)" size="mini" round>88</el-button>
+              <el-button @click="setBuyAmount(18)" size="mini" round>18</el-button>
             </el-col>
             <el-col :span="3">
-              <el-button @click="setBuyAmount(parseFloat(buyeos)+188)" size="mini" round>188</el-button>
+              <el-button @click="setBuyAmount(28)" size="mini" round>28</el-button>
             </el-col>
             <el-col :span="3">
-              <el-button @click="setBuyAmount(parseFloat(buyeos)+588)" size="mini" round>588</el-button>
+              <el-button @click="setBuyAmount(88)" size="mini" round>88</el-button>
             </el-col>
             <el-col :span="3">
-              <el-button @click="setBuyAmount(parseFloat(buyeos)+888)" size="mini" round>888</el-button>
+              <el-button @click="setBuyAmount(188)" size="mini" round>188</el-button>
             </el-col>
           </el-row>
 
@@ -405,16 +405,16 @@
           </el-row>
           <el-row type="flex" class="row-bg" justify="space-around" style="padding: 0 10px 20px 10px;">
             <el-col :span="3">
-              <el-button @click="setBuyAmount(parseFloat(buyeos)+88)" size="mini" round>88</el-button>
+              <el-button @click="setBuyAmount(18)" size="mini" round>18</el-button>
             </el-col>
             <el-col :span="3">
-              <el-button @click="setBuyAmount(parseFloat(buyeos)+188)" size="mini" round>188</el-button>
+              <el-button @click="setBuyAmount(28)" size="mini" round>28</el-button>
             </el-col>
             <el-col :span="3">
-              <el-button @click="setBuyAmount(parseFloat(buyeos)+588)" size="mini" round>588</el-button>
+              <el-button @click="setBuyAmount(88)" size="mini" round>88</el-button>
             </el-col>
             <el-col :span="3">
-              <el-button @click="setBuyAmount(parseFloat(buyeos)+888)" size="mini" round>888</el-button>
+              <el-button @click="setBuyAmount(188)" size="mini" round>188</el-button>
             </el-col>
           </el-row>
 

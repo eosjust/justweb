@@ -141,11 +141,11 @@
     created() {
       this.changeLang(this.$store.state.lang);
       this.checkClient();
-      this.initEosEnv();
     },
     computed: {},
     mounted() {
       const that = this;
+      this.initEosEnv();
       that.clientWidth = document.documentElement.clientWidth;
       that.clientHeight = document.documentElement.clientHeight;
       window.onresize = () => {
