@@ -427,7 +427,7 @@
         alleostrees: null,
         playerinfo: null,
         //display info
-        countdown: null,
+        countdown: "24:00:00",
         totaleos: "0.0000 EOS",
         airdropcolor: "rgba(142, 113, 199, 0.7)",
         airdropperc: 0,
@@ -1163,7 +1163,6 @@
         } else {
           that.airdropcolor = "rgba(" + 250 + ", " + (400 - that.airdropperc * 4) + ", 0, 1)";
         }
-        that.mygameinfo.dev_pool = Big(val.dev_pool).div(10000).toFixed(4) + " EOS";
         that.mygameinfo.dividend_pool = Big(val.dividend_pool).div(10000).toFixed(4) + " EOS";
         that.mygameinfo.game_state = val.game_state;
       }, playerinfo: function (val) {
