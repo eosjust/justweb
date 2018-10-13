@@ -38,24 +38,24 @@
     </el-row>
 
 
-    <el-row type="flex" justify="center" align="middle">
-      <el-col :span="8"></el-col>
-      <el-col :span="8" justify="center" align="middle">
-        <mu-button ripple color="primary" @click="btnStart">
-          start
-        </mu-button>
-        <mu-button ripple color="primary" @click="btnReset">
-          reset
-        </mu-button>
-        <mu-button ripple color="primary" @click="btnFinish">
-          finish
-        </mu-button>
-        <mu-button ripple color="primary" @click="btnCheck">
-          check
-        </mu-button>
-      </el-col>
-      <el-col :span="8"></el-col>
-    </el-row>
+    <!--<el-row type="flex" justify="center" align="middle">-->
+      <!--<el-col :span="8"></el-col>-->
+      <!--<el-col :span="8" justify="center" align="middle">-->
+        <!--<mu-button ripple color="primary" @click="btnStart">-->
+          <!--start-->
+        <!--</mu-button>-->
+        <!--<mu-button ripple color="primary" @click="btnReset">-->
+          <!--reset-->
+        <!--</mu-button>-->
+        <!--<mu-button ripple color="primary" @click="btnFinish">-->
+          <!--finish-->
+        <!--</mu-button>-->
+        <!--<mu-button ripple color="primary" @click="btnCheck">-->
+          <!--check-->
+        <!--</mu-button>-->
+      <!--</el-col>-->
+      <!--<el-col :span="8"></el-col>-->
+    <!--</el-row>-->
     <el-row type="flex" justify="center" align="middle"
             style="margin-top: 50px;margin-bottom: 50px;padding-left: 5%;padding-right: 5%;">
       <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="6">

@@ -15,9 +15,6 @@
         <mu-button flat ripple color="primary" to="/investjust">
           {{$t('mainmenu.investjust')}}
         </mu-button>
-        <mu-button flat ripple color="primary" to="/setting">
-          {{$t('mainmenu.about')}}
-        </mu-button>
       </mu-menu>
       <mu-menu slot="right" :open.sync="isMenuLangOpen">
         <mu-button flat ripple color="primary">
@@ -68,9 +65,6 @@
         </mu-list-item>
         <mu-list-item button to="investjust" @click="menudrawopen = false">
           <mu-list-item-title> {{$t('mainmenu.investjust')}}</mu-list-item-title>
-        </mu-list-item>
-        <mu-list-item button to="setting" @click="menudrawopen = false">
-          <mu-list-item-title> {{$t('mainmenu.about')}}</mu-list-item-title>
         </mu-list-item>
       </mu-list>
     </mu-drawer>
@@ -221,8 +215,8 @@
         var that = this;
         if (eossdkutil) {
           window.eossdkutil = eossdkutil;
-          eossdkutil.setScatterNetworkTest();
-          // eossdkutil.setScatterNetworkMain();
+          // eossdkutil.setScatterNetworkTest();
+          eossdkutil.setScatterNetworkMain();
           eossdkutil.init().then(function () {
             var env = eossdkutil.getEnv();
             if (env == "tp") {
