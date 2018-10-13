@@ -82,11 +82,11 @@
                     <mu-list-item-sub-title>树苗总量:{{myplayerinfo.tree_amount}}</mu-list-item-sub-title>
                     <mu-list-item-sub-title>收益同步:{{myplayerinfo.income_sync}}</mu-list-item-sub-title>
                   </mu-list-item-content>
-                  <!--<mu-list-item-action>-->
-                    <!--<mu-button small flat color="pink" @click="btnChkMyTree">-->
-                      <!--购买-->
-                    <!--</mu-button>-->
-                  <!--</mu-list-item-action>-->
+                  <mu-list-item-action>
+                    <mu-button small flat color="pink" @click="openBuyDialog">
+                      购买
+                    </mu-button>
+                  </mu-list-item-action>
                 </mu-list-item>
                 <mu-list-item button>
                   <mu-list-item-action>
@@ -216,7 +216,7 @@
               2.购买树苗后资金用途：<br/>
               &nbsp;&nbsp;&nbsp;60% 分红给之前玩家，11%进入空投池，10%作为最终大奖<br/>
               &nbsp;&nbsp;&nbsp;3%奖励推广玩家，3%支付合约内存费用，10%进入bancor池，提高JUST代币价格<br/>
-              &nbsp;&nbsp;&nbsp;3%奖励本轮股东，股东为上一轮购买树苗最多的玩家<br/>
+              &nbsp;&nbsp;&nbsp;3%奖励本轮股东，股东为上一轮购买树苗最多的玩家，第一轮没有股东，奖励给当前购买树苗最多的玩家<br/>
             </p>
             <p>
               3.树苗收益达到成本的130%，出现8小时倒计时<br/>
@@ -264,7 +264,7 @@
                   <mu-list-item-sub-title>树苗总量:{{rankUser.tree_amount}}</mu-list-item-sub-title>
                 </mu-list-item-content>
                 <mu-list-item-action v-show="rankUser.inx==0">
-                  <mu-list-item-after-text>下轮股东</mu-list-item-after-text>
+                  <mu-list-item-after-text>将获得下一轮3%收益</mu-list-item-after-text>
                 </mu-list-item-action>
               </mu-list-item>
             </mu-list>
@@ -411,6 +411,9 @@
         GAME_CHK: 6,
         GAME_DEL: 8,
         GAME_END: 10,
+
+        PRICE_DIV:100000,
+        PRICE_START:50,
         //input form
         buyeos: 1,
         selectTree: null,
@@ -624,12 +627,13 @@
           this.$message("请输入要购买的eos值");
           return;
         }
-        if (!this.selectTree) {
-          this.$message("请选择购买的位置");
-          return;
+        var that = this;
+        var memo="";
+        if (this.selectTree) {
+          memo="buytree:" + that.selectTree.pos + ";" + that.inviterName + ";";
         }
         var eossdkutil = window.eossdkutil;
-        var that = this;
+
         eossdkutil.pushEosAction({
           actions: [
             {
@@ -645,7 +649,7 @@
                 from: that.$store.state.eosUserName,
                 to: that.farmcontract,
                 quantity: Big(that.buyeos).toFixed(4) + " EOS",
-                memo: "buytree:" + that.selectTree.pos + ";" + that.inviterName + ";",
+                memo: memo,
               }
             }
           ]
@@ -973,9 +977,14 @@
         ).then(function (result) {
           var rows = result.data.rows;
           var len = rows.length;
-          var inx = len - 1;
-          var accounts = rows[inx];
-          that.myEosAmount = accounts.balance;
+          if(len>0){
+            var inx = len - 1;
+            var accounts = rows[inx];
+            that.myEosAmount = accounts.balance;
+          }else{
+            that.myEosAmount ="0.0000 EOS";
+          }
+
         }).catch(function (error) {
 
         });
@@ -994,9 +1003,14 @@
         ).then(function (result) {
           var rows = result.data.rows;
           var len = rows.length;
-          var inx = len - 1;
-          var accounts = rows[inx];
-          that.myJustAmount = accounts.balance;
+          if(len>0){
+            var inx = len - 1;
+            var accounts = rows[inx];
+            that.myJustAmount = accounts.balance;
+          }else{
+            that.myJustAmount = "0.0000 JUST";
+          }
+
         }).catch(function (error) {
 
         });
@@ -1021,29 +1035,14 @@
           str = time < 10 ? "0" + time : "" + time;
         }
         return str;
-      }, get_buy_amount(quant, supply) {
-        var total_amount = quant;
-        total_amount = total_amount * 10000;
-        var st = supply;
-        var ed = 500000000;
-        var mid;
-        while (st + 1 < ed) {
-          mid = parseInt((st + ed) / 2);
-          if (this.calc_range(supply + 1, mid) <= total_amount) {
-            st = mid;
-          } else {
-            ed = mid;
-          }
-        }
-        return st - supply;
-      }, calc_range(st, ed) {
-        if (st > ed) {
-          return 0;
-        }
-        var t_st = st;
-        var t_ed = ed;
-        var tmp = parseInt(((t_st + t_ed) * (t_ed - t_st + 1)) / 2);
-        return tmp;
+      }, get_buy_amount(amount, supply) {
+        var supply_2 = Big(supply).mul(supply);
+        var PRICE_DIV_2 = Big(this.PRICE_DIV).mul(this.PRICE_DIV);
+        //TODO overflow
+        var PRICE_START_2 = PRICE_DIV_2.mul(this.PRICE_START);
+        var buy_amount = PRICE_DIV_2.mul(amount);
+        var buy_amount128 = buy_amount.div((supply_2.add(PRICE_START_2)));
+        return buy_amount128.toFixed(0);
       }, convertChex(chex) {
         chex = chex.substring(2);
         var jhex = "";

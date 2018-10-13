@@ -67,10 +67,18 @@
                 </mu-list-item>
                 <mu-list-item button>
                   <mu-list-item-content>
-                    <mu-list-item-title>JUST 发行量:</mu-list-item-title>
+                    <mu-list-item-title>EOS 储备金:</mu-list-item-title>
                   </mu-list-item-content>
                   <mu-list-item-action>
-                    <mu-list-item-sub-title>{{justSupply}}</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>{{eosRest}}</mu-list-item-sub-title>
+                  </mu-list-item-action>
+                </mu-list-item>
+                <mu-list-item button>
+                  <mu-list-item-content>
+                    <mu-list-item-title>JUST 储备金:</mu-list-item-title>
+                  </mu-list-item-content>
+                  <mu-list-item-action>
+                    <mu-list-item-sub-title>{{justRest}}</mu-list-item-sub-title>
                   </mu-list-item-action>
                 </mu-list-item>
                 <mu-list-item button>
@@ -83,10 +91,18 @@
                 </mu-list-item>
                 <mu-list-item button>
                   <mu-list-item-content>
-                    <mu-list-item-title>EOS 储备金:</mu-list-item-title>
+                    <mu-list-item-title>矿池:</mu-list-item-title>
                   </mu-list-item-content>
                   <mu-list-item-action>
-                    <mu-list-item-sub-title>{{eosRest}}</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>{{justMineRest}}</mu-list-item-sub-title>
+                  </mu-list-item-action>
+                </mu-list-item>
+                <mu-list-item button>
+                  <mu-list-item-content>
+                    <mu-list-item-title>JUST 发行量:</mu-list-item-title>
+                  </mu-list-item-content>
+                  <mu-list-item-action>
+                    <mu-list-item-sub-title>{{justSupply}}</mu-list-item-sub-title>
                   </mu-list-item-action>
                 </mu-list-item>
                 <mu-list-item button>
@@ -140,6 +156,14 @@
                     <mu-list-item-sub-title>{{myJustAmount}}</mu-list-item-sub-title>
                   </mu-list-item-action>
                 </mu-list-item>
+                <mu-list-item button>
+                  <mu-list-item-content>
+                    <mu-list-item-title>当前手续费:</mu-list-item-title>
+                  </mu-list-item-content>
+                  <mu-list-item-action>
+                    <mu-list-item-sub-title>{{chargeShow}}</mu-list-item-sub-title>
+                  </mu-list-item-action>
+                </mu-list-item>
               </mu-list>
             </mu-paper>
           </el-col>
@@ -155,13 +179,14 @@
       </el-col>
       <el-col>
         <div class="just-small-desc">
-          <p>1.JUST TOKEN是EOSJUST的平台币，可自由转移和流通。</p>
-          <p>2.JUST发行总量上限为1亿，其中100w用于初始化bancor池，4900w可以通过挖矿方式获得，1000w保留锁定，4000w开发团队保留，2年内持续释放</p>
-          <p>3.bancor池初始化EOS储备1000EOS，JUST储备100w，初始币价1 JUST = 0.001 EOS</p>
-          <p>4.持币者成为EOSJUST股东，按持股比例享受包括不限于收入分红，源代码查看等权利</p>
-          <p>5.早期市场深度低，为了保护JUST股东的权益，卖出JUST Token会收取10%手续费</p>
-          <p>6.卖出JUST Token的手续费随着发行量上升线性减少，发行超过2000w时，手续费维持0.5%不变</p>
-          <p>7.所有资产公开透明，任意第三方EOS区块浏览器可查，规则人人平等。</p>
+          <p>1.JUST TOKEN是EOSJUST的通证，可自由转移和流通。</p>
+          <p>2.JUST发行总量上限为1亿，其中500w用于初始化bancor池，4500w可以通过挖矿方式获得，1000w保留锁定，4000w项目团队锁仓</p>
+          <p>3.项目团队通过两种方式解锁，a.平台每挖出10个通证，开发者解锁1个。b.从2019年10月1日开始，2年内逐渐解锁</p>
+          <p>4.bancor池初始化EOS储备500EOS，JUST储备500w，初始币价1 JUST = 0.0001 EOS</p>
+          <p>5.持币者成为EOSJUST股东，按持股比例享受包括不限于持币增值，收入分红，福利空投，源代码查看等权利</p>
+          <p>6.早期市场深度低，为了保护JUST股东的权益，单个账号购买的Token不能超过初始bancor池大小的20%即100w，卖出JUST Token会收取15%手续费</p>
+          <p>7.流通量超过bancor池的一半后，不限制买入数量，手续费也随着流通量上升线性减少，流通超过2000w时，手续费维持0.5%不变</p>
+          <p>8.所有资产公开透明，任意第三方EOS区块浏览器可查，规则人人平等。</p>
         </div>
       </el-col>
     </el-row>
@@ -183,14 +208,25 @@
         timerLoop:true,
         bancorcontract:"eosjustioexe",
         justtokencontract:"eosjusttoken",
+        justminecontract:"justminepool",
         eostokencontract:"eosio.token",
         justSymbolName:"JUST",
         justPrice: "0.0000 EOS/JUST",
+        justSupplyAmount:Big(0),
         justSupply: "0.0000",
+        justMaxSupplyAmount:Big(0),
         justMaxSupply: "0.0000",
+        justTurnoverAmount:Big(0),
         justTurnover: "0.0000",
+        eosRestAmount:Big(0),
         eosRest: "0.0000",
+        justRestAmount:Big(0),
         justRest: "0.0000",
+        justMineRestAmount:Big(0),
+        justMineRest:"0.0000",
+
+        chargeAmount:Big(0),
+        chargeShow:"",
         myEosAmount: "0.0000",
         myJustAmount: "0.0000",
         mayBuyAmount:"0.0000",
@@ -210,6 +246,7 @@
         that.requestMyJustAmount();
         that.requestMarketInfo();
         that.requestSupplyInfo();
+        that.requestMineAmount();
         return that.timerLoop;
       });
     },
@@ -242,7 +279,7 @@
         }).then(function (result) {
           that.$message("操作成功");
         }).catch(function (error) {
-          that.$message("操作失败");
+          that.$message(error);
         });
       },
       btnSellJust() {
@@ -270,7 +307,7 @@
         }).then(function (result) {
           that.$message("操作成功");
         }).catch(function (error) {
-          that.$message("操作失败");
+          that.$message(error);
         });
       },
       requestMyEosAmount() {
@@ -331,20 +368,38 @@
           var len = rows.length;
           var inx = len - 1;
           var marketinfo = rows[inx];
+          try{
+            if(marketinfo.quote){
+              that.eosRest=marketinfo.quote.balance;
+              var assetAry=that.eosRest.split(" ");
+              that.eosRestAmount=Big(assetAry[0]);
+            }
+            if(marketinfo.base){
+              that.justRest=marketinfo.base.balance;
+              var assetAry=that.justRest.split(" ");
+              that.justRestAmount=Big(assetAry[0]);
+            }
+            if(that.eosRest&&that.justRest){
+              that.justPrice=(that.eosRestAmount/that.justRestAmount).toFixed(4)+" EOS/JUST";
+            }
+            if(that.justSupplyAmount.gt(0)&&that.justRestAmount.gt(0)&&that.justMineRestAmount.gt(0)){
+              that.justTurnoverAmount=that.justSupplyAmount.minus(that.justRestAmount).minus(that.justMineRestAmount);
+              that.justTurnover=that.justTurnoverAmount.toFixed(4) +" JUST";
+              if(that.justTurnoverAmount.gt(20000000)){
+                that.chargeAmount=Big(0.005);
+                that.chargeShow=that.chargeAmount.mul(100).toFixed(2)+"%";
+              }else{
+                var chargem = Big(150).minus(that.justTurnoverAmount.div(20000000).mul(150-5)) ;
+                that.chargeAmount=chargem.div(1000);
+                that.chargeShow=that.chargeAmount.mul(100).toFixed(2)+"%";
+              }
 
-          if(marketinfo.quote){
-            var eosRestAsset=marketinfo.quote.balance;
-            var assetAry=eosRestAsset.split(" ");
-            that.eosRest=assetAry[0];
+            }
+
+          }catch (exex){
+
           }
-          if(marketinfo.base){
-            var justRestAsset=marketinfo.base.balance;
-            var assetAry=justRestAsset.split(" ");
-            that.justRest=assetAry[0];
-          }
-          if(that.eosRest&&that.justRest){
-            that.justPrice=(that.eosRest/that.justRest).toFixed(4)+" EOS/JUST";
-          }
+
         }).catch(function (error) {
 
         });
@@ -367,22 +422,62 @@
           var statinfo=rows[inx];
           that.justMaxSupply=statinfo.max_supply;
           that.justSupply=statinfo.supply;
+          if(that.justMaxSupply){
+            var assetAry=that.justMaxSupply.split(" ");
+            that.justMaxSupplyAmount=Big(assetAry[0]);
+          }
+          if(that.justSupply){
+            var assetAry=that.justSupply.split(" ");
+            that.justSupplyAmount=Big(assetAry[0]);
+          }
         }).catch(function (error) {
 
         });
       },
+      requestMineAmount() {
+        var that = this;
+        var eossdkutil = window.eossdkutil;
+        eossdkutil.getEosTableRows(
+          {
+            json: true,
+            code: that.justtokencontract,
+            scope: that.justminecontract,
+            table: 'accounts',
+            limit: 20
+          }
+        ).then(function (result) {
+          var rows = result.data.rows;
+          var len = rows.length;
+          var inx = len - 1;
+          var accounts=rows[inx];
+          that.justMineRest=accounts.balance;
+          if(that.justMineRest){
+            var assetAry=that.justMineRest.split(" ");
+            that.justMineRestAmount=Big(assetAry[0]);
+          }
+        }).catch(function (error) {
+
+        });
+      },
+      calChargeAmount() {
+
+      }
     },watch: {
       inputBuyAmount: function (val) {
         try{
-          this.mayBuyAmount= Big(this.justRest).mul(Big(val)).div(Big(this.eosRest).plus(Big(val))).toFixed(4);
+          this.mayBuyAmount= this.justRestAmount.mul(Big(val)).div(Big(this.eosRestAmount).plus(Big(val))).toFixed(4);
         }catch (e){
           this.mayBuyAmount="0.0000";
         }
       },
       inputSellAmount: function (val) {
         try{
-          if(  Big(this.justRest).minus(Big(val))>0  ){
-            this.maySellAmount= Big(this.eosRest).mul(Big(val)).div(Big(this.justRest).minus(Big(val))).toFixed(4);
+          if(Big(this.justRestAmount).minus(Big(val))>0  ){
+            var maySellAmountPure= Big(this.eosRestAmount).mul(Big(val)).div(Big(this.justRestAmount).minus(Big(val)));
+            if(this.chargeAmount.gt(0)){
+              maySellAmountPure=maySellAmountPure.minus(maySellAmountPure.mul(this.chargeAmount));
+            }
+            this.maySellAmount=maySellAmountPure.toFixed(4);
           }else{
             this.maySellAmount="0.0000";
           }
