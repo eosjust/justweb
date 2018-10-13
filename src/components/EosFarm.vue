@@ -38,6 +38,61 @@
     </el-row>
 
 
+
+
+
+    <el-row type="flex" justify="center" align="middle"
+            style="margin-top: 50px;margin-bottom: 50px;padding-left: 5%;padding-right: 5%;">
+      <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="6">
+        <div>&nbsp;</div>
+      </el-col>
+      <el-col :xs="22" :sm="18" :md="14" :lg="12" :xl="12" style="background-color: #f5f5f5;border-radius: 5px;">
+        <mu-tabs :value.sync="tab1active" color="#009688" indicator-color="#009688" style="border-radius: 5px 5px 0px 0px;" left>
+          <mu-tab>购买树苗</mu-tab>
+        </mu-tabs>
+        <div style="padding: 20px;" class="demo-text" v-if="tab1active === 0">
+          <el-row type="flex" justify="center" align="middle">
+            <el-col :span="20">
+              <el-input placeholder="请输入EOS数量" v-model="buyeos">
+                <template slot="append">≈{{maybeBuyAmount}} trees</template>
+              </el-input>
+            </el-col>
+          </el-row>
+          <el-row type="flex" class="row-bg" justify="space-around" style="padding: 0px 10px 0px 10px;">
+            <el-col :span="20">
+              <div class="text-gray">1 tree = {{treePrice}} EOS</div>
+            </el-col>
+          </el-row>
+          <el-row type="flex" class="row-bg" justify="space-around" style="padding: 0 10px 20px 10px;">
+            <el-col :span="3">
+              <el-button @click="setBuyAmount(parseFloat(buyeos)+88)" size="mini" round>88</el-button>
+            </el-col>
+            <el-col :span="3">
+              <el-button @click="setBuyAmount(parseFloat(buyeos)+188)" size="mini" round>188</el-button>
+            </el-col>
+            <el-col :span="3">
+              <el-button @click="setBuyAmount(parseFloat(buyeos)+588)" size="mini" round>588</el-button>
+            </el-col>
+            <el-col :span="3">
+              <el-button @click="setBuyAmount(parseFloat(buyeos)+888)" size="mini" round>888</el-button>
+            </el-col>
+          </el-row>
+
+          <el-row class="top_margin" type="flex" justify="center" align="middle">
+            <el-col :span="20" justify="center" align="middle">
+              <mu-button full-width ripple color="secondary" @click="btnBuy">
+                Buy
+              </mu-button>
+            </el-col>
+          </el-row>
+        </div>
+
+      </el-col>
+      <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="6">
+        <div>&nbsp;</div>
+      </el-col>
+    </el-row>
+
     <!--<el-row type="flex" justify="center" align="middle">-->
       <!--<el-col :span="8"></el-col>-->
       <!--<el-col :span="8" justify="center" align="middle">-->
@@ -338,25 +393,31 @@
         <mu-dialog title="买树苗" :width="$store.state.ismobile?'90%':'60%'" :open.sync="buyDialogOpen">
           <el-row type="flex" justify="center" align="middle">
             <el-col :span="20">
-              <el-input placeholder="请输入购买数量" v-model="buyeos">
+              <el-input placeholder="请输入EOS数量" v-model="buyeos">
                 <template slot="append">≈{{maybeBuyAmount}} trees</template>
               </el-input>
             </el-col>
           </el-row>
-          <el-row type="flex" class="row-bg" justify="space-around" style="padding: 10px;">
-            <el-col :span="3">
-              <el-button @click="setBuyAmount(buyeos+88)" size="mini" round>88</el-button>
-            </el-col>
-            <el-col :span="3">
-              <el-button @click="setBuyAmount(buyeos+188)" size="mini" round>188</el-button>
-            </el-col>
-            <el-col :span="3">
-              <el-button @click="setBuyAmount(buyeos+588)" size="mini" round>588</el-button>
-            </el-col>
-            <el-col :span="3">
-              <el-button @click="setBuyAmount(buyeos+888)" size="mini" round>888</el-button>
+          <el-row type="flex" class="row-bg" justify="space-around" style="padding: 0px 10px 0px 10px;">
+            <el-col :span="20">
+              <div class="text-gray">1 tree = {{treePrice}} EOS</div>
             </el-col>
           </el-row>
+          <el-row type="flex" class="row-bg" justify="space-around" style="padding: 0 10px 20px 10px;">
+            <el-col :span="3">
+              <el-button @click="setBuyAmount(parseFloat(buyeos)+88)" size="mini" round>88</el-button>
+            </el-col>
+            <el-col :span="3">
+              <el-button @click="setBuyAmount(parseFloat(buyeos)+188)" size="mini" round>188</el-button>
+            </el-col>
+            <el-col :span="3">
+              <el-button @click="setBuyAmount(parseFloat(buyeos)+588)" size="mini" round>588</el-button>
+            </el-col>
+            <el-col :span="3">
+              <el-button @click="setBuyAmount(parseFloat(buyeos)+888)" size="mini" round>888</el-button>
+            </el-col>
+          </el-row>
+
           <el-row class="top_margin" type="flex" justify="center" align="middle">
             <el-col :span="20" justify="center" align="middle">
               <mu-button full-width ripple color="secondary" @click="btnBuy">
@@ -415,7 +476,7 @@
         PRICE_DIV:100000,
         PRICE_START:50,
         //input form
-        buyeos: 1,
+        buyeos: 10,
         selectTree: null,
         drugPrice:"",
         selectTreeIncome:"",
@@ -444,6 +505,7 @@
         myJustAmount: "",
         myeostrees: [],
         myRankUsers: [],
+        treePrice:"",
 
       }
     },
@@ -901,6 +963,10 @@
           var inx = len - 1;
           var gameinfo = rows[inx];
           that.gameinfo = gameinfo;
+          that.treePrice = that.getTreePrice();
+          if(that.buyeos){
+            that.getMaybeBuyAmount(that.buyeos);
+          }
         }).catch(function (error) {
 
         });
@@ -1134,12 +1200,20 @@
         } else {
           return -1;
         }
-      }
-    }, watch: {
-      buyeos: function (val) {
+      },
+      getTreePrice(){
+        var amount = this.get_buy_amount(10000, this.gameinfo.supply);
+        var price=Big(1).div(amount).toFixed(4);
+        return price;
+      },
+      getMaybeBuyAmount(val){
         var buyEosAmount = parseFloat(val);
         var eosRealAmount = parseInt(buyEosAmount * 10000);
         this.maybeBuyAmount = this.get_buy_amount(eosRealAmount, this.gameinfo.supply);
+      }
+    }, watch: {
+      buyeos: function (val) {
+        this.getMaybeBuyAmount(val);
       },
       gameinfo: function (val) {
         var that = this;
@@ -1222,6 +1296,10 @@
   .img-in-text {
     width: 5em;
     height: auto;
+  }
+
+  .text-gray {
+    color:#888888;
   }
 
   .p3d-green {
