@@ -10,7 +10,7 @@
     <el-row type="flex" justify="center" align="middle">
       <el-col :span="8"></el-col>
       <el-col :span="8" justify="center" align="middle">
-        <div class="p3d-green farm-title-size">{{totaleos}}</div>
+        <div class="p3d-green farm-title-size">{{last_reward_pool}}</div>
       </el-col>
       <el-col :span="8"></el-col>
     </el-row>
@@ -28,10 +28,10 @@
       <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="7">
       </el-col>
       <el-col :xs="11" :sm="9" :md="7" :lg="6" :xl="5">
-        <div class="p3d-green farm-title2-size">{{needairdrop}}EOS</div>
+        <div class="p3d-green farm-title2-size">还需{{needairdrop}}EOS</div>
       </el-col>
       <el-col :xs="11" :sm="9" :md="7" :lg="6" :xl="5">
-        <div class="p3d-green farm-title2-size" style="text-align: right">{{mayairdrop_min}}~{{mayairdrop_max}}EOS</div>
+        <div class="p3d-green farm-title2-size" style="text-align: right">空投{{mayairdrop_min}}~{{mayairdrop_max}}EOS</div>
       </el-col>
       <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="7">
       </el-col>
@@ -188,7 +188,7 @@
                   <mu-list-item-action>
                     <icon name="gift" scale="3"></icon>
                   </mu-list-item-action>
-                  <mu-list-item-sub-title>最终奖池:{{mygameinfo.last_reward_pool}}</mu-list-item-sub-title>
+                  <mu-list-item-sub-title>游戏总量:{{totaleos}}</mu-list-item-sub-title>
                 </mu-list-item>
                 <mu-list-item button>
                   <mu-list-item-action>
@@ -429,6 +429,7 @@
         //display info
         countdown: "24:00:00",
         totaleos: "0.0000 EOS",
+        last_reward_pool:"0.0000 EOS",
         airdropcolor: "rgba(142, 113, 199, 0.7)",
         airdropperc: 0,
         needairdrop: "0",
@@ -482,13 +483,13 @@
         if (that.$store.state.eosUserName) {
           that.requestPlayerInfo();
           that.requestEosTreeInfo();
-          that.requestRankUsers();
           that.requestMyEosAmount();
           that.requestMyJustAmount();
         }
         return that.timerLoop;
       });
       that.requestGameInfo();
+      that.requestRankUsers();
     },
     destroyed: function () {
       this.timerLoop = false;
@@ -1143,6 +1144,7 @@
       gameinfo: function (val) {
         var that = this;
         that.totaleos = Big(val.total_pool).div(10000).toFixed(4) + " EOS";
+
         that.mygameinfo.tree_cnt = val.tree_id + 1;
         that.mygameinfo.end_time = val.end_time;
         that.mygameinfo.last_one = val.last_one;
@@ -1150,6 +1152,7 @@
         that.mygameinfo.supply = val.supply;
         that.mygameinfo.airdrop_pool = Big(val.airdrop_pool).div(10000).toFixed(4) + " EOS";
         that.mygameinfo.last_reward_pool = Big(val.last_reward_pool).div(10000).toFixed(4) + " EOS";
+        that.last_reward_pool=that.mygameinfo.last_reward_pool;
         that.mygameinfo.total_pool = Big(val.total_pool).div(10000).toFixed(4) + " EOS";
         var airdrop1 = (val.total_pool / 10000) % 1000;
         that.airdropperc = parseInt(airdrop1 / 10);
@@ -1167,6 +1170,9 @@
         that.mygameinfo.game_state = val.game_state;
       }, playerinfo: function (val) {
         var that = this;
+        if(val.user!=that.$store.state.eosUserName){
+          return;
+        }
         that.myplayerinfo.tree_amount = val.tree_amount;
         that.myplayerinfo.share_url = "购买后获得";
         if (val.tree_amount > 0) {

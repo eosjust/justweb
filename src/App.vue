@@ -74,21 +74,28 @@
       <el-row type="flex" justify="center">
         <el-col :span="3">
           <div style="text-align: center;">
-            <icon name="wechat" scale="3"></icon>
+            <el-popover
+              placement="top"
+              width="250px"
+              trigger="click">
+              <img style="width: 250px;height: 250px;" :src="wechatImg"/>
+              <icon slot="reference"  name="wechat" scale="3"></icon>
+            </el-popover>
+            <!--<img :src="imgEosTree5"/>-->
           </div>
         </el-col>
         <el-col :span="3">
-          <div style="text-align: center;">
-            <icon name="github" scale="3"></icon>
+          <div @click="openGit" style="text-align: center;">
+            <icon  name="github" scale="3"></icon>
           </div>
         </el-col>
         <el-col :span="3">
-          <div style="text-align: center;">
-            <icon name="telegram" scale="3"></icon>
+          <div @click="openTele" style="text-align: center;">
+            <icon  name="telegram" scale="3"></icon>
           </div>
         </el-col>
         <el-col :span="3">
-          <div style="text-align: center;">
+          <div @click="openMail" style="text-align: center;">
             <icon name="mail" scale="3"></icon>
           </div>
         </el-col>
@@ -107,6 +114,7 @@
 
 <script>
   import eossdkutil from 'eos-sdk-util';
+  import wechatImgBase from '@/assets/wechat_img.jpeg';
 
   export default {
     name: 'App',
@@ -126,7 +134,8 @@
         menudrawdocked: false,
         menudrawopen: false,
         curUserName: null,
-        eosUsers: []
+        eosUsers: [],
+        wechatImg:wechatImgBase,
       }
     },
     created() {
@@ -144,13 +153,22 @@
           that.clientWidth = document.documentElement.clientWidth;
           that.clientHeight = document.documentElement.clientHeight;
         })()
-      }
+      };
     },
     methods: {
       changeLang(lang) {
         this.$i18n.locale = lang;
         this.$store.commit('changeLang', lang);
         this.isMenuLangOpen = false;
+      },
+      openGit(){
+        window.open("https://github.com/eosjust");
+      },
+      openTele(){
+        window.open("https://t.me/justchannelroom");
+      },
+      openMail(){
+        window.open("mailto:eosjust@outlook.com");
       },
       onClientSizeChange(width, height) {
         if (this.isclientmobile) {
