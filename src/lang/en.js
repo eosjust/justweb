@@ -67,5 +67,10 @@ module.exports={
     geteos:'pick up EOS',
     canget:'can pick',
     hasget:'has pick',
+
+    askinputacnt:'please input an account',
+    watchother:'watch other',
+    watchhim:'watch him',
+    backme:'back to me',
   }
 }

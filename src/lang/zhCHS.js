@@ -69,6 +69,11 @@ module.exports={
     canget:'可摘',
     hasget:'已摘',
 
+    askinputacnt:'请输入一个账号',
+    watchother:'看别人',
+    watchhim:'看他',
+    backme:'回自己',
+
 
 
   }

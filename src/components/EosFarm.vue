@@ -47,10 +47,12 @@
         <div>&nbsp;</div>
       </el-col>
       <el-col :xs="22" :sm="18" :md="14" :lg="12" :xl="12" style="background-color: #f5f5f5;border-radius: 5px;">
-        <mu-tabs :value.sync="tab1active" color="#009688" indicator-color="#009688" style="border-radius: 5px 5px 0px 0px;" left>
+        <mu-tabs :value.sync="tabBuyActive" color="#009688" style="border-radius: 5px 5px 0px 0px;" center>
           <mu-tab>{{$t('eosfarm.buytree')}}</mu-tab>
+          <mu-tab>{{$t('eosfarm.watchother')}}</mu-tab>
+          <!--<mu-tab>回收站</mu-tab>-->
         </mu-tabs>
-        <div style="padding: 20px;" class="demo-text" v-if="true">
+        <div style="padding: 20px;" class="demo-text" v-if="tabBuyActive === 0">
           <el-row type="flex" justify="center" align="middle">
             <el-col :span="20">
               <el-input placeholder="请输入EOS数量" v-model="buyeos">
@@ -86,7 +88,33 @@
             </el-col>
           </el-row>
         </div>
-
+        <div style="padding: 20px;" class="demo-text" v-if="tabBuyActive === 1">
+          <el-row type="flex" justify="center" align="middle">
+            <el-col :span="20">
+              <el-autocomplete
+                style="width: 100%"
+                v-model="inputSwitchUser"
+                :placeholder="$t('eosfarm.askinputacnt')"
+                :fetch-suggestions="queryEosAccount"
+                @select="setSwitchUser">
+              </el-autocomplete>
+            </el-col>
+          </el-row>
+          <el-row style="margin-top: 20px;" type="flex" justify="center" align="middle">
+            <el-col :span="7" justify="center" align="middle">
+              <mu-button full-width ripple color="secondary" @click="btnSwitchUser">
+                {{$t('eosfarm.watchhim')}}
+              </mu-button>
+            </el-col>
+            <el-col :span="6" justify="center" align="middle">
+            </el-col>
+            <el-col :span="7" justify="center" align="middle">
+              <mu-button full-width ripple color="secondary" @click="btnResetSwitchUser">
+                {{$t('eosfarm.backme')}}
+              </mu-button>
+            </el-col>
+          </el-row>
+        </div>
       </el-col>
       <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="6">
         <div>&nbsp;</div>
@@ -208,11 +236,11 @@
                   <mu-list-item button slot="nested">
                     <mu-list-item-content>
                       <mu-list-item-sub-title>{{$t('eosfarm.airdropincome')}}:{{myplayerinfo.income_airdrop}}</mu-list-item-sub-title>
-                      <mu-list-item-sub-title>{{$t('eosfarm.treeincomewith')}}:{{myplayerinfo.income_airdrop_with}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>{{$t('eosfarm.airdropincomewith')}}:{{myplayerinfo.income_airdrop_with}}</mu-list-item-sub-title>
                     </mu-list-item-content>
                     <mu-list-item-content>
                       <mu-list-item-sub-title>{{$t('eosfarm.refincome')}}:{{myplayerinfo.income_invited}}</mu-list-item-sub-title>
-                      <mu-list-item-sub-title>{{$t('eosfarm.treeincomewith')}}:{{myplayerinfo.income_invited_with}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>{{$t('eosfarm.refincomewith')}}:{{myplayerinfo.income_invited_with}}</mu-list-item-sub-title>
                     </mu-list-item-content>
                   </mu-list-item>
                   <mu-list-item button slot="nested">
@@ -452,11 +480,14 @@
     data() {
       return {
         tab1active: 0,
+        tabBuyActive: 0,
         bottomActionOpen: false,
         buyDialogOpen: false,
         timerLoop: true,
         infoDetailOpen: '',
         inviterName: "",
+        inputSwitchUser:"",
+        nowSwitchUser:"",
         //tab
         //const info
         farmcontract: "eosjustaward",
@@ -506,6 +537,10 @@
         myeostrees: [],
         myRankUsers: [],
         treePrice:"",
+        testEosAccounts:[
+          { "value": "justtest1111" },
+          { "value": "justtest2222" },
+        ],
 
       }
     },
@@ -573,6 +608,52 @@
       closeBuyDialog() {
         this.selectTree = null;
         this.buyDialogOpen = false;
+      },
+      queryEosAccount(queryString, cb){
+        var results=[];
+        if(this.myRankUsers){
+          for(var i=0;i<this.myRankUsers.length;i++){
+            var item=new Object();
+            item.value=this.myRankUsers[i].user;
+            results.push(item);
+          }
+        }
+        cb(results);
+
+        var that = this;
+        var eossdkutil = window.eossdkutil;
+        eossdkutil.getEosTableRows(
+          {
+            json: true,
+            code: that.farmcontract,
+            scope: that.farmcontract,
+            table: 'playerinfo',
+            limit: 100
+          }
+        ).then(function (result) {
+          var rows = result.data.rows;
+          if(rows&&rows.length>0){
+            for(var i=0;i<rows.length;i++){
+              var item=new Object();
+              item.value=rows[i].user;
+              results.push(item);
+            }
+          }
+        }).catch(function (error) {
+
+        });
+      },
+      setSwitchUser(item){
+        console.log(item);
+      },
+      btnSwitchUser(){
+        if(this.inputSwitchUser){
+          this.nowSwitchUser=this.inputSwitchUser;
+        }
+      },
+      btnResetSwitchUser(){
+        this.nowSwitchUser=null;
+        this.inputSwitchUser=null;
       },
       onMyLandClick(eostree) {
         this.selectTree = eostree;
@@ -686,6 +767,10 @@
         window.open("https://eosflare.io/account/" + this.$store.state.eosUserName);
       },
       btnBuy() {
+        if(this.nowSwitchUser){
+          this.$message("观察者模式禁止此操作");
+          return;
+        }
         if (!this.buyeos) {
           this.$message("请输入要购买的eos值");
           return;
@@ -744,6 +829,10 @@
         });
       },
       btnBuyDrug() {
+        if(this.nowSwitchUser){
+          this.$message("观察者模式禁止此操作");
+          return;
+        }
         var eossdkutil = window.eossdkutil;
         var that = this;
         if (!that.selectTree) {
@@ -784,6 +873,10 @@
         });
       },
       btnDeleteTree() {
+        if(this.nowSwitchUser){
+          this.$message("观察者模式禁止此操作");
+          return;
+        }
         var eossdkutil = window.eossdkutil;
         var that = this;
         if (!that.selectTree) {
@@ -822,6 +915,10 @@
         });
       },
       btnWithdrawAll() {
+        if(this.nowSwitchUser){
+          this.$message("观察者模式禁止此操作");
+          return;
+        }
         var eossdkutil = window.eossdkutil;
         var that = this;
         eossdkutil.pushEosAction({
@@ -851,6 +948,10 @@
         });
       },
       btnWithDrawTree() {
+        if(this.nowSwitchUser){
+          this.$message("观察者模式禁止此操作");
+          return;
+        }
         var eossdkutil = window.eossdkutil;
         var that = this;
         var selectId = 0;
@@ -893,6 +994,12 @@
       btnChkMyTree() {
         var eossdkutil = window.eossdkutil;
         var that = this;
+        var rqUser="";
+        if(this.nowSwitchUser!=null&&this.nowSwitchUser.length>0){
+          rqUser=this.nowSwitchUser;
+        }else{
+          rqUser=that.$store.state.eosUserName;
+        }
         eossdkutil.pushEosAction({
           actions: [
             {
@@ -905,7 +1012,7 @@
                 }
               ],
               data: {
-                user: that.$store.state.eosUserName
+                user: rqUser
               }
             }
           ]
@@ -974,12 +1081,18 @@
       requestPlayerInfo() {
         var that = this;
         var eossdkutil = window.eossdkutil;
+        var rqUser="";
+        if(this.nowSwitchUser!=null&&this.nowSwitchUser.length>0){
+          rqUser=this.nowSwitchUser;
+        }else{
+          rqUser=that.$store.state.eosUserName;
+        }
         eossdkutil.getEosTableRows(
           {
             json: true,
             code: that.farmcontract,
             scope: that.farmcontract,
-            lower_bound: that.$store.state.eosUserName,
+            lower_bound: rqUser,
             table: 'playerinfo',
             limit: 1
           }
@@ -996,11 +1109,17 @@
       requestEosTreeInfo() {
         var that = this;
         var eossdkutil = window.eossdkutil;
+        var rqUser="";
+        if(this.nowSwitchUser!=null&&this.nowSwitchUser.length>0){
+          rqUser=this.nowSwitchUser;
+        }else{
+          rqUser=that.$store.state.eosUserName;
+        }
         eossdkutil.getEosTableRows(
           {
             json: true,
             code: that.farmcontract,
-            scope: that.$store.state.eosUserName,
+            scope: rqUser,
             table: 'eostree',
             limit: 20
           }
@@ -1033,11 +1152,17 @@
       requestMyEosAmount() {
         var that = this;
         var eossdkutil = window.eossdkutil;
+        var rqUser="";
+        if(this.nowSwitchUser!=null&&this.nowSwitchUser.length>0){
+          rqUser=this.nowSwitchUser;
+        }else{
+          rqUser=that.$store.state.eosUserName;
+        }
         eossdkutil.getEosTableRows(
           {
             json: true,
             code: that.eostokencontract,
-            scope: that.$store.state.eosUserName,
+            scope: rqUser,
             table: 'accounts',
             limit: 20
           }
@@ -1059,11 +1184,17 @@
       requestMyJustAmount() {
         var that = this;
         var eossdkutil = window.eossdkutil;
+        var rqUser="";
+        if(this.nowSwitchUser!=null&&this.nowSwitchUser.length>0){
+          rqUser=this.nowSwitchUser;
+        }else{
+          rqUser=that.$store.state.eosUserName;
+        }
         eossdkutil.getEosTableRows(
           {
             json: true,
             code: that.justtokencontract,
-            scope: that.$store.state.eosUserName,
+            scope: rqUser,
             table: 'accounts',
             limit: 20
           }
@@ -1244,8 +1375,12 @@
         that.mygameinfo.game_state = val.game_state;
       }, playerinfo: function (val) {
         var that = this;
-        if(val.user!=that.$store.state.eosUserName){
-          return;
+        if(this.nowSwitchUser&&this.nowSwitchUser.length>0){
+
+        }else{
+          if(val.user!=that.$store.state.eosUserName){
+            return;
+          }
         }
         that.myplayerinfo.tree_amount = val.tree_amount;
         that.myplayerinfo.share_url = "购买后获得";
