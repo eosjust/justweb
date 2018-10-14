@@ -61,5 +61,11 @@ module.exports={
     lastawardincomewith:'has withdraw',
     account:'account',
     maywinshare:'win 3% EOS of next round',
+    watering:'watering',
+    continuediv:'continue the dividends',
+    remove:'remove',
+    geteos:'pick up EOS',
+    canget:'can pick',
+    hasget:'has pick',
   }
 }

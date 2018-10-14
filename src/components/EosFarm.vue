@@ -358,8 +358,8 @@
                   </mu-avatar>
                 </mu-list-item-action>
                 <mu-list-item-content>
-                  <mu-list-item-sub-title>浇水--{{drugPrice}}</mu-list-item-sub-title>
-                  <mu-list-item-sub-title>延长分红时间</mu-list-item-sub-title>
+                  <mu-list-item-sub-title>{{$t('eosfarm.watering')}}--{{drugPrice}}</mu-list-item-sub-title>
+                  <mu-list-item-sub-title>{{$t('eosfarm.continuediv')}}</mu-list-item-sub-title>
                 </mu-list-item-content>
               </mu-list-item>
               <mu-list-item button @click="btnDeleteTree">
@@ -368,7 +368,7 @@
                     <img style="width: 100%;height: auto;" src="../assets/a_remove.png"/>
                   </mu-avatar>
                 </mu-list-item-action>
-                <mu-list-item-sub-title>铲除</mu-list-item-sub-title>
+                <mu-list-item-sub-title>{{$t('eosfarm.geteos')}}</mu-list-item-sub-title>
               </mu-list-item>
               <mu-list-item button @click="btnWithDrawTree">
                 <mu-list-item-action>
@@ -377,8 +377,8 @@
                   </mu-avatar>
                 </mu-list-item-action>
                 <mu-list-item-content>
-                  <mu-list-item-sub-title>摘柚子</mu-list-item-sub-title>
-                  <mu-list-item-sub-title>可摘:{{selectTreeIncome}}，已摘:{{selectTreeWith}}</mu-list-item-sub-title>
+                  <mu-list-item-sub-title>{{$t('eosfarm.remove')}}</mu-list-item-sub-title>
+                  <mu-list-item-sub-title>{{$t('eosfarm.canget')}}:{{selectTreeIncome}}，{{$t('eosfarm.hasget')}}:{{selectTreeWith}}</mu-list-item-sub-title>
                 </mu-list-item-content>
 
               </mu-list-item>

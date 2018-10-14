@@ -62,6 +62,14 @@ module.exports={
     account:'账号',
     maywinshare:'第一名将获得下一轮3%收益',
 
+    watering:'浇水',
+    continuediv:'延长分红时间',
+    remove:'铲除',
+    geteos:'摘柚子',
+    canget:'可摘',
+    hasget:'已摘',
+
+
 
   }
 }
