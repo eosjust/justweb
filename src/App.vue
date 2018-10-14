@@ -219,7 +219,7 @@
 
           } else if (eossdkutil.getEnv() == "none") {
             this.$message({
-              message: '请安装scatter插件，或在eos dapp浏览器内运行',
+              message: that.$t('mainmenu.envtip'),
               type: 'warning'
             });
           }

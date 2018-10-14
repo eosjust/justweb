@@ -7,10 +7,10 @@
                   :class="$store.state.ismobile?'investjust-height50':'investjust-height100'">
             <el-row type="flex" justify="center" align="middle" class="investjust-height100">
               <el-col :span="24">
-                <div :class="$store.state.ismobile?'just-small-title':'just-big-title'">EOSJUST首款经营类游戏­­--柚子农场即将隆重发布</div>
-                <div :class="$store.state.ismobile?'just-small-desc':'just-big-desc'">独创的退出机制,收益到达1.3倍可以选择退出</div>
-                <div :class="$store.state.ismobile?'just-small-desc':'just-big-desc'">先进及后进的玩家完全公平，避免后期无人加入</div>
-                <div :class="$store.state.ismobile?'just-small-desc':'just-big-desc'">早期空投 1000 EOS</div>
+                <div :class="$store.state.ismobile?'just-small-title':'just-big-title'">{{$t('investjust.title')}}</div>
+                <div :class="$store.state.ismobile?'just-small-desc':'just-big-desc'">{{$t('investjust.desc1')}}</div>
+                <div :class="$store.state.ismobile?'just-small-desc':'just-big-desc'">{{$t('investjust.desc2')}}</div>
+                <div :class="$store.state.ismobile?'just-small-desc':'just-big-desc'">{{$t('investjust.desc3')}}</div>
               </el-col>
             </el-row>
           </el-col>

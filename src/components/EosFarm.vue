@@ -28,10 +28,10 @@
       <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="7">
       </el-col>
       <el-col :xs="11" :sm="9" :md="7" :lg="6" :xl="5">
-        <div class="p3d-green farm-title2-size">还需{{needairdrop}}EOS</div>
+        <div class="p3d-green farm-title3-size">{{$t('eosfarm.need')}}:{{needairdrop}}EOS</div>
       </el-col>
       <el-col :xs="11" :sm="9" :md="7" :lg="6" :xl="5">
-        <div class="p3d-green farm-title2-size" style="text-align: right">空投{{mayairdrop_min}}~{{mayairdrop_max}}EOS</div>
+        <div class="p3d-green farm-title3-size" style="text-align: right">{{$t('eosfarm.award')}}:{{mayairdrop_min}}~{{mayairdrop_max}}EOS</div>
       </el-col>
       <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="7">
       </el-col>
@@ -48,7 +48,7 @@
       </el-col>
       <el-col :xs="22" :sm="18" :md="14" :lg="12" :xl="12" style="background-color: #f5f5f5;border-radius: 5px;">
         <mu-tabs :value.sync="tab1active" color="#009688" indicator-color="#009688" style="border-radius: 5px 5px 0px 0px;" left>
-          <mu-tab>购买树苗</mu-tab>
+          <mu-tab>{{$t('eosfarm.buytree')}}</mu-tab>
         </mu-tabs>
         <div style="padding: 20px;" class="demo-text" v-if="true">
           <el-row type="flex" justify="center" align="middle">
@@ -81,7 +81,7 @@
           <el-row class="top_margin" type="flex" justify="center" align="middle">
             <el-col :span="20" justify="center" align="middle">
               <mu-button full-width ripple color="secondary" @click="btnBuy">
-                Buy
+                {{$t('eosfarm.buy')}}
               </mu-button>
             </el-col>
           </el-row>
@@ -93,24 +93,24 @@
       </el-col>
     </el-row>
 
-    <!--<el-row type="flex" justify="center" align="middle">-->
-      <!--<el-col :span="8"></el-col>-->
-      <!--<el-col :span="8" justify="center" align="middle">-->
-        <!--<mu-button ripple color="primary" @click="btnStart">-->
-          <!--start-->
-        <!--</mu-button>-->
-        <!--<mu-button ripple color="primary" @click="btnReset">-->
-          <!--reset-->
-        <!--</mu-button>-->
-        <!--<mu-button ripple color="primary" @click="btnFinish">-->
-          <!--finish-->
-        <!--</mu-button>-->
-        <!--<mu-button ripple color="primary" @click="btnCheck">-->
-          <!--check-->
-        <!--</mu-button>-->
-      <!--</el-col>-->
-      <!--<el-col :span="8"></el-col>-->
-    <!--</el-row>-->
+    <el-row type="flex" justify="center" align="middle" v-show="false">
+      <el-col :span="8"></el-col>
+      <el-col :span="8" justify="center" align="middle">
+        <mu-button ripple color="primary" @click="btnStart">
+          start
+        </mu-button>
+        <mu-button ripple color="primary" @click="btnReset">
+          reset
+        </mu-button>
+        <mu-button ripple color="primary" @click="btnFinish">
+          finish
+        </mu-button>
+        <mu-button ripple color="primary" @click="btnCheck">
+          check
+        </mu-button>
+      </el-col>
+      <el-col :span="8"></el-col>
+    </el-row>
     <el-row type="flex" justify="center" align="middle"
             style="margin-top: 50px;margin-bottom: 50px;padding-left: 5%;padding-right: 5%;">
       <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="6">
@@ -119,27 +119,27 @@
       <el-col :xs="22" :sm="18" :md="14" :lg="12" :xl="12" style="background-color: #f5f5f5;border-radius: 5px;">
         <mu-tabs :value.sync="tab1active" color="#009688" style="border-radius: 5px 5px 0px 0px;" center>
           <!--<mu-tab>买树苗</mu-tab>-->
-          <mu-tab>统计信息</mu-tab>
-          <mu-tab>玩法说明</mu-tab>
-          <mu-tab>排行榜</mu-tab>
+          <mu-tab>{{$t('eosfarm.summary')}}</mu-tab>
+          <mu-tab>{{$t('eosfarm.howtoplay')}}</mu-tab>
+          <mu-tab>{{$t('eosfarm.ranklist')}}</mu-tab>
         </mu-tabs>
         <div class="demo-text" v-if="tab1active === 0">
           <el-row>
             <el-col :span="24">
               <mu-list toggle-nested>
-                <mu-sub-header>个人数据</mu-sub-header>
+                <mu-sub-header>{{$t('eosfarm.userdata')}}</mu-sub-header>
 
                 <mu-list-item button>
                   <mu-list-item-action>
                     <icon name="tree3" scale="3"></icon>
                   </mu-list-item-action>
                   <mu-list-item-content>
-                    <mu-list-item-sub-title>树苗总量:{{myplayerinfo.tree_amount}}</mu-list-item-sub-title>
-                    <mu-list-item-sub-title>收益同步:{{myplayerinfo.income_sync}}</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>{{$t('eosfarm.treeamount')}}:{{myplayerinfo.tree_amount}}</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>{{$t('eosfarm.incomesync')}}:{{myplayerinfo.income_sync}}</mu-list-item-sub-title>
                   </mu-list-item-content>
                   <mu-list-item-action>
                     <mu-button small flat color="pink" @click="openBuyDialog">
-                      购买
+                      {{$t('eosfarm.buy')}}
                     </mu-button>
                   </mu-list-item-action>
                 </mu-list-item>
@@ -148,8 +148,8 @@
                     <icon name="wallet2" scale="3"></icon>
                   </mu-list-item-action>
                   <mu-list-item-content>
-                    <mu-list-item-sub-title>可提现:{{myplayerinfo.income_total}}</mu-list-item-sub-title>
-                    <mu-list-item-sub-title>已提现:{{myplayerinfo.income_total_with}}</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>{{$t('eosfarm.canwith')}}:{{myplayerinfo.income_total}}</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>{{$t('eosfarm.haswith')}}:{{myplayerinfo.income_total_with}}</mu-list-item-sub-title>
                   </mu-list-item-content>
                   <mu-list-item-action >
                     <!--<mu-button icon color="primary">-->
@@ -161,7 +161,7 @@
                   </mu-list-item-action>
                   <mu-list-item-action>
                     <mu-button small flat color="pink" @click="btnWithdrawAll">
-                      提现
+                      {{$t('eosfarm.withdraw')}}
                     </mu-button>
                   </mu-list-item-action>
                 </mu-list-item>
@@ -170,12 +170,12 @@
                     <icon name="wallet" scale="3"></icon>
                   </mu-list-item-action>
                   <mu-list-item-content>
-                    <mu-list-item-sub-title>EOS余额:{{myEosAmount}}</mu-list-item-sub-title>
-                    <mu-list-item-sub-title>JUST余额:{{myJustAmount}}</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>{{$t('eosfarm.eosbalance')}}:{{myEosAmount}}</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>{{$t('eosfarm.justbalance')}}:{{myJustAmount}}</mu-list-item-sub-title>
                   </mu-list-item-content>
                   <mu-list-item-action>
                     <mu-button small flat color="pink" @click="btnOpenEosflare">
-                      查看
+                      {{$t('eosfarm.view')}}
                     </mu-button>
                   </mu-list-item-action>
                 </mu-list-item>
@@ -184,78 +184,78 @@
                     <icon name="share" scale="3"></icon>
                   </mu-list-item-action>
                   <mu-list-item-content>
-                    <mu-list-item-sub-title>推广链接:</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>{{$t('eosfarm.reflink')}}:</mu-list-item-sub-title>
                     <mu-list-item-sub-title>{{myplayerinfo.share_url}}</mu-list-item-sub-title>
                   </mu-list-item-content>
                   <mu-list-item-action>
                     <mu-button small flat color="pink" @click="copyShareUrl">
-                      复制
+                      {{$t('eosfarm.copy')}}
                     </mu-button>
                   </mu-list-item-action>
                 </mu-list-item>
                 <mu-list-item button nested :open="infoDetailOpen === 'player_detail'"
                               @toggle-nested="infoDetailOpen = arguments[0] ? 'player_detail' : ''">
-                  <mu-list-item-sub-title>详情</mu-list-item-sub-title>
+                  <mu-list-item-sub-title>{{$t('eosfarm.detail')}}</mu-list-item-sub-title>
                   <mu-list-item-action>
                     <mu-icon class="toggle-icon" size="24" value="keyboard_arrow_down"></mu-icon>
                   </mu-list-item-action>
                   <mu-list-item button slot="nested">
                     <mu-list-item-content>
-                      <mu-list-item-sub-title>树苗可提:{{myplayerinfo.income_tree}}</mu-list-item-sub-title>
-                      <mu-list-item-sub-title>树苗已提:{{myplayerinfo.income_tree_with}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>{{$t('eosfarm.treeincome')}}:{{myplayerinfo.income_tree}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>{{$t('eosfarm.treeincomewith')}}:{{myplayerinfo.income_tree_with}}</mu-list-item-sub-title>
                     </mu-list-item-content>
                   </mu-list-item>
                   <mu-list-item button slot="nested">
                     <mu-list-item-content>
-                      <mu-list-item-sub-title>空投可提:{{myplayerinfo.income_airdrop}}</mu-list-item-sub-title>
-                      <mu-list-item-sub-title>空投已提:{{myplayerinfo.income_airdrop_with}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>{{$t('eosfarm.airdropincome')}}:{{myplayerinfo.income_airdrop}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>{{$t('eosfarm.treeincomewith')}}:{{myplayerinfo.income_airdrop_with}}</mu-list-item-sub-title>
                     </mu-list-item-content>
                     <mu-list-item-content>
-                      <mu-list-item-sub-title>邀请可提:{{myplayerinfo.income_invited}}</mu-list-item-sub-title>
-                      <mu-list-item-sub-title>邀请已提:{{myplayerinfo.income_invited_with}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>{{$t('eosfarm.refincome')}}:{{myplayerinfo.income_invited}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>{{$t('eosfarm.treeincomewith')}}:{{myplayerinfo.income_invited_with}}</mu-list-item-sub-title>
                     </mu-list-item-content>
                   </mu-list-item>
                   <mu-list-item button slot="nested">
                     <mu-list-item-content>
-                      <mu-list-item-sub-title>股东可提:{{myplayerinfo.income_share}}</mu-list-item-sub-title>
-                      <mu-list-item-sub-title>股东已提:{{myplayerinfo.income_share_with}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>{{$t('eosfarm.shareincome')}}:{{myplayerinfo.income_share}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>{{$t('eosfarm.shareincomewith')}}:{{myplayerinfo.income_share_with}}</mu-list-item-sub-title>
                     </mu-list-item-content>
                     <mu-list-item-content>
-                      <mu-list-item-sub-title>最终大奖:{{myplayerinfo.income_award}}</mu-list-item-sub-title>
-                      <mu-list-item-sub-title>大奖已提:{{myplayerinfo.income_award_with}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>{{$t('eosfarm.lastawardincome')}}:{{myplayerinfo.income_award}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>{{$t('eosfarm.lastawardincomewith')}}:{{myplayerinfo.income_award_with}}</mu-list-item-sub-title>
                     </mu-list-item-content>
                   </mu-list-item>
                 </mu-list-item>
               </mu-list>
               <mu-divider></mu-divider>
               <mu-list>
-                <mu-sub-header>游戏数据</mu-sub-header>
+                <mu-sub-header>{{$t('eosfarm.gamedata')}}</mu-sub-header>
                 <mu-list-item button>
                   <mu-list-item-action>
                     <icon name="tree3" scale="3"></icon>
                   </mu-list-item-action>
                   <mu-list-item-content>
-                    <mu-list-item-sub-title>树苗总量:{{mygameinfo.supply}}</mu-list-item-sub-title>
-                    <mu-list-item-sub-title>已开垦:{{mygameinfo.tree_cnt}}</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>{{$t('eosfarm.treeamount')}}:{{mygameinfo.supply}}</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>{{$t('eosfarm.landnum')}}:{{mygameinfo.tree_cnt}}</mu-list-item-sub-title>
                   </mu-list-item-content>
                 </mu-list-item>
                 <mu-list-item button>
                   <mu-list-item-action>
                     <icon name="gift" scale="3"></icon>
                   </mu-list-item-action>
-                  <mu-list-item-sub-title>游戏总量:{{totaleos}}</mu-list-item-sub-title>
+                  <mu-list-item-sub-title>{{$t('eosfarm.totaleos')}}:{{totaleos}}</mu-list-item-sub-title>
                 </mu-list-item>
                 <mu-list-item button>
                   <mu-list-item-action>
                     <icon name="airdrop" scale="3"></icon>
                   </mu-list-item-action>
-                  <mu-list-item-sub-title>空投奖池:{{mygameinfo.airdrop_pool}}</mu-list-item-sub-title>
+                  <mu-list-item-sub-title>{{$t('eosfarm.airdroppool')}}:{{mygameinfo.airdrop_pool}}</mu-list-item-sub-title>
                 </mu-list-item>
                 <mu-list-item button>
                   <mu-list-item-action>
                     <icon name="vip" scale="3"></icon>
                   </mu-list-item-action>
-                  <mu-list-item-sub-title>最终赢家:{{mygameinfo.last_one}}</mu-list-item-sub-title>
+                  <mu-list-item-sub-title>{{$t('eosfarm.lastwinner')}}:{{mygameinfo.last_one}}</mu-list-item-sub-title>
                 </mu-list-item>
               </mu-list>
             </el-col>
@@ -274,8 +274,8 @@
               &nbsp;&nbsp;&nbsp;3%奖励本轮股东，股东为上一轮购买树苗最多的玩家，第一轮没有股东，奖励给当前购买树苗最多的玩家<br/>
             </p>
             <p>
-              3.树苗收益达到成本的130%，出现8小时倒计时<br/>
-              &nbsp;&nbsp;&nbsp;可通过浇水延续分红时间，价格为成本1%，每次递增树苗成本1%，每次续命8小时
+              3.树苗收益达到成本的130%，出现30分钟倒计时<br/>
+              &nbsp;&nbsp;&nbsp;可通过浇水延续分红时间，价格为成本1%，每次递增树苗成本1%，每次续命2小时
             </p>
             <p>
               4.树苗倒计时结束，不再享受分红，由此树苗发行量下降，购买新树苗价格将降低
@@ -285,7 +285,7 @@
               &nbsp;&nbsp;&nbsp;如果还需购买树苗，需要将树苗铲除，已铲除的树苗不再享受分红
             </p>
             <p>
-              6.每售出1000 EOS的树苗，从空投池中发送4~12%的EOS奖励买家<br/>
+              6.每售出1000 EOS的树苗，从空投池中发送6~14%的EOS奖励买家<br/>
               &nbsp;&nbsp;&nbsp;空投池初始资金1000 EOS
             </p>
             <p>
@@ -315,11 +315,11 @@
                   </mu-avatar>
                 </mu-list-item-action>
                 <mu-list-item-content>
-                  <mu-list-item-sub-title>用户名:{{rankUser.user}}</mu-list-item-sub-title>
-                  <mu-list-item-sub-title>树苗总量:{{rankUser.tree_amount}}</mu-list-item-sub-title>
+                  <mu-list-item-sub-title>{{$t('eosfarm.account')}} : {{rankUser.user}}</mu-list-item-sub-title>
+                  <mu-list-item-sub-title>{{$t('eosfarm.treeamount')}} : {{rankUser.tree_amount}}</mu-list-item-sub-title>
                 </mu-list-item-content>
                 <mu-list-item-action v-show="rankUser.inx==0">
-                  <mu-list-item-after-text>将获得下一轮3%收益</mu-list-item-after-text>
+                  <mu-list-item-after-text>{{$t('eosfarm.maywinshare')}}</mu-list-item-after-text>
                 </mu-list-item-action>
               </mu-list-item>
             </mu-list>
@@ -1232,8 +1232,8 @@
         that.airdropperc = parseInt(airdrop1 / 10);
         that.needairdrop = (1000 - airdrop1).toFixed(2);
         var expAirDropPool = (val.airdrop_pool / 10000) + that.needairdrop / 10;
-        that.mayairdrop_min = (expAirDropPool * 0.04).toFixed(2);
-        that.mayairdrop_max = (expAirDropPool * 0.12).toFixed(2);
+        that.mayairdrop_min = (expAirDropPool * 0.06).toFixed(2);
+        that.mayairdrop_max = (expAirDropPool * 0.14).toFixed(2);
         that.airdropcolor = "rgba(" + 50 + ", " + 200 + ", 0, 1)";
         if (that.airdropperc > 0 && that.airdropperc < 50) {
           that.airdropcolor = "rgba(" + (50 + that.airdropperc * 4) + ", " + 200 + ", 0, 1)";
@@ -1291,6 +1291,10 @@
 
   .farm-title2-size {
     font-size: 1.6em;
+  }
+
+  .farm-title3-size {
+    font-size: 1.4em;
   }
 
   .img-in-text {
