@@ -1228,12 +1228,12 @@
         that.mygameinfo.last_reward_pool = Big(val.last_reward_pool).div(10000).toFixed(4) + " EOS";
         that.last_reward_pool=that.mygameinfo.last_reward_pool;
         that.mygameinfo.total_pool = Big(val.total_pool).div(10000).toFixed(4) + " EOS";
-        var airdrop1 = (val.total_pool / 10000) % 1000;
-        that.airdropperc = parseInt(airdrop1 / 10);
-        that.needairdrop = (1000 - airdrop1).toFixed(2);
+        var airdrop1 = (val.total_pool / 10000) % 500;
+        that.airdropperc = parseInt(airdrop1 / 5);
+        that.needairdrop = (500 - airdrop1).toFixed(2);
         var expAirDropPool = (val.airdrop_pool / 10000) + that.needairdrop / 10;
-        that.mayairdrop_min = (expAirDropPool * 0.06).toFixed(2);
-        that.mayairdrop_max = (expAirDropPool * 0.14).toFixed(2);
+        that.mayairdrop_min = (expAirDropPool * 0.03).toFixed(2);
+        that.mayairdrop_max = (expAirDropPool * 0.07).toFixed(2);
         that.airdropcolor = "rgba(" + 50 + ", " + 200 + ", 0, 1)";
         if (that.airdropperc > 0 && that.airdropperc < 50) {
           that.airdropcolor = "rgba(" + (50 + that.airdropperc * 4) + ", " + 200 + ", 0, 1)";
