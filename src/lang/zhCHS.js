@@ -25,7 +25,7 @@ module.exports={
     desc3:'不间断送出大奖，初始奖池 1000EOS',
   },
   eosfarm: {
-    need:'还需',
+    need:'每售出500EOS',
     award:'奖励',
     buytree:'购买树苗',
     buy:'购买',
@@ -70,7 +70,7 @@ module.exports={
     hasget:'已摘',
 
     askinputacnt:'请输入一个账号',
-    watchother:'看别人',
+    watchother:'偷看',
     watchhim:'看他',
     backme:'回自己',
 

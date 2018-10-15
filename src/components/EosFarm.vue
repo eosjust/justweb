@@ -28,7 +28,7 @@
       <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="7">
       </el-col>
       <el-col :xs="11" :sm="9" :md="7" :lg="6" :xl="5">
-        <div class="p3d-green farm-title3-size">{{$t('eosfarm.need')}}:{{needairdrop}}EOS</div>
+        <div class="p3d-green farm-title3-size">{{$t('eosfarm.need')}}</div>
       </el-col>
       <el-col :xs="11" :sm="9" :md="7" :lg="6" :xl="5">
         <div class="p3d-green farm-title3-size" style="text-align: right">{{$t('eosfarm.award')}}:{{mayairdrop_min}}~{{mayairdrop_max}}EOS</div>
@@ -313,7 +313,7 @@
               &nbsp;&nbsp;&nbsp;如果还需购买树苗，需要将树苗铲除，已铲除的树苗不再享受分红
             </p>
             <p>
-              6.每售出1000 EOS的树苗，从空投池中发送6~14%的EOS奖励买家<br/>
+              6.每售出500 EOS的树苗，从空投池中发送3~7%的EOS奖励买家<br/>
               &nbsp;&nbsp;&nbsp;空投池初始资金1000 EOS
             </p>
             <p>
