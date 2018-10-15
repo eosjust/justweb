@@ -25,7 +25,7 @@ module.exports={
     desc3:'Uninterrupted bonuses, the initial prize pool has 1000EOS',
   },
   eosfarm: {
-    need:'need',
+    need:'every 500EOS',
     award:'award',
     buytree:'buy trees',
     buy:'buy',
