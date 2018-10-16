@@ -1,5 +1,39 @@
 <template>
   <el-row>
+
+
+    <el-row type="flex" justify="center" align="middle" style="margin-top: 50px;">
+      <el-col :span="4"></el-col>
+      <el-col :span="16" justify="center" align="middle">
+        <el-alert
+          title=""
+          type="error">
+          <div>公告</div>
+          <div>由于游戏推广不利，游戏并没有取的预期的结果，由于游戏即将结束，而JUST代币的早期投资者仍在此游戏中亏损</div>
+          <div>所以开发者决定手动结束游戏，并将最终大奖691.6100 EOS 和空投池中的1000EOS用于补偿游戏中亏损的用户</div>
+          <div>具体补偿规则稍后公布到官方微信群，没有加群的朋友请加微信：hupanjingdu2018，未在微信群中的玩家不能得到补偿</div>
+          <div>我们将于不久后推出新游戏《夺宝争霸》请投资者继续相信我们</div>
+        </el-alert>
+        <br/>
+        <br/>
+        <el-alert
+          title=""
+          type="error">
+          <div>Announcement</div>
+          <div>Due to the failure of the game promotion, the game did not take the expected results, </div>
+          <div>because the game is coming to an end, and the early investors of the JUST token are still losing money in this game.</div>
+          <div>So the developer decided to end the game manually, and used the final jackpot 691.6100 EOS and the 1000EOS in the airdrop pool to compensate the losing users in the game.</div>
+          <div>The specific compensation rules will be announced to the official WeChat group later. If you have no group friends, please add WeChat: hupanjingdu2018. Players who are not in the WeChat group cannot get compensation.</div>
+          <div>We will launch a new game in the near future, "GiftCraft", please investors continue to believe us</div>
+        </el-alert>
+
+
+      </el-col>
+      <el-col :span="4"></el-col>
+    </el-row>
+
+
+
     <el-row type="flex" justify="center" align="middle" style="margin-top: 50px;">
       <el-col :span="8"></el-col>
       <el-col :span="8" justify="center" align="middle">

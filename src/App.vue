@@ -12,6 +12,9 @@
         <mu-button flat ripple color="primary" to="/eosfarm">
           {{$t('mainmenu.farm')}}
         </mu-button>
+        <mu-button flat ripple color="primary" to="/treasure">
+          {{$t('mainmenu.treasure')}}
+        </mu-button>
         <mu-button flat ripple color="primary" to="/investjust">
           {{$t('mainmenu.investjust')}}
         </mu-button>
@@ -63,9 +66,13 @@
         <mu-list-item button to="eosfarm" @click="menudrawopen = false">
           <mu-list-item-title> {{$t('mainmenu.farm')}}</mu-list-item-title>
         </mu-list-item>
+        <mu-list-item button to="treasure" @click="menudrawopen = false">
+          <mu-list-item-title> {{$t('mainmenu.treasure')}}</mu-list-item-title>
+        </mu-list-item>
         <mu-list-item button to="investjust" @click="menudrawopen = false">
           <mu-list-item-title> {{$t('mainmenu.investjust')}}</mu-list-item-title>
         </mu-list-item>
+
       </mu-list>
     </mu-drawer>
     <router-view/>

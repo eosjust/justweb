@@ -7,6 +7,7 @@ import Navigate from '@/components/Navigate'
 import Setting from '@/components/Setting'
 import InvestJust from '@/components/InvestJust'
 import EosFarm from '@/components/EosFarm'
+import Treasure from '@/components/Treasure'
 
 Vue.use(Router)
 
@@ -47,6 +48,11 @@ export default new Router({
       path: '/eosfarm',
       name: 'EosFarm',
       component: EosFarm
+    },
+    {
+      path: '/treasure',
+      name: 'Treasure',
+      component: Treasure
     }
 
 

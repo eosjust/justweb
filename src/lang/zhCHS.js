@@ -1,6 +1,7 @@
 module.exports={
   mainmenu: {
     farm:'柚子农场',
+    treasure:'夺宝争霸',
     login:'登录',
     logout:'退出',
     home:'首页',

@@ -9,13 +9,15 @@ import store from './store';
 import i18n from './lang';
 import ElementUI from 'element-ui';
 import Icon from 'vue-svg-icon/Icon.vue';
+import Croppa from 'vue-croppa'
 import 'element-ui/lib/theme-chalk/index.css';
-
+import 'vue-croppa/dist/vue-croppa.css'
 
 Vue.config.productionTip = false;
 Vue.component('icon', Icon);
 Vue.use(MuseUI);
 Vue.use(ElementUI);
+Vue.use(Croppa);
 
 /* eslint-disable no-new */
 new Vue({

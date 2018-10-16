@@ -4,6 +4,7 @@ module.exports={
     login:'Login',
     logout:'Logout',
     farm:'eosfarm',
+    treasure:'giftcraft',
     games:'Games',
     tpdemo:'tp-sdk-demo',
     hello: 'Hello',
