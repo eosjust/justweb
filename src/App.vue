@@ -147,6 +147,7 @@
     },
     created() {
       this.changeLang(this.$store.state.lang);
+
       this.checkClient();
     },
     computed: {},
