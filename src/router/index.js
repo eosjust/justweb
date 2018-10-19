@@ -8,7 +8,8 @@ import Setting from '@/components/Setting'
 import InvestJust from '@/components/InvestJust'
 import EosFarm from '@/components/EosFarm'
 import Treasure from '@/components/Treasure'
-import GiftCraft from '@/components/GiftCraft'
+import AwardCraft from '@/components/AwardCraft'
+
 
 Vue.use(Router)
 
@@ -56,9 +57,9 @@ export default new Router({
       component: Treasure
     },
     {
-      path: '/giftcraft',
-      name: 'GiftCraft',
-      component: GiftCraft
+      path: '/awardcraft',
+      name: 'AwardCraft',
+      component: AwardCraft
     }
 
 
