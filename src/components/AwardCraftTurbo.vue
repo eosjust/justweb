@@ -81,7 +81,6 @@
       },
       data() {
         return {
-          award_tab_active:0,
           currentDate: new Date(),
           loading:false,
         }

@@ -84,8 +84,6 @@
     },
     data() {
       return {
-        tabInvestActive:0,
-        award_tab_active: 1,
         loading: false,
       }
     },

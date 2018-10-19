@@ -31,40 +31,6 @@
       </el-col>
       <el-col :span="2"></el-col>
     </el-row>
-
-    <!--<el-row type="flex" justify="center" align="middle" style="margin-top: 50px;">-->
-      <!--<el-col :span="2"></el-col>-->
-      <!--<el-col :span="8" justify="center" align="middle">-->
-        <!--<croppa v-model="myCroppa"-->
-                <!--:width="200"-->
-                <!--:height="200"-->
-                <!--:quality="1"-->
-        <!--&gt;</croppa>-->
-      <!--</el-col>-->
-      <!--<el-col :span="8" justify="center" align="middle">-->
-        <!--<img :src="imgb64" />-->
-      <!--</el-col>-->
-      <!--<el-col :span="2"></el-col>-->
-    <!--</el-row>-->
-    <!--<el-row type="flex" justify="center" align="middle" style="margin-top: 50px;">-->
-      <!--<el-col :span="8"></el-col>-->
-      <!--<el-col :span="8" justify="center" align="middle">-->
-        <!--<mu-button @click="btnGetImg64"></mu-button>-->
-      <!--</el-col>-->
-      <!--<el-col :span="8"></el-col>-->
-    <!--</el-row>-->
-    <!--<el-row type="flex" justify="center" align="middle" style="margin-top: 50px;">-->
-      <!--<el-col :span="8"></el-col>-->
-      <!--<el-col :span="8" justify="center" align="middle">-->
-        <!--<el-input-->
-          <!--type="textarea"-->
-          <!--:rows="2"-->
-          <!--placeholder="请输入内容"-->
-          <!--v-model="imgb64">-->
-        <!--</el-input>-->
-      <!--</el-col>-->
-      <!--<el-col :span="8"></el-col>-->
-    <!--</el-row>-->
   </el-row>
 </template>
 

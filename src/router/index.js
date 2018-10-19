@@ -18,7 +18,7 @@ export default new Router({
     {
       path: '/',
       name: 'index',
-      component: EosFarm
+      component: InvestJust
     },
     {
       path: '/moragame',
