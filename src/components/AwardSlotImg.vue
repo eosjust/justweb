@@ -1,17 +1,16 @@
 <template>
   <el-col :span="$store.state.ismobile?12:6" >
     <el-card :body-style="{ padding: '0px' }" style="padding: 0px;margin: 6px;">
-      <img src="../assets/gift5.jpg" class="image">
+      <img :src="data.img" class="image">
       <el-row style="padding: 12px;">
-        <div class="award-slot-img-title-text">占用内存:200kb</div>
-        <div class="award-slot-img-title-text">上传进度:100/200</div>
+        <div class="award-slot-img-title-text">占用内存:{{getImgSizeStr(data.imgsize)}}</div>
         <el-row type="flex" justify="space-between">
           <el-col :span="6">
-            <mu-button flat color="secondary">继续上传</mu-button>
+            <!--<mu-button flat color="secondary">继续上传</mu-button>-->
           </el-col>
           <el-col :span="6">
             <el-row type="flex" justify="end">
-              <mu-button flat color="secondary">删除</mu-button>
+              <mu-button @click="btnDelImg" flat color="secondary">删除</mu-button>
             </el-row>
           </el-col>
         </el-row>
@@ -29,12 +28,48 @@
     },
     data() {
       return {
-        isActive:false,
+
       }
     },
     methods: {
-      onSlotSmallClick(){
-        this.isActive=!this.isActive;
+      btnDelImg(){
+        var that = this;
+        if(this.data&&this.data.upsize&&this.data.upsize>0){
+
+        }else{
+          return;
+        }
+        var eossdkutil = window.eossdkutil;
+        eossdkutil.pushEosAction({
+          actions: [
+            {
+              account: "eosjustturbo",
+              name: "delimg",
+              authorization: [
+                {
+                  actor: that.$store.state.eosUserName,
+                  permission: "active"
+                }
+              ],
+              data: {
+                img_id:that.data.id,
+                user: that.$store.state.eosUserName,
+              }
+            }
+          ]
+        }).then(function (result) {
+          that.$message("删除成功");
+        }).catch(function (error) {
+          that.$message(error);
+        });
+      },
+      getImgSizeStr(size){
+        if(size&&size>0){
+          return parseFloat(size)/1000+"Kb";
+        }else{
+          return "0Kb";
+        }
+
       }
     },
     watch: {}

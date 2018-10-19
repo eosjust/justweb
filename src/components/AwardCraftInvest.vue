@@ -12,7 +12,7 @@
               </el-row>
               <el-row type="flex">
                 <el-col :span="24">
-                  <AwardSlotBig></AwardSlotBig>
+                  <AwardSlotBig :data="curSlot"></AwardSlotBig>
                 </el-col>
               </el-row>
               <el-row type="flex" justify="end">
@@ -25,17 +25,17 @@
               </el-row>
               <el-row>
                 <el-row type="flex" justify="center" style="padding: 10px;">
-                  <el-input placeholder="长度12以内，.1-5,a-z的英文字符串" v-model="buyeos">
+                  <el-input placeholder="长度12以内，.1-5,a-z的英文字符串" v-model="newSlotName">
                     <template slot="prepend">名字</template>
                   </el-input>
                 </el-row>
                 <el-row type="flex" justify="center" style="padding: 10px;">
-                  <el-input placeholder="" v-model="buyeos">
+                  <el-input placeholder="" v-model="newSlotTitle">
                     <template slot="prepend">标题</template>
                   </el-input>
                 </el-row>
                 <el-row type="flex" justify="center" style="padding: 10px;">
-                  <el-input placeholder="" v-model="buyeos">
+                  <el-input placeholder="" v-model="newSlotGoodsPrice">
                     <template slot="prepend">商品价格</template>
                   </el-input>
                 </el-row>
@@ -49,22 +49,21 @@
       <el-col :xs="1" :sm="3" :md="5" :lg="6" :xl="6">
       </el-col>
     </el-row>
+
     <el-row type="flex" justify="center" align="middle"
             style="margin-bottom: 50px;padding-left: 5%;padding-right: 5%;">
       <el-col :xs="1" :sm="3" :md="4" :lg="4" :xl="4">
       </el-col>
       <el-col :xs="22" :sm="18" :md="16" :lg="16" :xl="16">
+
         <el-row>
-          <AwardSlotSmall></AwardSlotSmall>
-          <AwardSlotSmall></AwardSlotSmall>
-          <AwardSlotSmall></AwardSlotSmall>
-          <AwardSlotSmall></AwardSlotSmall>
-          <AwardSlotSmall></AwardSlotSmall>
-          <AwardSlotSmall></AwardSlotSmall>
-          <AwardSlotSmall></AwardSlotSmall>
-          <AwardSlotSmall></AwardSlotSmall>
-          <AwardSlotSmall></AwardSlotSmall>
-          <AwardSlotSmall></AwardSlotSmall>
+          <div class="award-invest-tip-text">点击下方坑位查看详情</div>
+        </el-row>
+        <el-row>
+          <mu-divider></mu-divider>
+        </el-row>
+        <el-row>
+          <AwardSlotSmall v-for="slot in myallslotinfo" :key="slot.key" :data="slot" :isActive="curSlot.key==slot.key" @onclick="btnOnSlotSmallClick"></AwardSlotSmall>
         </el-row>
       </el-col>
       <el-col :xs="1" :sm="3" :md="4" :lg="4" :xl="4">
@@ -74,6 +73,7 @@
 </template>
 
 <script>
+  import timeout from 'timeout';
   import AwardSlotSmall from '@/components/AwardSlotSmall';
   import AwardSlotBig from '@/components/AwardSlotBig';
   export default {
@@ -84,11 +84,22 @@
     },
     data() {
       return {
-        loading: false,
+        myallslotinfo:[],
+        curSlot:{},
+        newSlotName:"",
+        newSlotTitle:"",
+        newSlotGoodsPrice:"",
+
       }
     },
     created() {
-
+      var that=this;
+      this.timerLoop=true;
+      this.requestAllSlot();
+      timeout.timeout(2000, function () {
+        that.requestAllSlot();
+        return that.timerLoop;
+      });
     },
     mounted() {
 
@@ -97,10 +108,26 @@
 
     },
     methods: {
-      btnGetImg64() {
-      },
-      btnStart() {
+      requestAllSlot() {
+        var that = this;
+        var eossdkutil = window.eossdkutil;
+        eossdkutil.getEosTableRows(
+          {
+            json: true,
+            code: "eosjustturbo",
+            scope: "eosjustturbo",
+            table: 'slot',
+            limit: 1000
+          }
+        ).then(function (result) {
+          var rows = result.data.rows;
+          that.myallslotinfo=rows;
+        }).catch(function (error) {
 
+        });
+      },
+      btnOnSlotSmallClick(slot){
+        this.curSlot=slot;
       },
       load() {
 
