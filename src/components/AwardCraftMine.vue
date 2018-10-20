@@ -252,6 +252,7 @@
           ]
         }).then(function (result) {
           that.$message("上传成功");
+          that.myCroppa.remove();
         }).catch(function (error) {
           that.$message(error);
         });
