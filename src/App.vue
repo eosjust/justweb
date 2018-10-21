@@ -225,7 +225,7 @@
               });
             }
           } else if (eossdkutil.getEnv() == "tp") {
-
+            that.initTpName();
           } else if (eossdkutil.getEnv() == "none") {
             this.$message({
               message: that.$t('mainmenu.envtip'),
