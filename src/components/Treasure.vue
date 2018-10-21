@@ -31,6 +31,9 @@
       </el-col>
       <el-col :span="2"></el-col>
     </el-row>
+    <el-row>
+      <croppa v-model="myCroppa"></croppa>
+    </el-row>
   </el-row>
 </template>
 
