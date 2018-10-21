@@ -225,12 +225,15 @@
               });
             }
           } else if (eossdkutil.getEnv() == "tp") {
+            that.$message(eossdkutil.isConnected());
             that.initTpName();
           } else if (eossdkutil.getEnv() == "none") {
             this.$message({
               message: that.$t('mainmenu.envtip'),
               type: 'warning'
             });
+          }else{
+            that.$message("please run in dapp explore");
           }
         }
       }, onChoseUser(name) {

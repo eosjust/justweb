@@ -193,8 +193,6 @@
               <el-row style="padding: 12px;">
                 <el-row type="flex" justify="center" align="middle">
                   <croppa v-model="myCroppa"
-                          @loading-end="calImgFile"
-                          @image-remove="calImgFile"
                           :width="200"
                           :height="200"
                           :quality="1">
