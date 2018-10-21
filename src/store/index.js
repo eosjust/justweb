@@ -26,6 +26,7 @@ export default new vuex.Store({
     eosUserAuth: 'active',
     ismobile:false,
     myEostreesCache:[],
+    awardImgMap:null,
   },
   mutations: {
     changeEosUserName(state, userName) {
@@ -53,6 +54,9 @@ export default new vuex.Store({
     },
     changeMyEosTree(state,trees){
       state.myEostreesCache=trees;
-    }
+    },
+    setAwardMap(state,awardMap){
+      state.awardImgMap=awardMap;
+    },
   }
 })

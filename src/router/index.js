@@ -49,12 +49,12 @@ export default new Router({
     {
       path: '/eosfarm',
       name: 'EosFarm',
-      component: EosFarm
+      component: AwardCraft
     },
     {
       path: '/treasure',
       name: 'Treasure',
-      component: Treasure
+      component: AwardCraft
     },
     {
       path: '/awardcraft',

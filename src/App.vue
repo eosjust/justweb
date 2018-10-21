@@ -9,12 +9,12 @@
       </mu-button>
 
       <mu-menu slot="left" v-show="!ismobile">
-        <mu-button flat ripple color="primary" to="/eosfarm">
-          {{$t('mainmenu.farm')}}
+        <mu-button flat ripple color="primary" to="/awardcraft">
+          {{$t('mainmenu.awardcraft')}}
         </mu-button>
-        <mu-button flat ripple color="primary" to="/treasure">
-          {{$t('mainmenu.treasure')}}
-        </mu-button>
+        <!--<mu-button flat ripple color="primary" to="/treasure">-->
+          <!--{{$t('mainmenu.treasure')}}-->
+        <!--</mu-button>-->
         <mu-button flat ripple color="primary" to="/investjust">
           {{$t('mainmenu.investjust')}}
         </mu-button>
@@ -63,12 +63,12 @@
     </mu-appbar>
     <mu-drawer :open.sync="menudrawopen" :docked="menudrawdocked" v-show="ismobile">
       <mu-list>
-        <mu-list-item button to="eosfarm" @click="menudrawopen = false">
-          <mu-list-item-title> {{$t('mainmenu.farm')}}</mu-list-item-title>
+        <mu-list-item button to="awardcraft" @click="menudrawopen = false">
+          <mu-list-item-title> {{$t('mainmenu.awardcraft')}}</mu-list-item-title>
         </mu-list-item>
-        <mu-list-item button to="treasure" @click="menudrawopen = false">
-          <mu-list-item-title> {{$t('mainmenu.treasure')}}</mu-list-item-title>
-        </mu-list-item>
+        <!--<mu-list-item button to="treasure" @click="menudrawopen = false">-->
+          <!--<mu-list-item-title> {{$t('mainmenu.treasure')}}</mu-list-item-title>-->
+        <!--</mu-list-item>-->
         <mu-list-item button to="investjust" @click="menudrawopen = false">
           <mu-list-item-title> {{$t('mainmenu.investjust')}}</mu-list-item-title>
         </mu-list-item>

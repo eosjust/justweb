@@ -178,7 +178,6 @@
             <el-col :span="24">
               <mu-list toggle-nested>
                 <mu-sub-header>{{$t('eosfarm.userdata')}}</mu-sub-header>
-
                 <mu-list-item button>
                   <mu-list-item-action>
                     <icon name="tree3" scale="3"></icon>

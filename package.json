@@ -19,6 +19,7 @@
     "element-ui": "^2.4.6",
     "eos-sdk-util": "^1.0.23",
     "eosjs": "^16.0.6",
+    "hashmap": "^2.3.0",
     "identicon.js": "^2.3.3",
     "mr-crypt": "^1.0.8",
     "muse-ui": "^3.0.0",

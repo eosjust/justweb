@@ -3,7 +3,7 @@
     <el-card :body-style="{ padding: '0px' }" style="padding: 0px;margin: 6px;">
       <el-row type="flex" justify="space-between" style="margin-top: 5px;">
         <el-col :span="6">
-          <span class="award-slot-key-text">just</span>
+          <span class="award-slot-key-text">{{myslotinfo.key}}</span>
         </el-col>
         <el-col :span="6" v-show="false">
           <el-row type="flex" justify="end">
@@ -15,22 +15,22 @@
           </el-row>
         </el-col>
       </el-row>
-      <img src="../assets/gift5.jpg" class="image">
+      <img :src="myslotinfo.img" class="image">
       <el-row style="padding: 12px;">
-        <div class="award-slot-title-text">iPhone6 Plus 5.5英寸</div>
-        <div class="award-slot-price-text">价值:2000EOS</div>
-        <el-progress :percentage="70" :show-text="false" status="success"></el-progress>
+        <div class="award-slot-title-text">{{myslotinfo.title}}</div>
+        <div class="award-slot-price-text">价值:{{myslotinfo.goods_price_show}}EOS</div>
+        <el-progress :percentage="myslotinfo.percent" :show-text="false" status="success"></el-progress>
         <el-row type="flex" justify="space-between">
-          <el-col :span="6">
-            <div class="award-slot-text-left">200EOS</div>
+          <el-col :span="10">
+            <div class="award-slot-text-left">{{myslotinfo.progress_show}}EOS</div>
             <div class="award-slot-text-left">已参与</div>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="4">
             <div></div>
             <div></div>
           </el-col>
-          <el-col :span="6">
-            <div class="award-slot-text-right">100EOS</div>
+          <el-col :span="10">
+            <div class="award-slot-text-right">{{myslotinfo.need_show}}EOS</div>
             <div class="award-slot-text-right">剩余</div>
           </el-col>
         </el-row>
@@ -39,7 +39,7 @@
           </el-col>
           <el-col :span="6">
             <el-row type="flex" justify="end">
-              <mu-button flat color="secondary">立即参加</mu-button>
+              <mu-button @click="onJoinClick" flat color="secondary">立即参加</mu-button>
             </el-row>
           </el-col>
         </el-row>
@@ -50,6 +50,8 @@
 </template>
 
 <script>
+  import dfImg from '../assets/nonepic.png';
+  import HashMap from 'hashmap';
   export default {
     name: "AwardSlot",
     props: ['data'],
@@ -57,10 +59,90 @@
 
     },
     data() {
-      return {}
+      return {
+        myslotinfo:{
+          key:"",
+          title:"",
+          goods_price_show:"",
+          percent:0,
+          need:0,
+          need_show:"",
+          img:dfImg,
+        },
+      }
     },
-    methods: {},
-    watch: {}
+    methods: {
+      onJoinClick(){
+        this.$emit('onJoin',this.data);
+      },
+      requestUserImg(hash,ImgId,imgUser) {
+        var that = this;
+        var eossdkutil = window.eossdkutil;
+        var imgMap = this.$store.state.awardImgMap;
+        if(imgMap==null){
+          imgMap=new HashMap();
+          this.$store.commit('setAwardMap', imgMap);
+        }
+        // if(!(typeof(imgMap)==HashMap)){
+        //   imgMap=new HashMap();
+        //   this.$store.commit('setAwardMap', imgMap);
+        // }
+        if(imgMap.get(hash)&&imgMap.get(hash).length>0){
+          that.myslotinfo.img=imgMap.get(hash);
+          console.log("load img from cache");
+          return;
+        }
+        eossdkutil.getEosTableRows(
+          {
+            json: true,
+            code: "eosjustturbo",
+            scope: imgUser,
+            lower_bound:ImgId,
+            table: 'userimg',
+            limit: 1
+          }
+        ).then(function (result) {
+          var rows = result.data.rows;
+          if(rows.length>0){
+            console.log("load img from net");
+            that.myslotinfo.img=rows[rows.length-1].img;
+            if(imgMap.get(hash)&&imgMap.get(hash).length>0){
+
+            }else{
+              imgMap.set(hash,that.myslotinfo.img);
+              that.$store.commit('setAwardMap', imgMap);
+            }
+          }else{
+            that.myslotinfo.img=dfImg;
+          }
+        }).catch(function (error) {
+          that.myslotinfo.img=dfImg;
+        });
+      },
+      parseEosAmount(amount) {
+        return (parseFloat(amount) / 10000).toFixed(4);
+      },
+      toEosAmount(price) {
+        return parseInt((parseFloat(price) * 10000).toFixed(0));
+      },
+    },
+    watch: {
+      data:function (val) {
+        if(val){
+          this.myslotinfo.key=val.key;
+          this.myslotinfo.title=val.title;
+          this.myslotinfo.goods_price_show=this.parseEosAmount(val.goods_price);
+          this.myslotinfo.progress_show=this.parseEosAmount(val.progress);
+          this.myslotinfo.percent=0;
+          if(val.progress>0&&val.goods_price>0){
+            this.myslotinfo.percent=parseInt(parseFloat(val.progress*100/val.goods_price));
+          }
+          this.myslotinfo.need=val.goods_price-val.progress;
+          this.myslotinfo.need_show=this.parseEosAmount(this.myslotinfo.need);
+          this.requestUserImg(val.img_hash,val.img_id,val.img_user);
+        }
+      }
+    }
   }
 </script>
 
