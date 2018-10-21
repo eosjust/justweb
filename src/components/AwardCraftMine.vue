@@ -193,6 +193,14 @@
               <el-row style="padding: 12px;">
                 <el-row type="flex" justify="center" align="middle">
                   <croppa v-model="myCroppa"
+                          placeholder="Click to Add Image"
+                          @loading-end="calImgFile"
+                          @image-remove="calImgFile"
+                          accept=".jpg,.gif,.jpeg,.png"
+                          :placeholder-font-size="16"
+                          canvas-color="transparent"
+                          :prevent-white-space="true"
+                          :show-loading="true"
                           :width="200"
                           :height="200"
                           :quality="1">
@@ -210,6 +218,7 @@
                 <div class="award-upimg-text">hash:{{nowImg.hash}}</div>
                 <el-row type="flex" justify="space-between">
                   <el-col :span="6">
+                    <mu-button @click="onChooseFile" flat color="secondary">选择图片</mu-button>
                   </el-col>
                   <el-col :span="6">
                     <el-row type="flex" justify="end">
@@ -335,6 +344,9 @@
           this.nowImg.sizeStr = "0Kb";
           this.nowImg.hash = "";
         }
+      },
+      onChooseFile(){
+        this.myCroppa.chooseFile();
       },
       copyShareUrl() {
         var that = this;
