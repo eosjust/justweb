@@ -193,14 +193,8 @@
               <el-row style="padding: 12px;">
                 <el-row type="flex" justify="center" align="middle">
                   <croppa v-model="myCroppa"
-                          placeholder="Click to Add Image"
                           @loading-end="calImgFile"
                           @image-remove="calImgFile"
-                          accept=".jpg,.gif,.jpeg,.png"
-                          :placeholder-font-size="16"
-                          canvas-color="transparent"
-                          :prevent-white-space="true"
-                          :show-loading="true"
                           :width="200"
                           :height="200"
                           :quality="1">

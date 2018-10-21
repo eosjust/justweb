@@ -147,13 +147,13 @@
     },
     created() {
       this.changeLang(this.$store.state.lang);
-
+      this.initEosEnv();
       this.checkClient();
     },
     computed: {},
     mounted() {
       const that = this;
-      this.initEosEnv();
+
       that.clientWidth = document.documentElement.clientWidth;
       that.clientHeight = document.documentElement.clientHeight;
       window.onresize = () => {
@@ -162,6 +162,7 @@
           that.clientHeight = document.documentElement.clientHeight;
         })()
       };
+      this.initEosEnv();
     },
     methods: {
       changeLang(lang) {
