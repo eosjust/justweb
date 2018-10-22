@@ -264,7 +264,6 @@
       return {
         myCroppa: {},
         loading: false,
-        timerLoop: false,
         imgQualitySlideVal: 60,
         curSlot: {},
         curUser: "",

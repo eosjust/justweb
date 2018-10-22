@@ -1,9 +1,9 @@
 <template>
   <el-row>
     <el-row type="flex" justify="space-around" align="bottom" style="margin-top: 30px;margin-bottom: 30px;">
-      <el-col :xs="7" :sm="7" :md="5" :lg="4" :xl="4" v-show="false">
+      <el-col :xs="7" :sm="7" :md="5" :lg="4" :xl="4" >
         <div style="text-align: center;" class="award-big-title2">
-          2366.00 EOS
+          {{award_pool}}
         </div>
         <div style="background:linear-gradient(to left,#ffffff,#e91e63,#ffffff);height:1px;margin: 5px;"></div>
         <div style="text-align: center" class="award-big-title2">
@@ -16,12 +16,12 @@
         </div>
         <div style="background:linear-gradient(to left,#ffffff,#e91e63,#ffffff);height:1px;margin: 5px;"></div>
         <div style="text-align: center" class="award-big-title1">
-          游戏开始倒计时
+          倒计时
         </div>
       </el-col>
-      <el-col :xs="7" :sm="7" :md="5" :lg="4" :xl="4" v-show="false">
+      <el-col :xs="7" :sm="7" :md="5" :lg="4" :xl="4" >
         <div style="text-align: center;" class="award-big-title2">
-          justtest1111
+          {{last_winner}}
         </div>
         <div style="background:linear-gradient(to left,#ffffff,#e91e63,#ffffff);height:1px;margin: 5px;"></div>
         <div style="text-align: center" class="award-big-title2">
@@ -120,10 +120,12 @@
     },
     data() {
       return {
-        startTime:1540209600,
+        endTime:1540209600,
         countdown:"24:00:00",
+        award_pool:"0.0000 EOS",
+        last_winner:"",
         joinDialogOpen:false,
-
+        myglobalinfo:{},
         buyeos:10.00,
         maybeRate:"20%",
         infoDetailOpen: '',
@@ -142,12 +144,13 @@
       var that=this;
       that.requestAllSlot();
       timeout.timeout(1000, function () {
-        let delta = that.startTime - Date.parse(new Date()) / 1000;
+        let delta = that.endTime - Date.parse(new Date()) / 1000;
         that.countdown = that.formatSeconds(delta);
         return true;
       });
       timeout.timeout(3000, function () {
         that.requestAllSlot();
+        that.requestGlobal();
         return true;
       });
       if (that.$route.query.ref) {
@@ -184,6 +187,29 @@
         ).then(function (result) {
           var rows = result.data.rows;
           that.allslotinfo = rows;
+        }).catch(function (error) {
+
+        });
+      },
+      requestGlobal() {
+        var that = this;
+        var eossdkutil = window.eossdkutil;
+        eossdkutil.getEosTableRows(
+          {
+            json: true,
+            code: "eosjustturbo",
+            scope: "eosjustturbo",
+            table: 'globalinfo',
+            limit: 1
+          }
+        ).then(function (result) {
+          var rows = result.data.rows;
+          if(rows&&rows.length>0){
+            that.myglobalinfo=rows[0];
+            that.endTime=that.myglobalinfo.end_time;
+            that.last_winner=that.myglobalinfo.last_winner;
+            that.award_pool=that.parseEosAmount(that.myglobalinfo.award_pool) ;
+          }
         }).catch(function (error) {
 
         });
@@ -227,6 +253,9 @@
         }).catch(function (error) {
           that.$message(error);
         });
+      },
+      parseEosAmount(amount) {
+        return (parseFloat(amount) / 10000).toFixed(4);
       },
       formatSeconds(value) {
         var secondTime = parseInt(value);

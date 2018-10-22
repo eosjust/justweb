@@ -54,7 +54,7 @@ export default new Router({
     {
       path: '/treasure',
       name: 'Treasure',
-      component: Treasure
+      component: AwardCraft
     },
     {
       path: '/awardcraft',

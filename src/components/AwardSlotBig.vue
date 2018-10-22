@@ -55,6 +55,21 @@
         </el-col>
       </el-row>
     </el-row>
+    <mu-divider></mu-divider>
+    <el-row style="max-height: 300px;overflow: scroll;">
+      <mu-list>
+        <mu-sub-header>开奖记录</mu-sub-header>
+        <mu-list-item v-for="luckUser in myslotory" :key="luckUser.id" button :ripple="false">
+          <mu-list-item-content>
+            <mu-list-item-sub-title>获奖者:{{luckUser.winner}}</mu-list-item-sub-title>
+            <mu-list-item-sub-title>开奖号码:{{luckUser.win_number}}</mu-list-item-sub-title>
+          </mu-list-item-content>
+          <mu-list-item-action >
+            <mu-list-item-after-text>第{{luckUser.round}}轮</mu-list-item-after-text>
+          </mu-list-item-action>
+        </mu-list-item>
+      </mu-list>
+    </el-row>
   </el-card>
 </template>
 
@@ -83,6 +98,9 @@
           percent:0,
           img:dfImg,
         },
+        myslotory:[
+
+        ],
       }
     },
     methods: {
@@ -130,6 +148,30 @@
           that.myslotinfo.img = dfImg;
         });
       },
+
+      requestSlotory(nowkey) {
+        var that = this;
+        var eossdkutil = window.eossdkutil;
+        eossdkutil.getEosTableRows(
+          {
+            json: true,
+            code: "eosjustturbo",
+            scope: nowkey,
+            table: 'slotory',
+            limit: 1000
+          }
+        ).then(function (result) {
+          var rows = result.data.rows;
+          if(rows&&rows.length>0){
+            that.myslotory.splice(0,that.myslotory.length);
+            for(var ii=0;ii<rows.length;ii++){
+              that.myslotory.splice(ii,1,rows[ii]);
+            }
+          }
+        }).catch(function (error) {
+
+        });
+      },
       parseEosAmount(amount) {
         return (parseFloat(amount) / 10000).toFixed(4);
       },
@@ -156,6 +198,7 @@
           this.myslotinfo.need=val.goods_price-val.progress;
           this.myslotinfo.need_show=this.parseEosAmount(this.myslotinfo.need);
           this.requestUserImg(val.img_hash,val.img_id,val.img_user);
+          this.requestSlotory(val.key);
         }
       },
     }
