@@ -38,10 +38,10 @@
     <!--</el-row>-->
     <el-row>
       <mu-dialog title="参与夺宝" :width="$store.state.ismobile?'90%':'60%'" :open.sync="joinDialogOpen">
-        <el-row type="flex" justify="center" align="middle">
+        <el-row type="flex" justify="center" align="middle" style="padding:10px;">
           <el-col :span="20">
             <el-input placeholder="请输入EOS数量" v-model="buyeos">
-              <!--<template slot="append">≈{{maybeRate}}</template>-->
+              <template slot="append">EOS</template>
             </el-input>
           </el-col>
         </el-row>

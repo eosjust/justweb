@@ -54,6 +54,22 @@
                 </mu-list>
               </el-col>
             </el-row>
+            <el-row style="max-height: 300px;overflow: scroll;">
+              <mu-list textline="three-line">
+                <mu-sub-header>夺宝记录</mu-sub-header>
+                <mu-list-item v-for="luckUser in myexlog" :key="luckUser.id" button :ripple="false">
+                  <mu-list-item-content>
+                    <mu-list-item-sub-title>参与商品标识:{{luckUser.key}}</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>号码开始:{{luckUser.buy_start}}</mu-list-item-sub-title>
+                    <mu-list-item-sub-title>号码结束:{{luckUser.buy_end}}</mu-list-item-sub-title>
+                  </mu-list-item-content>
+                  <mu-list-item-action >
+                    <mu-list-item-after-text>第{{luckUser.round}}轮</mu-list-item-after-text>
+                    <mu-list-item-after-text>商品价格{{luckUser.goods_price_show}}</mu-list-item-after-text>
+                  </mu-list-item-action>
+                </mu-list-item>
+              </mu-list>
+            </el-row>
           </el-tab-pane>
           <el-tab-pane label="查看商品">
             <el-row type="flex">
@@ -217,25 +233,6 @@
       </el-col>
     </el-row>
     <mu-divider></mu-divider>
-    <el-row type="flex" justify="center" style="margin-top: 15px;">
-      <el-col :span="1">
-      </el-col>
-      <el-col :span="22">
-        <el-row type="flex" justify="space-between" style="margin-left: 12px;margin-right: 12px;">
-          <el-col :span="6">
-            <div class="award-sub-title">夺宝记录</div>
-          </el-col>
-          <el-col :span="6">
-            <div class="award-sub-title-link" style="text-align: right"></div>
-          </el-col>
-        </el-row>
-        <el-row>
-
-        </el-row>
-      </el-col>
-      <el-col :span="1">
-      </el-col>
-    </el-row>
   </el-row>
 </template>
 
@@ -320,6 +317,7 @@
           size: 0,
           sizeStr: "",
         },
+        myexlog:[],
 
       }
     },
@@ -334,6 +332,7 @@
         that.requestMyJustAmount();
         that.requestMyEosAmount();
         that.requestPlayerInfo();
+        that.requestMyExLog();
         that.share_url="https://www.eosjust.com/#/awardcraft?ref="+that.$store.state.eosUserName;
         return true;
       });
@@ -418,6 +417,30 @@
           }else{
           }
 
+        }).catch(function (error) {
+
+        });
+      },
+      requestMyExLog() {
+        var that = this;
+        var eossdkutil = window.eossdkutil;
+        eossdkutil.getEosTableRows(
+          {
+            json: true,
+            code: "eosjustturbo",
+            scope: that.$store.state.eosUserName,
+            table: 'userexlog',
+            limit: 1000
+          }
+        ).then(function (result) {
+          var rows = result.data.rows;
+          if(rows&&rows.length>0){
+            that.myexlog.splice(0,that.myexlog.length);
+            for(var ii=0;ii<rows.length;ii++){
+              rows[ii].goods_price_show=that.parseEosAmount(rows[ii].goods_price);
+              that.myexlog.splice(ii,1,rows[ii]);
+            }
+          }
         }).catch(function (error) {
 
         });
