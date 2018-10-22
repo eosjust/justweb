@@ -8,7 +8,7 @@
         <el-tabs type="border-card">
           <el-tab-pane label="购买橱窗">
             <el-row>
-              <div class="award-invest-tip-text">购买一个橱窗，获得此橱窗经营权，可以编辑标题，资金量，封面图，经营期内可获得夺宝收益2%，橱窗被买走立即回本并获额外5%收益</div>
+              <div class="award-invest-tip-text">购买一个橱窗，获得此橱窗经营权，可以编辑标题，资金量，封面图，经营期内可获得夺宝收益2%，橱窗被买走立即回本并获额外15%收益</div>
             </el-row>
             <el-row type="flex">
               <el-col :span="24">
@@ -22,7 +22,7 @@
           <el-tab-pane label="新建橱窗">
             <el-row>
               <div class="award-invest-tip-text">
-                新建一个橱窗，永久获得橱窗夺宝收益的2%，新建后获得经营权，可获得经营权交易10%的收益，为了减少橱窗数量，提高已存在橱窗的收益，新建橱窗价格最低30EOS
+                新建一个橱窗，永久获得橱窗夺宝收益的2%，新建后获得经营权，可获得经营权交易5%的收益，为了减少橱窗数量，提高已存在橱窗的收益，新建橱窗价格最低30EOS
               </div>
             </el-row>
             <el-row>
