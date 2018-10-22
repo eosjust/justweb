@@ -410,11 +410,13 @@
         ).then(function (result) {
           var rows = result.data.rows;
           var len = rows.length;
-          if(len>0){
+          if(len>0&&rows[0].user==that.$store.state.eosUserName){
             var inx = len - 1;
             that.playerinfo = rows[inx];
             that.refreshPlayerInfo(that.playerinfo);
           }else{
+            var nouser={};
+            that.refreshPlayerInfo(nouser);
           }
 
         }).catch(function (error) {
@@ -535,10 +537,16 @@
       },
       refreshPlayerInfo(playerinfo) {
         var that=this;
-        that.myplayerinfo.income_total=playerinfo.income_award+playerinfo.income_invite+playerinfo.income_slot;
-        that.myplayerinfo.income_total_with=playerinfo.income_award_with+playerinfo.income_invite_with+playerinfo.income_slot_with;
-        that.myplayerinfo.income_total_show=that.parseEosAmount(that.myplayerinfo.income_total);
-        that.myplayerinfo.income_total_with_show=that.parseEosAmount(that.myplayerinfo.income_total_with);
+        if(playerinfo&&playerinfo.user){
+          that.myplayerinfo.income_total=playerinfo.income_award+playerinfo.income_invite+playerinfo.income_slot;
+          that.myplayerinfo.income_total_with=playerinfo.income_award_with+playerinfo.income_invite_with+playerinfo.income_slot_with;
+          that.myplayerinfo.income_total_show=that.parseEosAmount(that.myplayerinfo.income_total);
+          that.myplayerinfo.income_total_with_show=that.parseEosAmount(that.myplayerinfo.income_total_with);
+        }else{
+          that.myplayerinfo.income_total_show="0.0000 EOS";
+          that.myplayerinfo.income_total_with_show="0.0000 EOS";
+        }
+
       },
       refreshSlots() {
         var that = this;

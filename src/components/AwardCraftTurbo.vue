@@ -55,28 +55,28 @@
         <mu-button slot="actions" flat color="primary" @click="closeJoinDialog">Close</mu-button>
       </mu-dialog>
     </el-row>
-    <mu-divider></mu-divider>
-    <el-row type="flex" justify="center" style="margin-top: 15px;">
-      <el-col :span="1">
-      </el-col>
-      <el-col :span="22">
-        <el-row type="flex" justify="space-between" style="margin-left: 12px;margin-right: 12px;">
-          <el-col :span="6">
-            <div class="award-sub-title">即将完成</div>
-          </el-col>
-          <el-col :span="6">
-            <div class="award-sub-title-link" style="text-align: right"></div>
-          </el-col>
-        </el-row>
-        <el-row>
-          <AwardSlot @onJoin="btnOnJoin" v-for="slot in allslotinfo" :key="slot.key" :data="slot">
+    <!--<mu-divider></mu-divider>-->
+    <!--<el-row type="flex" justify="center" style="margin-top: 15px;">-->
+      <!--<el-col :span="1">-->
+      <!--</el-col>-->
+      <!--<el-col :span="22">-->
+        <!--<el-row type="flex" justify="space-between" style="margin-left: 12px;margin-right: 12px;">-->
+          <!--<el-col :span="6">-->
+            <!--<div class="award-sub-title">即将完成</div>-->
+          <!--</el-col>-->
+          <!--<el-col :span="6">-->
+            <!--<div class="award-sub-title-link" style="text-align: right"></div>-->
+          <!--</el-col>-->
+        <!--</el-row>-->
+        <!--<el-row>-->
+          <!--<AwardSlot @onJoin="btnOnJoin" v-for="slot in allslotinfo" :key="slot.key" :data="slot">-->
 
-          </AwardSlot>
-        </el-row>
-      </el-col>
-      <el-col :span="1">
-      </el-col>
-    </el-row>
+          <!--</AwardSlot>-->
+        <!--</el-row>-->
+      <!--</el-col>-->
+      <!--<el-col :span="1">-->
+      <!--</el-col>-->
+    <!--</el-row>-->
     <mu-divider></mu-divider>
     <el-row type="flex" justify="center" style="margin-top: 15px;">
       <el-col :span="1">
