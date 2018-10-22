@@ -281,6 +281,8 @@
           that.isMenuLoginShow = true;
         }
       }, initScatterName() {
+        eossdkutil.login().then(function (identity) {
+        });
         var identity = eossdkutil.getScatterIdentity();
         var that = this;
         if (identity) {
