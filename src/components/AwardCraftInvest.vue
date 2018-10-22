@@ -22,7 +22,7 @@
           <el-tab-pane label="新建橱窗">
             <el-row>
               <div class="award-invest-tip-text">
-                新建一个橱窗，永久获得橱窗夺宝收益的2%，新建后获得经营权，可获得经营权交易5%的收益，为了减少橱窗数量，提高已存在橱窗的收益，新建橱窗价格最低30EOS
+                新建一个橱窗，永久获得橱窗夺宝收益的2%，新建后获得经营权，可获得经营权交易5%的收益，为了减少橱窗数量，提高已存在橱窗的收益，新建橱窗价格为5EOS
               </div>
             </el-row>
             <el-row>
@@ -217,7 +217,7 @@
               data: {
                 from: that.$store.state.eosUserName,
                 to: "eosjustturbo",
-                quantity: "30.0000 EOS",
+                quantity: "5.0000 EOS",
                 memo: memo,
               }
             }
