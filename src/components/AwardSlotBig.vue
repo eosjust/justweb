@@ -162,11 +162,13 @@
           }
         ).then(function (result) {
           var rows = result.data.rows;
+          that.myslotory.splice(0,that.myslotory.length);
           if(rows&&rows.length>0){
-            that.myslotory.splice(0,that.myslotory.length);
             for(var ii=0;ii<rows.length;ii++){
               that.myslotory.splice(ii,1,rows[ii]);
             }
+          }else{
+
           }
         }).catch(function (error) {
 

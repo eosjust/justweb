@@ -103,12 +103,7 @@
       }
     },
     created() {
-      var that = this;
-      this.requestAllSlot();
-      timeout.timeout(2000, function () {
-        that.requestAllSlot();
-        return true;
-      });
+
     },
     mounted() {
       var that = this;
@@ -117,11 +112,20 @@
       } else {
         that.inviterName = "";
       }
+      this.requestAllSlot();
     },
     destroyed: function () {
 
     },
     methods: {
+      requestLoop(){
+        var that=this;
+        timeout.timeout(2000, function () {
+          that.requestAllSlot();
+          console.log("invest");
+          return that.timerLoop;
+        });
+      },
       requestAllSlot() {
         var that = this;
         var eossdkutil = window.eossdkutil;
@@ -232,7 +236,11 @@
 
       }
     },
-    watch: {}
+    watch: {
+      timerLoop:function (val) {
+        this.requestLoop();
+      }
+    }
   }
 </script>
 

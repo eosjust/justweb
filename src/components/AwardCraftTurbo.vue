@@ -138,26 +138,21 @@
       }
     },
     created() {
-
+      var that=this;
+      that.requestLoop();
     },
     mounted() {
       var that=this;
-      that.requestAllSlot();
-      timeout.timeout(1000, function () {
-        let delta = that.endTime - Date.parse(new Date()) / 1000;
-        that.countdown = that.formatSeconds(delta);
-        return true;
-      });
-      timeout.timeout(3000, function () {
-        that.requestAllSlot();
-        that.requestGlobal();
-        return true;
-      });
       if (that.$route.query.ref) {
         that.inviterName = that.$route.query.ref;
       } else {
         that.inviterName = "";
       }
+      timeout.timeout(1000, function () {
+        let delta = that.endTime - Date.parse(new Date()) / 1000;
+        that.countdown = that.formatSeconds(delta);
+        return that.timerLoop;
+      });
 
     },
     destroyed: function () {
@@ -166,7 +161,15 @@
     methods: {
       btnGetImg64() {
       },
-
+      requestLoop(){
+        var that=this;
+        timeout.timeout(3000, function () {
+          that.requestAllSlot();
+          that.requestGlobal();
+          console.log("turbo");
+          return that.timerLoop;
+        });
+      },
       closeJoinDialog(){
         this.joinDialogOpen=false;
       },
@@ -186,7 +189,12 @@
           }
         ).then(function (result) {
           var rows = result.data.rows;
-          that.allslotinfo = rows;
+          if(rows&&rows.length>0){
+            that.allslotinfo.splice(0,that.allslotinfo.length);
+            for(var i=0;i<rows.length;i++){
+              that.allslotinfo.splice(i,1,rows[i]);
+            }
+          }
         }).catch(function (error) {
 
         });
@@ -286,7 +294,11 @@
         // this.loading = true;
       }
     },
-    watch: {}
+    watch: {
+      timerLoop:function (val) {
+        this.requestLoop();
+      }
+    }
   }
 </script>
 

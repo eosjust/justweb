@@ -322,20 +322,7 @@
       }
     },
     created() {
-      var that = this;
-      this.requestUserImg();
-      this.requestAllSlot();
-      timeout.timeout(2000, function () {
-        that.requestUserImg();
-        that.requestAllSlot();
-        that.refreshSlots();
-        that.requestMyJustAmount();
-        that.requestMyEosAmount();
-        that.requestPlayerInfo();
-        that.requestMyExLog();
-        that.share_url="https://www.eosjust.com/#/awardcraft?ref="+that.$store.state.eosUserName;
-        return true;
-      });
+
     },
     mounted() {
       var that = this;
@@ -344,12 +331,33 @@
       } else {
         that.inviterName = "";
       }
-
     },
     destroyed: function () {
       this.timerLoop = false;
     },
     methods: {
+      requestLoop(){
+        var that = this;
+        that.requestUserImg();
+        that.requestAllSlot();
+        that.refreshSlots();
+        that.requestMyJustAmount();
+        that.requestMyEosAmount();
+        that.requestPlayerInfo();
+        that.requestMyExLog();
+        timeout.timeout(2000, function () {
+          that.requestUserImg();
+          that.requestAllSlot();
+          that.refreshSlots();
+          that.requestMyJustAmount();
+          that.requestMyEosAmount();
+          that.requestPlayerInfo();
+          that.requestMyExLog();
+          that.share_url="https://www.eosjust.com/#/awardcraft?ref="+that.$store.state.eosUserName;
+          console.log("mine");
+          return that.timerLoop;
+        });
+      },
       calImgFile() {
         var quality100 = 10;
         if (this.imgQualitySlideVal && this.imgQualitySlideVal > 0) {
@@ -540,6 +548,7 @@
         if(playerinfo&&playerinfo.user){
           that.myplayerinfo.income_total=playerinfo.income_award+playerinfo.income_invite+playerinfo.income_slot;
           that.myplayerinfo.income_total_with=playerinfo.income_award_with+playerinfo.income_invite_with+playerinfo.income_slot_with;
+          that.myplayerinfo.income_total-=that.myplayerinfo.income_total_with;
           that.myplayerinfo.income_total_show=that.parseEosAmount(that.myplayerinfo.income_total);
           that.myplayerinfo.income_total_with_show=that.parseEosAmount(that.myplayerinfo.income_total_with);
         }else{
@@ -701,7 +710,11 @@
 
       }
     },
-    watch: {}
+    watch: {
+      timerLoop:function (val) {
+        this.requestLoop();
+      }
+    }
   }
 </script>
 
