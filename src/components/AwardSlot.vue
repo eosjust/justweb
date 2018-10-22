@@ -18,7 +18,7 @@
       <img :src="myslotinfo.img" class="image">
       <el-row style="padding: 12px;">
         <div class="award-slot-title-text">{{myslotinfo.title}}</div>
-        <div class="award-slot-price-text">经营者:{{myslotinfo.partner}}EOS</div>
+        <div class="award-slot-price-text">经营者:{{myslotinfo.partner}}</div>
         <div class="award-slot-price-text">经营权:{{myslotinfo.slot_price_show}}EOS</div>
         <div class="award-slot-price-text">夺宝价格:{{myslotinfo.goods_price_show}}EOS</div>
         <el-progress :percentage="myslotinfo.percent" :show-text="false" status="success"></el-progress>
