@@ -75,7 +75,7 @@
 
 <script>
 
-  import dfImg from '../assets/nonepic.png';
+  import dfImg from '../assets/awardcraft_logo.jpg';
   export default {
     name: "AwardSlotBig",
     props: ['data'],

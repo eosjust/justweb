@@ -53,7 +53,7 @@
 </template>
 
 <script>
-  import dfImg from '../assets/nonepic.png';
+  import dfImg from '../assets/awardcraft_logo.jpg';
   import HashMap from 'hashmap';
   export default {
     name: "AwardSlot",
