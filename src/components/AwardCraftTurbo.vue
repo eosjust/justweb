@@ -37,7 +37,8 @@
     <!--</el-carousel>-->
     <!--</el-row>-->
     <el-row>
-      <mu-dialog title="参与夺宝" :width="$store.state.ismobile?'90%':'60%'" :open.sync="joinDialogOpen">
+      <mu-dialog title="" :width="$store.state.ismobile?'90%':'60%'" :open.sync="joinDialogOpen">
+        <div class="award-title3">参与夺宝有机会获得商品等值奖金，每一轮夺宝结束，本轮所有玩家将获得奖池中的部分奖金</div>
         <el-row type="flex" justify="center" align="middle" style="padding:10px;">
           <el-col :span="20">
             <el-input placeholder="请输入EOS数量" v-model="buyeos">
@@ -53,6 +54,26 @@
           </el-col>
         </el-row>
         <mu-button slot="actions" flat color="primary" @click="closeJoinDialog">Close</mu-button>
+      </mu-dialog>
+    </el-row>
+    <el-row>
+      <mu-dialog title="" :width="$store.state.ismobile?'90%':'60%'" :open.sync="buyDialogOpen">
+        <div class="award-title3">买下商品经营权可以获得夺宝2%收益，自由上传图片到区块链上，并且经营权易主后立即回本，并获得15%回报</div>
+        <el-row type="flex" justify="center" align="middle" style="padding:10px;">
+          <el-col :span="20">
+            <el-input placeholder="请输入EOS数量" v-model="slotPrice">
+              <template slot="append">EOS</template>
+            </el-input>
+          </el-col>
+        </el-row>
+        <el-row class="top_margin" type="flex" justify="center" align="middle">
+          <el-col :span="20" justify="center" align="middle">
+            <mu-button full-width ripple color="secondary" @click="btnBuy">
+              购买
+            </mu-button>
+          </el-col>
+        </el-row>
+        <mu-button slot="actions" flat color="primary" @click="closeBuyDialog">Close</mu-button>
       </mu-dialog>
     </el-row>
     <!--<mu-divider></mu-divider>-->
@@ -91,7 +112,7 @@
           </el-col>
         </el-row>
         <el-row>
-          <AwardSlot @onJoin="btnOnJoin" v-for="slot in allslotinfo" :key="slot.key" :data="slot">
+          <AwardSlot @onJoin="btnOnJoin" @onBuy="btnOnBuy" v-for="slot in allslotinfo" :key="slot.key" :data="slot">
 
           </AwardSlot>
         </el-row>
@@ -125,8 +146,10 @@
         award_pool:"0.0000 EOS",
         last_winner:"",
         joinDialogOpen:false,
+        buyDialogOpen:false,
         myglobalinfo:{},
         buyeos:10.00,
+        slotPrice:0.100,
         maybeRate:"20%",
         infoDetailOpen: '',
         curUser: "",
@@ -139,7 +162,8 @@
     },
     created() {
       var that=this;
-      that.requestLoop();
+      that.requestAllSlot();
+      that.requestGlobal();
     },
     mounted() {
       var that=this;
@@ -148,6 +172,7 @@
       } else {
         that.inviterName = "";
       }
+      that.requestLoop();
       timeout.timeout(1000, function () {
         let delta = that.endTime - Date.parse(new Date()) / 1000;
         that.countdown = that.formatSeconds(delta);
@@ -175,6 +200,12 @@
       },
       openJoinDialog(){
         this.joinDialogOpen=true;
+      },
+      closeBuyDialog(){
+        this.buyDialogOpen=false;
+      },
+      openBuyDialog(){
+        this.buyDialogOpen=true;
       },
       requestAllSlot() {
         var that = this;
@@ -224,7 +255,17 @@
       },
       btnOnJoin(slot){
         this.curJoinSlot=slot;
+        if(slot){
+          this.buyeos=((slot.goods_price-slot.progress)/10000).toFixed(4);
+        }
         this.openJoinDialog();
+      },
+      btnOnBuy(slot){
+        this.curJoinSlot=slot;
+        if(slot){
+          this.slotPrice=((slot.slot_price)/10000).toFixed(4);
+        }
+        this.openBuyDialog();
       },
       btnJoin() {
         var that = this;
@@ -256,10 +297,56 @@
             }
           ]
         }).then(function (result) {
-          that.$message("保存成功");
-          that.myCroppa.remove();
+          that.$message("购买成功");
+          that.closeBuyDialog();
+          that.closeJoinDialog();
         }).catch(function (error) {
           that.$message(error);
+          that.closeBuyDialog();
+          that.closeJoinDialog();
+        });
+      },
+      btnBuy() {
+        var that = this;
+        if(that.curJoinSlot&&that.curJoinSlot.key){
+
+        }else{
+          that.$message("请选择一个商品");
+        }
+        var slotPirce=Big(this.curJoinSlot.slot_price);
+        slotPirce=slotPirce.div(10000);
+        if(!slotPirce.gt(0)){
+          that.$message("橱窗价格错误");
+        }
+        var eossdkutil = window.eossdkutil;
+        var memo="buyslot:" + that.curJoinSlot.key + ";" + that.inviterName + ";";
+        eossdkutil.pushEosAction({
+          actions: [
+            {
+              account: "eosio.token",
+              name: "transfer",
+              authorization: [
+                {
+                  actor: that.$store.state.eosUserName,
+                  permission: "active"
+                }
+              ],
+              data: {
+                from: that.$store.state.eosUserName,
+                to: "eosjustturbo",
+                quantity: slotPirce.toFixed(4) + " EOS",
+                memo: memo,
+              }
+            }
+          ]
+        }).then(function (result) {
+          that.$message("购买成功");
+          that.closeBuyDialog();
+          that.closeJoinDialog();
+        }).catch(function (error) {
+          that.$message(error);
+          that.closeBuyDialog();
+          that.closeJoinDialog();
         });
       },
       parseEosAmount(amount) {
@@ -321,5 +408,9 @@
     color: #e91e63;
     font-size: 1.2em;
     line-height: 1.0em;
+  }
+  .award-title3 {
+    color: #9e9e9e;
+    font-size: 0.9em;
   }
 </style>

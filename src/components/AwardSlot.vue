@@ -18,7 +18,9 @@
       <img :src="myslotinfo.img" class="image">
       <el-row style="padding: 12px;">
         <div class="award-slot-title-text">{{myslotinfo.title}}</div>
-        <div class="award-slot-price-text">价值:{{myslotinfo.goods_price_show}}EOS</div>
+        <div class="award-slot-price-text">经营者:{{myslotinfo.partner}}EOS</div>
+        <div class="award-slot-price-text">经营权:{{myslotinfo.slot_price_show}}EOS</div>
+        <div class="award-slot-price-text">夺宝价格:{{myslotinfo.goods_price_show}}EOS</div>
         <el-progress :percentage="myslotinfo.percent" :show-text="false" status="success"></el-progress>
         <el-row type="flex" justify="space-between">
           <el-col :span="10">
@@ -36,10 +38,11 @@
         </el-row>
         <el-row type="flex" justify="space-between">
           <el-col :span="6">
+            <mu-button @click="onBuyClick" flat color="secondary">经营</mu-button>
           </el-col>
           <el-col :span="6">
             <el-row type="flex" justify="end">
-              <mu-button @click="onJoinClick" flat color="secondary">立即参加</mu-button>
+              <mu-button @click="onJoinClick" flat color="secondary">夺宝</mu-button>
             </el-row>
           </el-col>
         </el-row>
@@ -64,6 +67,8 @@
           key:"",
           title:"",
           goods_price_show:"",
+          slot_price_show:"",
+          partner:"",
           percent:0,
           need:0,
           need_show:"",
@@ -74,6 +79,9 @@
     methods: {
       onJoinClick(){
         this.$emit('onJoin',this.data);
+      },
+      onBuyClick(){
+        this.$emit('onBuy',this.data);
       },
       requestUserImg(hash,ImgId,imgUser) {
         var that = this;
@@ -131,6 +139,9 @@
         if(val){
           this.myslotinfo.key=val.key;
           this.myslotinfo.title=val.title;
+          this.myslotinfo.partner=val.partner;
+
+          this.myslotinfo.slot_price_show=this.parseEosAmount(val.slot_price);
           this.myslotinfo.goods_price_show=this.parseEosAmount(val.goods_price);
           this.myslotinfo.progress_show=this.parseEosAmount(val.progress);
           this.myslotinfo.percent=0;
