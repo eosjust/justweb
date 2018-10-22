@@ -14,8 +14,8 @@
                       <icon name="wallet2" scale="3"></icon>
                     </mu-list-item-action>
                     <mu-list-item-content>
-                      <mu-list-item-sub-title>可提现:1111</mu-list-item-sub-title>
-                      <mu-list-item-sub-title>已提现:1111</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>可提现:{{myplayerinfo.income_total_show}}</mu-list-item-sub-title>
+                      <mu-list-item-sub-title>已提现:{{myplayerinfo.income_total_with_show}}</mu-list-item-sub-title>
                     </mu-list-item-content>
                     <mu-list-item-action>
                       <mu-button small flat color="pink" @click="btnWithdrawAll">
@@ -111,26 +111,8 @@
       </el-col>
     </el-row>
 
-    <el-row type="flex" justify="center" style="margin-top: 15px;">
-      <el-col :span="1">
-      </el-col>
-      <el-col :span="22">
-        <el-row type="flex" justify="space-between" style="margin-left: 12px;margin-right: 12px;">
-          <el-col :span="6">
-            <div class="award-sub-title">我参加的</div>
-          </el-col>
-          <el-col :span="6">
-            <div class="award-sub-title-link" style="text-align: right"></div>
-          </el-col>
-        </el-row>
-        <el-row>
 
-        </el-row>
-      </el-col>
-      <el-col :span="1">
-      </el-col>
-    </el-row>
-    <mu-divider></mu-divider>
+
     <el-row type="flex" justify="center" style="margin-top: 15px;">
       <el-col :span="1">
       </el-col>
@@ -234,6 +216,26 @@
       <el-col :span="1">
       </el-col>
     </el-row>
+    <mu-divider></mu-divider>
+    <el-row type="flex" justify="center" style="margin-top: 15px;">
+      <el-col :span="1">
+      </el-col>
+      <el-col :span="22">
+        <el-row type="flex" justify="space-between" style="margin-left: 12px;margin-right: 12px;">
+          <el-col :span="6">
+            <div class="award-sub-title">夺宝记录</div>
+          </el-col>
+          <el-col :span="6">
+            <div class="award-sub-title-link" style="text-align: right"></div>
+          </el-col>
+        </el-row>
+        <el-row>
+
+        </el-row>
+      </el-col>
+      <el-col :span="1">
+      </el-col>
+    </el-row>
   </el-row>
 </template>
 
@@ -251,6 +253,7 @@
 
   export default {
     name: "AwardCraftMine",
+    props: ['timerLoop'],
     components: {
       AwardSlot,
       AwardSlotSmall,
@@ -271,11 +274,31 @@
         mypartslots: [],
         myuserimg: [],
         myplayerinfo:{
+          user:"",
+          inviter:"",
+          income_invite:0,
+          income_invite_with:0,
+          income_award:0,
+          income_award_with:0,
+          income_slot:0,
+          income_slot_with:0,
+          income_invite_show:"0.0000 EOS",
+          income_invite_with_show:"0.0000 EOS",
+          income_award_show:"0.0000 EOS",
+          income_award_with_show:"0.0000 EOS",
+          income_slot_show:"0.0000 EOS",
+          income_slot_with_show:"0.0000 EOS",
+          income_total:0,
+          income_total_with:0,
+          income_total_show:"0.0000 EOS",
+          income_total_with_show:"0.0000 EOS",
+        },
+        myEosAmount:"0.0000 EOS",
+        myJustAmount:"0.0000 JUST",
+        share_url:"http://www.eosjust.com/#/awardcraft?ref=",
+        playerinfo:{
 
         },
-        myEosAmount:"100.0000 EOS",
-        myJustAmount:"100.0000 JUST",
-        share_url:"http://www.eosjust.com/#/awardcraft?ref=",
         curEditSlot: {
           editTitle: "",
           isTitleDisable: true,
@@ -303,15 +326,17 @@
     },
     created() {
       var that = this;
-      this.timerLoop = true;
       this.requestUserImg();
       this.requestAllSlot();
       timeout.timeout(2000, function () {
         that.requestUserImg();
         that.requestAllSlot();
         that.refreshSlots();
+        that.requestMyJustAmount();
+        that.requestMyEosAmount();
+        that.requestPlayerInfo();
         that.share_url="https://www.eosjust.com/#/awardcraft?ref="+that.$store.state.eosUserName;
-        return that.timerLoop;
+        return true;
       });
     },
     mounted() {
@@ -372,6 +397,84 @@
       btnOpenEosflare(){
 
       },
+      requestPlayerInfo() {
+        var that = this;
+        var eossdkutil = window.eossdkutil;
+        eossdkutil.getEosTableRows(
+          {
+            json: true,
+            code: "eosjustturbo",
+            scope: "eosjustturbo",
+            lower_bound: that.$store.state.eosUserName,
+            table: 'playerinfo',
+            limit: 1
+          }
+        ).then(function (result) {
+          var rows = result.data.rows;
+          var len = rows.length;
+          if(len>0){
+            var inx = len - 1;
+            that.playerinfo = rows[inx];
+            that.refreshPlayerInfo(that.playerinfo);
+          }else{
+          }
+
+        }).catch(function (error) {
+
+        });
+      },
+      requestMyEosAmount() {
+        var that = this;
+        var eossdkutil = window.eossdkutil;
+        eossdkutil.getEosTableRows(
+          {
+            json: true,
+            code: "eosio.token",
+            scope: that.$store.state.eosUserName,
+            table: 'accounts',
+            limit: 20
+          }
+        ).then(function (result) {
+          var rows = result.data.rows;
+          var len = rows.length;
+          if(len>0){
+            var inx = len - 1;
+            var accounts = rows[inx];
+            that.myEosAmount = accounts.balance;
+          }else{
+            that.myEosAmount ="0.0000 EOS";
+          }
+
+        }).catch(function (error) {
+
+        });
+      },
+      requestMyJustAmount() {
+        var that = this;
+        var eossdkutil = window.eossdkutil;
+        eossdkutil.getEosTableRows(
+          {
+            json: true,
+            code: "eosjusttoken",
+            scope: that.$store.state.eosUserName,
+            table: 'accounts',
+            limit: 20
+          }
+        ).then(function (result) {
+          var rows = result.data.rows;
+          var len = rows.length;
+          if(len>0){
+            var inx = len - 1;
+            var accounts = rows[inx];
+            that.myJustAmount = accounts.balance;
+          }else{
+            that.myJustAmount = "0.0000 JUST";
+          }
+
+        }).catch(function (error) {
+
+        });
+      },
       requestAllSlot() {
         var that = this;
         var eossdkutil = window.eossdkutil;
@@ -408,6 +511,13 @@
           var a = error;
         });
       },
+      refreshPlayerInfo(playerinfo) {
+        var that=this;
+        that.myplayerinfo.income_total=playerinfo.income_award+playerinfo.income_invite+playerinfo.income_slot;
+        that.myplayerinfo.income_total_with=playerinfo.income_award_with+playerinfo.income_invite_with+playerinfo.income_slot_with;
+        that.myplayerinfo.income_total_show=that.parseEosAmount(that.myplayerinfo.income_total);
+        that.myplayerinfo.income_total_with_show=that.parseEosAmount(that.myplayerinfo.income_total_with);
+      },
       refreshSlots() {
         var that = this;
         this.curUser = that.$store.state.eosUserName;
@@ -426,6 +536,32 @@
             }
           }
         }
+      },
+      btnWithdrawAll() {
+
+        var eossdkutil = window.eossdkutil;
+        var that = this;
+        eossdkutil.pushEosAction({
+          actions: [
+            {
+              account: "eosjustturbo",
+              name: "withdraw",
+              authorization: [
+                {
+                  actor: that.$store.state.eosUserName,
+                  permission: "active"
+                }
+              ],
+              data: {
+                user: that.$store.state.eosUserName,
+              }
+            }
+          ]
+        }).then(function (result) {
+          that.$message("操作成功");
+        }).catch(function (error) {
+          that.$message(error);
+        });
       },
       btnOnSlotSmallClick(slot) {
         this.curSlot = slot;

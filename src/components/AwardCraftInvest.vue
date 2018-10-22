@@ -77,11 +77,14 @@
 
 <script>
   import timeout from 'timeout';
+  import bigInt from "big-integer";
+  import Big from 'big.js';
   import AwardSlotSmall from '@/components/AwardSlotSmall';
   import AwardSlotBig from '@/components/AwardSlotBig';
 
   export default {
     name: "AwardCraftInvest",
+    props: ['timerLoop'],
     components: {
       AwardSlotSmall,
       AwardSlotBig
@@ -92,6 +95,7 @@
         curUser: "",
         inviterName:"",
         curSlot: {},
+        buySlotEos:0,
         newSlotName: "",
         newSlotTitle: "",
         newSlotGoodsPrice: 0,
@@ -100,11 +104,10 @@
     },
     created() {
       var that = this;
-      this.timerLoop = true;
       this.requestAllSlot();
       timeout.timeout(2000, function () {
         that.requestAllSlot();
-        return that.timerLoop;
+        return true;
       });
     },
     mounted() {
@@ -133,6 +136,16 @@
         ).then(function (result) {
           var rows = result.data.rows;
           that.myallslotinfo = rows;
+          if(that.myallslotinfo&&that.myallslotinfo.length>0){
+            if(that.curSlot&&that.curSlot.key){
+              for(var ii=0;ii<that.myallslotinfo.length;ii++){
+                if(that.curSlot.key==that.myallslotinfo[ii].key){
+                  that.curSlot=that.myallslotinfo[ii];
+                  console.log("update"+that.curSlot.key);
+                }
+              }
+            }
+          }
         }).catch(function (error) {
 
         });
@@ -147,12 +160,18 @@
         } else {
           that.$message("请选择一个橱窗");
         }
+        var slotPirce=Big(this.curSlot.slot_price);
+        slotPirce=slotPirce.div(10000);
+        if(!slotPirce.gt(0)){
+          that.$message("橱窗价格错误");
+        }
+        var memo="buyslot:" + that.curSlot.key + ";" + that.inviterName + ";";
         var eossdkutil = window.eossdkutil;
         eossdkutil.pushEosAction({
           actions: [
             {
-              account: "eosjustturbo",
-              name: "buyslot",
+              account: "eosio.token",
+              name: "transfer",
               authorization: [
                 {
                   actor: that.$store.state.eosUserName,
@@ -160,9 +179,10 @@
                 }
               ],
               data: {
-                slotkey: that.curSlot.key,
-                user: that.$store.state.eosUserName,
-                inviter:that.inviterName,
+                from: that.$store.state.eosUserName,
+                to: "eosjustturbo",
+                quantity: slotPirce.toFixed(4) + " EOS",
+                memo: memo,
               }
             }
           ]
@@ -181,11 +201,13 @@
         }
         var pricesys=(that.newSlotGoodsPrice*10000).toFixed(0);
         var eossdkutil = window.eossdkutil;
+        var memo="";
+        memo="newslot:" + that.newSlotName + ";" + that.inviterName + ";"+that.newSlotTitle+";"+pricesys+";";
         eossdkutil.pushEosAction({
           actions: [
             {
-              account: "eosjustturbo",
-              name: "newslot",
+              account: "eosio.token",
+              name: "transfer",
               authorization: [
                 {
                   actor: that.$store.state.eosUserName,
@@ -193,13 +215,10 @@
                 }
               ],
               data: {
-                user: that.$store.state.eosUserName,
-                inviter:that.inviterName,
-                owner: that.$store.state.eosUserName,
-                slotkey: that.newSlotName,
-                title:that.newSlotTitle,
-                goods_price:pricesys,
-
+                from: that.$store.state.eosUserName,
+                to: "eosjustturbo",
+                quantity: "100.0000 EOS",
+                memo: memo,
               }
             }
           ]

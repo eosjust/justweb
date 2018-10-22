@@ -3,7 +3,7 @@
 
     <el-row type="flex" justify="space-between" style="margin-top: 5px;">
       <el-col :span="6">
-        <span class="award-slot-big-key-text">{{data.key}}</span>
+        <span class="award-slot-big-key-text">{{myslotinfo.key}}</span>
       </el-col>
       <el-col :span="6" v-show="false">
         <el-row type="flex" justify="end">
@@ -18,24 +18,24 @@
     <el-row style="padding: 12px;">
       <el-row type="flex" justify="space-between" align="middle" style="padding-bottom: 10px;">
         <el-col :span="16">
-          <div class="award-slot-big-title-text">标题:{{data.title}}</div>
-          <div class="award-slot-big-title-text">商品价格:{{data.goods_price}}</div>
-          <div class="award-slot-big-title-text">轮数:{{data.round}}</div>
-          <div class="award-slot-big-title-text">历史总资金:{{data.round}}</div>
-          <div class="award-slot-big-title-text">拥有者:{{data.owner}}</div>
-          <div class="award-slot-big-title-text">经营者:{{data.partner}}</div>
-          <div class="award-slot-big-title-text">经营权价格:{{data.slot_price}}</div>
+          <div class="award-slot-big-title-text">标题:{{myslotinfo.title}}</div>
+          <div class="award-slot-big-title-text">商品价格:{{myslotinfo.goods_price_show}}</div>
+          <div class="award-slot-big-title-text">轮数:{{myslotinfo.round}}</div>
+          <div class="award-slot-big-title-text">历史总资金:{{myslotinfo.total_pool_show}}</div>
+          <div class="award-slot-big-title-text">拥有者:{{myslotinfo.owner}}</div>
+          <div class="award-slot-big-title-text">经营者:{{myslotinfo.partner}}</div>
+          <div class="award-slot-big-title-text">经营权价格:{{myslotinfo.slot_price_show}}</div>
         </el-col>
         <el-col :span="8">
-          <img :src="nowImg64" class="image">
+          <img :src="myslotinfo.img" class="image">
         </el-col>
       </el-row>
 
-      <el-progress :percentage="70" :show-text="false" status="success"></el-progress>
+      <el-progress :percentage="myslotinfo.percent" :show-text="false" status="success"></el-progress>
       <el-row type="flex" justify="space-between">
         <el-col :span="6">
           <div class="award-slot-big-text-left">已参与</div>
-          <div class="award-slot-big-text-left">{{data.progress}}</div>
+          <div class="award-slot-big-text-left">{{myslotinfo.progress_show}}</div>
         </el-col>
         <el-col :span="6">
           <div></div>
@@ -43,7 +43,7 @@
         </el-col>
         <el-col :span="6">
           <div class="award-slot-big-text-right">剩余</div>
-          <div class="award-slot-big-text-right">{{data.goods_price-data.progress}}</div>
+          <div class="award-slot-big-text-right">{{myslotinfo.need_show}}</div>
         </el-col>
       </el-row>
       <el-row type="flex" justify="space-between">
@@ -59,7 +59,8 @@
 </template>
 
 <script>
-  import dfImg from '../assets/logo.png';
+
+  import dfImg from '../assets/nonepic.png';
   export default {
     name: "AwardSlotBig",
     props: ['data'],
@@ -68,40 +69,93 @@
     },
     data() {
       return {
-        lastKey:"",
-        nowImg64:"",
+        myslotinfo:{
+          key:"",
+          title:"",
+          goods_price_show:"",
+          round:1,
+          total_pool_show:"",
+          owner:"",
+          partner:"",
+          slot_price_show:"",
+          progress_show:"",
+          need_show:"",
+          percent:0,
+          img:dfImg,
+        },
       }
     },
     methods: {
-      requestUserImg(hash,ImgId,imgUser) {
+      requestUserImg(hash, ImgId, imgUser) {
         var that = this;
         var eossdkutil = window.eossdkutil;
+        var imgMap = this.$store.state.awardImgMap;
+        if (imgMap == null) {
+          imgMap = new HashMap();
+          this.$store.commit('setAwardMap', imgMap);
+        }
+        // if(!(typeof(imgMap)==HashMap)){
+        //   imgMap=new HashMap();
+        //   this.$store.commit('setAwardMap', imgMap);
+        // }
+        if (imgMap.get(hash) && imgMap.get(hash).length > 0) {
+          that.myslotinfo.img = imgMap.get(hash);
+          console.log("load img from cache");
+          return;
+        }
         eossdkutil.getEosTableRows(
           {
             json: true,
             code: "eosjustturbo",
             scope: imgUser,
-            lower_bound:ImgId,
+            lower_bound: ImgId,
             table: 'userimg',
             limit: 1
           }
         ).then(function (result) {
           var rows = result.data.rows;
-          if(rows.length>0){
-            that.nowImg64=rows[rows.length-1].img;
-          }else{
-            that.nowImg64=dfImg;
+          if (rows.length > 0) {
+            console.log("load img from net");
+            that.myslotinfo.img = rows[rows.length - 1].img;
+            if (imgMap.get(hash) && imgMap.get(hash).length > 0) {
+
+            } else {
+              imgMap.set(hash, that.myslotinfo.img);
+              that.$store.commit('setAwardMap', imgMap);
+            }
+          } else {
+            that.myslotinfo.img = dfImg;
           }
         }).catch(function (error) {
-          that.nowImg64=dfImg;
+          that.myslotinfo.img = dfImg;
         });
+      },
+      parseEosAmount(amount) {
+        return (parseFloat(amount) / 10000).toFixed(4);
+      },
+      toEosAmount(price) {
+        return parseInt((parseFloat(price) * 10000).toFixed(0));
       },
     },
     watch: {
       data: function (val) {
-        if(val.key!=this.lastKey){
-          this.lastKey=val.key;
-          this.requestUserImg("",val.img_id,val.img_user);
+        if(val){
+          this.myslotinfo.key=val.key;
+          this.myslotinfo.title=val.title;
+          this.myslotinfo.round=val.round;
+          this.myslotinfo.goods_price_show=this.parseEosAmount(val.goods_price);
+          this.myslotinfo.progress_show=this.parseEosAmount(val.progress);
+          this.myslotinfo.total_pool_show=this.parseEosAmount(val.total_pool);
+          this.myslotinfo.slot_price_show=this.parseEosAmount(val.slot_price);
+          this.myslotinfo.owner=val.owner;
+          this.myslotinfo.partner=val.partner;
+          this.myslotinfo.percent=0;
+          if(val.progress>0&&val.goods_price>0){
+            this.myslotinfo.percent=parseInt(parseFloat(val.progress*100/val.goods_price));
+          }
+          this.myslotinfo.need=val.goods_price-val.progress;
+          this.myslotinfo.need_show=this.parseEosAmount(this.myslotinfo.need);
+          this.requestUserImg(val.img_hash,val.img_id,val.img_user);
         }
       },
     }

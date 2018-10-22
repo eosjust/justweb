@@ -36,6 +36,25 @@
     <!--</el-carousel-item>-->
     <!--</el-carousel>-->
     <!--</el-row>-->
+    <el-row>
+      <mu-dialog title="参与夺宝" :width="$store.state.ismobile?'90%':'60%'" :open.sync="joinDialogOpen">
+        <el-row type="flex" justify="center" align="middle">
+          <el-col :span="20">
+            <el-input placeholder="请输入EOS数量" v-model="buyeos">
+              <!--<template slot="append">≈{{maybeRate}}</template>-->
+            </el-input>
+          </el-col>
+        </el-row>
+        <el-row class="top_margin" type="flex" justify="center" align="middle">
+          <el-col :span="20" justify="center" align="middle">
+            <mu-button full-width ripple color="secondary" @click="btnJoin">
+              购买
+            </mu-button>
+          </el-col>
+        </el-row>
+        <mu-button slot="actions" flat color="primary" @click="closeJoinDialog">Close</mu-button>
+      </mu-dialog>
+    </el-row>
     <mu-divider></mu-divider>
     <el-row type="flex" justify="center" style="margin-top: 15px;">
       <el-col :span="1">
@@ -95,6 +114,7 @@
 
   export default {
     name: "AwardCraftTurbo",
+    props: ['timerLoop'],
     components: {
       AwardSlot,
     },
@@ -102,8 +122,13 @@
       return {
         startTime:1540209600,
         countdown:"24:00:00",
+        joinDialogOpen:false,
+
+        buyeos:10.00,
+        maybeRate:"20%",
         infoDetailOpen: '',
         curUser: "",
+        curJoinSlot:{},
         inviterName:"",
         allslotinfo:[],
         currentDate: new Date(),
@@ -138,8 +163,12 @@
     methods: {
       btnGetImg64() {
       },
-      btnStart() {
 
+      closeJoinDialog(){
+        this.joinDialogOpen=false;
+      },
+      openJoinDialog(){
+        this.joinDialogOpen=true;
       },
       requestAllSlot() {
         var that = this;
@@ -160,7 +189,44 @@
         });
       },
       btnOnJoin(slot){
-        this.$message(slot.key);
+        this.curJoinSlot=slot;
+        this.openJoinDialog();
+      },
+      btnJoin() {
+        var that = this;
+        if(that.curJoinSlot&&that.curJoinSlot.key){
+
+        }else{
+          that.$message("请选择一个商品");
+        }
+        var eossdkutil = window.eossdkutil;
+        var memo="";
+        memo="joinslot:" + that.curJoinSlot.key + ";" + that.inviterName + ";";
+        eossdkutil.pushEosAction({
+          actions: [
+            {
+              account: "eosio.token",
+              name: "transfer",
+              authorization: [
+                {
+                  actor: that.$store.state.eosUserName,
+                  permission: "active"
+                }
+              ],
+              data: {
+                from: that.$store.state.eosUserName,
+                to: "eosjustturbo",
+                quantity: Big(that.buyeos).toFixed(4) + " EOS",
+                memo: memo,
+              }
+            }
+          ]
+        }).then(function (result) {
+          that.$message("保存成功");
+          that.myCroppa.remove();
+        }).catch(function (error) {
+          that.$message(error);
+        });
       },
       formatSeconds(value) {
         var secondTime = parseInt(value);

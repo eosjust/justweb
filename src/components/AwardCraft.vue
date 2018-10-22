@@ -6,9 +6,9 @@
       <mu-tab>投资</mu-tab>
       <mu-tab>我的</mu-tab>
     </mu-tabs>
-    <AwardCraftTurbo v-show="award_tab_active==0"></AwardCraftTurbo>
-    <AwardCraftInvest v-show="award_tab_active==1"></AwardCraftInvest>
-    <AwardCraftMine v-show="award_tab_active==2"></AwardCraftMine>
+    <AwardCraftTurbo v-show="award_tab_active==0" :timerLoop="award_tab_active==0"></AwardCraftTurbo>
+    <AwardCraftInvest v-show="award_tab_active==1" :timerLoop="award_tab_active==1"></AwardCraftInvest>
+    <AwardCraftMine v-show="award_tab_active==2" :timerLoop="award_tab_active==2"></AwardCraftMine>
   </el-row>
 </template>
 
