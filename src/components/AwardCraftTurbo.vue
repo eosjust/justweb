@@ -221,9 +221,10 @@
         ).then(function (result) {
           var rows = result.data.rows;
           if(rows&&rows.length>0){
+            var sortSlots = rows.sort(that.sortSlotFun);
             that.allslotinfo.splice(0,that.allslotinfo.length);
-            for(var i=0;i<rows.length;i++){
-              that.allslotinfo.splice(i,1,rows[i]);
+            for(var i=0;i<sortSlots.length;i++){
+              that.allslotinfo.splice(i,1,sortSlots[i]);
             }
           }
         }).catch(function (error) {
@@ -252,6 +253,13 @@
         }).catch(function (error) {
 
         });
+      },
+      sortSlotFun(slot1, slot2) {
+        if (slot1.slot_price < slot2.slot_price) {
+          return 1;
+        } else {
+          return -1;
+        }
       },
       btnOnJoin(slot){
         this.curJoinSlot=slot;
